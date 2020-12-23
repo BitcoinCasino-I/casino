@@ -37,13 +37,13 @@ var reels_bg = new Image();
 var snd_reel_stop = new Array();
 var snd_win;
 
-symbols.src = "images/reddit_icons_small.png";
-reels_bg.src = "images/reels_bg.png";
+symbols.src = "assets/images/reddit_icons_small.png";
+reels_bg.src = "assets/images/reels_bg.png";
 
 snd_win = new Audio("sounds/win.wav");
-snd_reel_stop[0] = new Audio("sounds/reel_stop.wav");
-snd_reel_stop[1] = new Audio("sounds/reel_stop.wav");
-snd_reel_stop[2] = new Audio("sounds/reel_stop.wav");
+snd_reel_stop[0] = new Audio("assets/sounds/reel_stop.wav");
+snd_reel_stop[1] = new Audio("assets/sounds/reel_stop.wav");
+snd_reel_stop[2] = new Audio("assets/sounds/reel_stop.wav");
 
 // enums
 var STATE_REST = 0;
