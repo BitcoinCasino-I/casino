@@ -20,7 +20,7 @@ var FPS = 60;
 setInterval(function() {
   logic();
   render();
-}, 1500/FPS);
+}, 1000/FPS);
 
 // html elements
 var can;     // canvas
@@ -57,12 +57,12 @@ var reel_positions = 32;
 var symbol_size = 32;
 var symbol_count = 11;
 var reel_pixel_length = reel_positions * symbol_size;
-var row_count = 0;
+var row_count = 3;
 var stopping_distance = 528;
 var max_reel_speed = 32;
 var spinup_acceleration = 2;
 var spindown_acceleration = 1;
-var starting_credits = 1000;
+var starting_credits = 100;
 var reward_delay = 3; // how many frames between each credit tick
 var reward_delay_grand = 1; // delay for grand-prize winning
 var reward_grand_threshhold = 25; // count faster if the reward is over this size
@@ -123,7 +123,6 @@ var playing_lines;
 
 function draw_symbol(symbol_index, x, y) {
   var symbol_pixel = symbol_index * symbol_size;
-  //																								Symbol size x & y	
   ctx.drawImage(symbols, 0,symbol_pixel,symbol_size,symbol_size, x+reel_area_left,y+reel_area_top,symbol_size,symbol_size);
 }
 
