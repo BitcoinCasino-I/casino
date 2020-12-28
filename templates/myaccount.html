@@ -1,0 +1,67 @@
+{% extends 'base_smallhero.html' %}
+{% set active_page = "myaccount" %}
+
+{% block herocontent %}
+  <center><h1>My Account</h1></center>
+{% endblock %}
+
+{% block maincontent %}
+
+    <!-- ======= About Us Section ======= -->
+    <section id="about" class="about">
+      <div class="container" data-aos="fade-up">
+
+        <div class="row content">
+          <div class="col-lg-6">
+            {% if hasimage == True %}
+            <img style="max-height:100px;border-radius: 50%; margin-bottom: 20px" src="{{ url_for('static', filename='upload/profileimg/') }}{{ userid }}{{ extension }}">
+            {% endif %}
+            <h4>Your username handle:</h4>
+            <p>{{ username }}</p>
+            <h4>Your email address:</h4>
+            <p>{{ email }}</p>
+            <h4>Your credit balance:</h4>
+            <p>{{ balance }} Credits</p><br>
+            <p><a href="{{ url_for('buycredits')}}" style="margin-right: 10px"><button class="btn btn-secondary" style="">Buy credits</button></a><a href="{{ url_for('logout')}}"><button class="btn btn-secondary" style="">Logout</button></a></p>
+          </div>
+          <div class="col-lg-6 pt-4 pt-lg-0">
+            <h4>Profile image:</h4>
+            <div style="padding-bottom: 10px; font-weight: bold;">{{ msgimage }}</div>
+            <form method="post" action="{{ url_for('myaccount')}}" enctype="multipart/form-data">
+              <div class="form-group w-50">
+                <label>Allowed file types: jpg, png<br>Max. 600 x 600px<br>Must be square</label>
+                <input type="file" class="form-control" placeholder="Choose a file" name="image">
+              </div>
+              <button type="submit" class="btn btn-secondary" style="margin-top: 15px">Upload / Change</button>
+            </form>
+            {% if hasimage == True %}<a href="{{ url_for('myaccount', deleteimage=True) }}"><button class="btn btn-secondary" style="margin-top: 15px">Delete</button></a>{% endif %}
+            <br><br>
+            <h4>Change your password:</h4>
+            <div style="padding-bottom: 10px; font-weight: bold;">{{ msgchangepw }}</div>
+            <form method="post" action="{{ url_for('myaccount')}}">
+              <div class="form-group w-50">
+                <label>Current password</label>
+                <input type="password" class="form-control" placeholder="Current password" name="currentpassword">
+              </div>
+              <div class="form-group w-50">
+                <label>New Password</label>
+                <input type="password" class="form-control" placeholder="New password" name="newpassword">
+              </div>
+              <button type="submit" class="btn btn-secondary" style="margin-top: 15px">Change now</button>
+            </form>
+            <br><br>
+            <h4>Delete your account:</h4>
+            <div style="padding-bottom: 10px; font-weight: bold;">{{ msgdeleteacc }}</div>
+            <form method="post" action="{{ url_for('myaccount')}}">
+              <div class="form-group w-50">
+                <label>Confirm your password</label>
+                <input type="password" class="form-control" placeholder="Confirm your password" name="confirmpassword">
+              </div>
+              <button type="submit" class="btn btn-secondary" style="margin-top: 15px">Delete my account</button>
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </section><!-- End About Us Section -->
+{% endblock %}

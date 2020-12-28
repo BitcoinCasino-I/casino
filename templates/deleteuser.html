@@ -1,0 +1,32 @@
+{% extends 'base_smallhero.html' %}
+{% set active_page = "adminpanel" %}
+
+{% block herocontent %}
+  <center><h1>Admin: Delete user</h1></center>
+{% endblock %}
+
+{% block maincontent %}
+
+    <!-- ======= About Us Section ======= -->
+    <section id="about" class="about">
+      <div class="container" data-aos="fade-up">
+
+        <div class="row content">
+          <div class="col-lg-6">
+            <p>Enter a username to delete the user from the system. Careful!</p>
+          </div>
+          <div class="col-lg-6 pt-4 pt-lg-0">
+              <form method="post" action="{{ url_for('deleteuser')}}">
+                  <div class="form-group">
+                     <label>Username</label>
+                     <input type="text" class="form-control" value="{{ username }}" name="user" {% if username %}readonly{% endif %}>
+                  </div>
+                  <button type="submit" class="btn btn-secondary" style="margin-top: 15px" onclick="return confirm('Are you sure you wish to delete?');">Delete user</button>
+              </form>
+              <div style="padding-top: 20px; font-weight: bold;">{{ msg }}</div>
+          </div>
+        </div>
+
+      </div>
+    </section><!-- End About Us Section -->
+{% endblock %}

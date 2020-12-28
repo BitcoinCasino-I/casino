@@ -1,0 +1,46 @@
+{% extends 'base_smallhero.html' %}
+{% set active_page = "" %}
+
+{% block herocontent %}
+  <center><h1>Login</h1></center>
+{% endblock %}
+
+{% block maincontent %}
+
+    <!-- ======= About Us Section ======= -->
+    <section id="about" class="about">
+      <div class="container" data-aos="fade-up">
+
+        <div class="row content">
+          <div class="col-lg-6">
+            <p>
+              Login here to access our totally fair gambling games.
+            </p>
+            <ul>
+              <li><i class="ri-check-double-line"></i> Totally fair</li>
+              <li><i class="ri-check-double-line"></i> Absolutely legit</li>
+              <li><i class="ri-check-double-line"></i> Proper gambling!!!111</li>
+            </ul>
+            <br>
+            <p><strong>No account? <u><a href="{{ url_for('registrierung')}}">Signup here</a></u></strong></p>
+            <p><strong>Forgot password? <u><a href="{{ url_for('resetpassword')}}">Click here</a></u></strong></p>
+          </div>
+          <div class="col-lg-6 pt-4 pt-lg-0">
+            <form method="post" action="{{ url_for('anmeldung')}}">
+                  <div class="form-group">
+                     <label>Username</label>
+                     <input type="text" class="form-control" placeholder="Username" name="user">
+                  </div>
+                  <div class="form-group">
+                     <label>Password</label>
+                     <input type="password" class="form-control" placeholder="Password" name="pass">
+                  </div>
+                  <button type="submit" class="btn btn-secondary" style="margin-top: 15px">Login</button>
+               </form>
+               <div style="padding-top: 20px; font-weight: bold;">{{ msg }}</div>
+          </div>
+        </div>
+
+      </div>
+    </section><!-- End About Us Section -->
+{% endblock %}

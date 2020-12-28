@@ -1,0 +1,29 @@
+{% extends 'base_smallhero.html' %}
+{% set active_page = "" %}
+
+{% block herocontent %}
+  <center><h1>Account activation</h1></center>
+{% endblock %}
+
+{% block maincontent %}
+
+    <!-- ======= About Us Section ======= -->
+    <section id="about" class="about">
+      <div class="container" data-aos="fade-up">
+
+        <div class="row content">
+          <div class="col-lg-6">
+            {% if success == True %}
+            <h4>Your account has been activated.</h4>
+            <p><a href="{{ url_for('anmeldung')}}"><button class="btn btn-secondary" style="">Login now</button></a></p>
+            {% else %}
+            <h4>Error: Your activation link is invalid.</h4>
+            {% endif %}
+          </div>
+          <div class="col-lg-6 pt-4 pt-lg-0">
+          </div>
+        </div>
+
+      </div>
+    </section><!-- End About Us Section -->
+{% endblock %}

@@ -1,0 +1,59 @@
+{% extends 'base_smallhero.html' %}
+{% set active_page = "adminpanel" %}
+
+{% block herocontent %}
+  <center><h1>Admin: Show users</h1></center>
+{% endblock %}
+
+{% block maincontent %}
+
+    <!-- ======= About Us Section ======= -->
+    <section id="about" class="about">
+      <div class="container" data-aos="fade-up">
+
+        <div class="row content">
+          <div class="col-lg-12">
+           <div class="table-responsive"> 
+            <table class="table table-responsive">
+            <thead>
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Username</th>
+                <th scope="col">Email</th>
+                <th scope="col">Balance</th>
+                <th scope="col">Image</th>
+                <th scope="col">Banned</th>
+                <th scope="col">Activated</th>
+                <th scope="col">Admin</th>
+                <th scope="col">Last login (UTC)</th>
+                <th scope="col">Last active (UTC)</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for user in users %}
+              <tr>
+                <th scope="row">{{ user[0] }}</th>
+                <td>{{ user[1] }}</td>
+                <td>{{ user[2] }}</td>
+                <td>{{ user[5] }}</td>
+                <td>{% if (user[11] == 1) %}<a href="{{ url_for('static', filename= 'upload/profileimg/') }}{{ user[0] }}{{ user[12] }}" target="_blank"><img style="height:15px" src="{{ url_for('static', filename= 'img/external.png') }}"></a>{% else %}&#10005;{% endif %}</td>
+                <td>{% if (user[4] == 1) %}&#10004;{% else %}&#10005;{% endif %}</td>
+                <td>{% if (user[7] == 1) %}&#10004;{% else %}&#10005;{% endif %}</td>
+                <td>{% if (user[8] == 1) %}&#10004;{% else %}&#10005;{% endif %}</td>
+                <td>{{ user[9] }}</td>
+                <td>{{ user[10] }}</td>
+                <td><a href="{{ url_for('edituser', user=user[1]) }}">Edit</a></td>
+                <td><a href="{{ url_for('deleteuser', user=user[1]) }}">Delete</a></td>
+              </tr>
+              {% endfor %}
+            </tbody>
+            </table>
+           </div>
+          </div>
+        </div>
+
+      </div>
+    </section><!-- End About Us Section -->
+{% endblock %}

@@ -1,0 +1,81 @@
+{% extends 'base_smallhero.html' %}
+{% set active_page = "adminpanel" %}
+
+{% block herocontent %}
+  <center><h1>Admin: Edit user</h1>{% if editmode == True %}<h5 style="color:#fff">{{ userid}}: {{ username }}</h5>{% endif %}</center>
+{% endblock %}
+
+{% block maincontent %}
+
+    <!-- ======= About Us Section ======= -->
+    <section id="about" class="about">
+      <div class="container" data-aos="fade-up">
+
+        <div class="row content">
+          <div class="col-lg-6">
+            <p>{% if editmode == False %}Enter a username to edit all of his data.{% endif %}{% if editmode == True %}Now edit the users data and save. Careful!{% endif %}</p>
+          </div>
+          <div class="col-lg-6 pt-4 pt-lg-0">
+            {% if editmode == False %}
+            <form method="post" action="{{ url_for('edituser')}}">
+                  <div class="form-group">
+                     <label>Username</label>
+                     <input type="text" class="form-control" placeholder="Username" name="user">
+                  </div>
+                  <button type="submit" class="btn btn-secondary" style="margin-top: 15px">Edit user</button>
+               </form>
+               <div style="padding-top: 20px; font-weight: bold;">{{ msg }}</div>
+            {% endif %}
+            {% if editmode == True %}
+              <form method="post" action="{{ url_for('edituser')}}">
+                  <div class="form-group">
+                    <label>User-ID</label>
+                    <input style="color:grey" type="text" value="{{ userid }}" class="form-control" name="userid" readonly>
+                  </div>
+                  <div class="form-group">
+                     <label>Username</label>
+                     <input type="text" class="form-control" value="{{ username }}" name="userchange">
+                  </div>
+                  <div class="form-group">
+                     <label>Email</label>
+                     <input type="text" class="form-control" value="{{ email }}" name="emailchange">
+                  </div>
+                  <div class="form-group">
+                     <label>Password</label>
+                     <input type="password" class="form-control" placeholder="LEAVE FREE TO KEEP PASSWORD" name="passwordchange">
+                  </div>
+                  <div class="form-group">
+                     <label>Balance</label>
+                     <input type="number" class="form-control" value="{{ balance }}" name="balancechange">
+                  </div>
+                  <div class="form-group">
+                     <label>Activated</label>
+                     <select class="form-control" name="activatedchange">
+                      <option value="0"{% if (activated == 0) %} selected="selected"{% endif %}>False</option>
+                      <option value="1"{% if (activated == 1) %} selected="selected"{% endif %}>True</option>
+                     </select>
+                  </div>
+                  <div class="form-group">
+                     <label>Banned</label>
+                     <select class="form-control" name="bannedchange">
+                      <option value="0"{% if (banned == 0) %} selected="selected"{% endif %}>False</option>
+                      <option value="1"{% if (banned == 1) %} selected="selected"{% endif %}>True</option>
+                     </select>
+                  </div>
+                  <div class="form-group">
+                     <label>Is Admin</label>
+                     <select class="form-control" name="isadminchange">
+                      <option value="0"{% if (isadmin == 0) %} selected="selected"{% endif %}>False</option>
+                      <option value="1"{% if (isadmin == 1) %} selected="selected"{% endif %}>True</option>
+                     </select>
+                  </div>
+                  <button type="submit" class="btn btn-secondary" style="margin-top: 15px">Save changes</button>
+              </form>
+              <div style="padding-top: 20px; font-weight: bold;">{{ msg }}</div>
+            {% endif %}
+          </div>
+        </div>
+
+      </div>
+    </section><!-- End About Us Section -->
+{% endblock %}

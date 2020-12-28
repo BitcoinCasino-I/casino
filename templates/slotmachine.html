@@ -1,0 +1,23 @@
+{% extends 'base_smallhero.html' %}
+{% set active_page = "slotmachine" %}
+
+{% block herocontent %}
+  <center><h1>Epic Slot Machine</h1></center>
+{% endblock %}
+
+{% block maincontent %}
+        <div style="padding-top: 30px;padding-bottom: 30px">
+            <div id="slotmachine"></div>
+        </div>
+
+{% endblock %}
+
+{% block customcss %}
+<link href="{{ url_for('static', filename= 'vendor/slotmachine/css/style.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block customjs %}
+<script src="{{ url_for('static', filename= 'vendor/slotmachine/js/application.js') }}"></script>
+{% endblock %}
+
+

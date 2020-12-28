@@ -1,0 +1,58 @@
+{% extends 'base_smallhero.html' %}
+{% set active_page = "" %}
+
+{% block herocontent %}
+  <center><h1>Buy credits</h1></center>
+{% endblock %}
+
+{% block maincontent %}
+
+    <!-- ======= About Us Section ======= -->
+    <section id="about" class="about">
+      <div class="container" data-aos="fade-up">
+
+        <div class="row content">
+          <div class="col-lg-6">
+            <p>
+              Here you can buy credits using your credit card (<b>simulated</b>).
+            </p>
+            <p>
+              Choose a package that fits your gambling needs and off you go!
+            </p>
+            <p>
+              <strong>You currently have {{ credits }} Credits.</strong>
+            </p>
+          </div>
+          <div class="col-lg-6 pt-4 pt-lg-0">
+            <form method="post" action="{{ url_for('buycredits')}}">
+                  <div class="form-group">
+                    <label for="exampleFormControlSelect1">Choose a package</label>
+                    <select class="form-control" id="exampleFormControlSelect1" name="package">
+                      <option value="20">20 Credits - 5€</option>
+                      <option value="50">50 Credits - 10€</option>
+                      <option value="120">120 Credits - 20€</option>
+                      <option value="250">250 Credits - 40€</option>
+                      <option value="500">500 Credits - 60€</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                     <label>Credit card holder</label>
+                     <input type="text" class="form-control" placeholder="Full name" name="name">
+                  </div>
+                  <div class="form-group">
+                     <label>Credit card number</label>
+                     <input type="text" class="form-control" placeholder="xxxxxxxxxxxxxxxx" name="ccnumber">
+                  </div>
+                  <div class="form-group">
+                     <label>CCV</label>
+                     <input maxlength="4" type="text" class="form-control" placeholder="xxxx" name="ccv">
+                  </div>
+                  <button type="submit" class="btn btn-secondary" style="margin-top: 15px">Buy credits</button>
+               </form>
+            <div style="padding-top: 20px; font-weight: bold;">{{ msg }}</div>
+          </div>
+        </div>
+
+      </div>
+    </section><!-- End About Us Section -->
+{% endblock %}

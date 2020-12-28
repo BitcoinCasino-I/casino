@@ -1,0 +1,33 @@
+{% extends 'base_smallhero.html' %}
+{% set active_page = "adminpanel" %}
+
+{% block herocontent %}
+  <center><h1>Admin Panel</h1></center>
+{% endblock %}
+
+{% block maincontent %}
+
+    <!-- ======= About Us Section ======= -->
+    <section id="about" class="about">
+      <div class="container" data-aos="fade-up">
+
+        <div class="row content">
+          <div class="col-lg-6">
+            <h4>Your username handle:</h4>
+            <p>{{ username }}</p>
+            <h4>Your email address:</h4>
+            <p>{{ email }}</p><br>
+            <p><a href="{{ url_for('logout')}}"><button class="btn btn-secondary" style="">Logout</button></a></p>
+          </div>
+          <div class="col-lg-6 pt-4 pt-lg-0">
+            <h4>Actions:</h4>
+            <p><a href="{{ url_for('showusers')}}"><button class="btn btn-secondary" style="">Show users</button></a></p>
+            <p><a href="{{ url_for('edituser')}}"><button class="btn btn-secondary" style="">Edit user</button></a></p>
+            <p><a href="{{ url_for('adduser')}}"><button class="btn btn-secondary" style="">Add user</button></a></p>
+            <p><a href="{{ url_for('deleteuser')}}"><button class="btn btn-secondary" style="">Delete user</button></a></p>
+          </div>
+        </div>
+
+      </div>
+    </section><!-- End About Us Section -->
+{% endblock %}
