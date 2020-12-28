@@ -19,6 +19,8 @@ app.config.from_pyfile('mail.cfg')
 app.config['PROFILEIMAGE_UPLOAD_FOLDER'] = '/var/www/html/CasinoApp/CasinoApp/static/upload/profileimg'
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
+APPDOMAIN = 'https://casino.reshade.io'
+
 mysql.init_app(app)
 mail.init_app(app)
 jsglue.init_app(app)
@@ -198,7 +200,7 @@ def registrierung():
 			md5_hash = get_md5(password)
 			mysql_write('INSERT INTO user VALUES (NULL, %s, %s, %s, 0, 20, %s, 0, 0, NULL, NULL, 0, NULL)', (username, email, md5_hash, otp))
 			otpstring = str(otp)
-			sendamail("Account activation", [email], "<h3>Activation link:</h3><p><a href='http://casino.reshade.io/activate?otp=" + otpstring + "&user=" + username +"'>http://casino.reshade.io/activate?otp=" + otpstring + "&user=" + username +"</a></p>")
+			sendamail("Account activation", [email], "<h3>Activation link:</h3><p><a href='" + APPDOMAIN + "/activate?otp=" + otpstring + "&user=" + username +"'>"+ APPDOMAIN +"/activate?otp=" + otpstring + "&user=" + username +"</a></p>")
 			msg = 'Check your mail to confirm registration! Also look in spam.'
 	elif request.method == 'POST':
 		# Form is empty
@@ -293,7 +295,7 @@ def myaccount():
 	deleteimage = request.args.get("deleteimage")
 	if deleteimage == "True":
 		if request.environ.get('HTTP_REFERER') is not None:
-			if request.environ.get('HTTP_REFERER') == 'http://casino.reshade.io' + url_for('myaccount'):
+			if request.environ.get('HTTP_REFERER') == APPDOMAIN + url_for('myaccount'):
 				msgimage = deleteimage
 				if accountdata[11] == 1:
 					hasimage = False
@@ -485,7 +487,7 @@ def edituser():
 				msg = 'User "' + mysql_fetchone('SELECT * FROM user WHERE id = %s', (userid,))[1] + '" with ID ' + userid + ' was edited!'
 	else:
 		if request.environ.get('HTTP_REFERER') is not None:
-			if request.environ.get('HTTP_REFERER') == 'http://casino.reshade.io' + url_for('showusers'):
+			if request.environ.get('HTTP_REFERER') == APPDOMAIN + url_for('showusers'):
 				usernameform = request.args.get("user")
 				account = mysql_fetchone('SELECT * FROM user WHERE username = %s', (usernameform,))
 				if account:
@@ -532,7 +534,7 @@ def deleteuser():
 					msg = 'User not found!'
 	else:
 		if request.environ.get('HTTP_REFERER') is not None:
-			if request.environ.get('HTTP_REFERER') == 'http://casino.reshade.io' + url_for('showusers') or request.environ.get('HTTP_REFERER') == 'http://casino.reshade.io' + url_for('deleteuser'):
+			if request.environ.get('HTTP_REFERER') == APPDOMAIN + url_for('showusers') or request.environ.get('HTTP_REFERER') == APPDOMAIN + url_for('deleteuser'):
 				return render_template('deleteuser.html', isLoggedIn=True, isAdmin=True, username=request.args.get("user"))
 	return render_template('deleteuser.html', isLoggedIn=True, isAdmin=True, msg=msg)
 
