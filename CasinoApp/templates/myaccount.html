@@ -32,7 +32,7 @@
                 <label>Allowed file types: jpg, png<br>Max. 600 x 600px<br>Must be square</label>
                 <input type="file" class="form-control" placeholder="Choose a file" name="image">
               </div>
-              <button type="submit" class="btn btn-secondary" style="margin-top: 15px">Upload / Change</button>
+              <button type="submit" class="btn btn-secondary" style="margin-top: 15px">{% if hasimage == True %}Change{% else %}Upload{% endif %}</button>
             </form>
             {% if hasimage == True %}<a href="{{ url_for('myaccount', deleteimage=True) }}"><button class="btn btn-secondary" style="margin-top: 15px">Delete</button></a>{% endif %}
             <br><br>
