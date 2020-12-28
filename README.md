@@ -26,8 +26,8 @@ deactivate
 </VirtualHost>
 
 <VirtualHost *:443>
-
                 ServerName casino.reshade.io
+                
                 SSLEngine On
                 SSLCertificateFile /etc/letsencrypt/live/casino.reshade.io/fullchain.pem
                 SSLCertificateKeyFile /etc/letsencrypt/live/casino.reshade.io/privkey.pem
