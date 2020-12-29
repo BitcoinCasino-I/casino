@@ -9,13 +9,13 @@
 * libapache2-mod-wsgi-py3
 * libmysqlclient-dev
   
-## Server Requirements  
-Um die Anwendung auf dem Server vom Repo aus zu aktualisieren:  
+## Update app on server  
+To update the app on the server from this repo, execute the following on the server:  
 ```
 sh /var/www/html/clone_permissions_venv.sh
 ```
   
-## Apache mods
+## Apache enabled mods
 ```
 Loaded Modules:
  core_module (static)
