@@ -12,5 +12,7 @@
 ## Update app on server  
 To update the app on the server from this repo, execute the following on the server:  
 ```
-sh /var/www/html/clone_permissions_venv.sh
+bash /var/www/html/clone_permissions_venv.sh
 ```
+* ALWAYS EXECUTE THE SCRIPT AS USER "DUMMY"
+* USE "BASH" AND NOT "SH" (YES, IT MAKES A DIFFERENCE)
