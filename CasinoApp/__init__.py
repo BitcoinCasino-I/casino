@@ -51,8 +51,18 @@ def mysql_fetchall(execute, data):
 	connection = mysql.connect()
 	cursor = connection.cursor()
 	cursor.execute(execute, data)
-	# Fetch one record and return result
+	# Fetch all records and return result
 	accounts = cursor.fetchall()
+	cursor.close()
+	connection.close()
+	return accounts
+
+def mysql_fetchmany(execute, data, size):
+	connection = mysql.connect()
+	cursor = connection.cursor()
+	cursor.execute(execute, data)
+	# Fetch x records and return result
+	accounts = cursor.fetchmany(size)
 	cursor.close()
 	connection.close()
 	return accounts
