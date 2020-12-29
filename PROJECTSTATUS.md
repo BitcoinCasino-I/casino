@@ -45,6 +45,7 @@
 
 ### Wichtige Hinweise:
 
+- Um die Anwendung auf dem Server vom Repo aus zu aktualisieren, das Skript "/var/www/html/clone_permissions_venv.sh" ausführen
 - Falls weitere py-Skripte angelegt werden, immer Shebang benutzen
 - Alle Files und Ordner auf dem Webserver (ausgenommen \_\_pycache\_\_ und Casino\_vEnv) sollten dummy als owner, www-data als groupowner und 750 als Rechte haben (außer, wenn wir für manche Sicherheitslücken für bestimmte Ordner etwas anderes brauchen)
 - Bitte keinen root-User für Änderungen auf dem Server verwenden, soweit möglich
