@@ -41,19 +41,19 @@ deactivate
                 
                 # Include /etc/apache2/le_http_01_challenge_pre.conf
 
-                WSGIScriptAlias / /var/www/html/CasinoApp/casinoapp.wsgi
-                <Directory /var/www/html/CasinoApp/CasinoApp/>
+                WSGIScriptAlias / /var/www/html/casino/CasinoApp/casinoapp.wsgi
+                <Directory /var/www/html/casino/CasinoApp/CasinoApp/>
                                 Order allow,deny
                                 Allow from all
                 </Directory>
                 
-                Alias /static /var/www/html/CasinoApp/CasinoApp/static
-                <Directory /var/www/html/CasinoApp/CasinoApp/static/>
+                Alias /static /var/www/html/casino/CasinoApp/CasinoApp/static
+                <Directory /var/www/html/casino/CasinoApp/CasinoApp/static/>
                                 Order allow,deny
                                 Allow from all
                 </Directory>
                 
-                <Directory /var/www/html/CasinoApp/CasinoApp/static/uploads/profileimages/>
+                <Directory /var/www/html/casino/CasinoApp/CasinoApp/static/uploads/profileimages/>
                                 Order allow,deny
                                 Allow from all
                 </Directory>
