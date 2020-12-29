@@ -67,6 +67,16 @@ def mysql_fetchmany(execute, data, size):
 	connection.close()
 	return accounts
 
+def mysql_fetchmany_nodata(execute, size):
+	connection = mysql.connect()
+	cursor = connection.cursor()
+	cursor.execute(execute)
+	# Fetch x records and return result
+	accounts = cursor.fetchmany(size)
+	cursor.close()
+	connection.close()
+	return accounts
+
 def mysql_fetchall_nodata(execute):
 	connection = mysql.connect()
 	cursor = connection.cursor()
