@@ -14,3 +14,4 @@ To update the app on the server from this repo, execute the following on the ser
 ```
 sh /var/www/html/clone_permissions_venv.sh
 ```
+ALWAYS EXECUTE THE SCRIPT AS USER "DUMMY"
