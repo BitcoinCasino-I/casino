@@ -59,6 +59,7 @@
   - Besser sichtbare Formularantworten
   - Show Users Änderung: Mehr-Seiten-Ansicht (da sonst zu viele User auf einmal ausgegeben werden könnten)
   - Menuitems werden manchmal nicht richtig hinterlegt (fixen)
+  - Buy Credits besser machen
 - VPS &amp; Apache vollständig konfigurieren (Sicherheitsdirektiven etc.)
 - Authentifizierungsmethoden, Benutzer und Benutzerrollen finalisieren (für VPS, MySQL, Anwendung)
 - Datei- bzw. Ordnerberechtigungen finalisieren (soweit gewollt)
