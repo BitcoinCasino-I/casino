@@ -7,7 +7,8 @@ from flask_jsglue import JSGlue
 from datetime import datetime
 
 import re, hashlib, json, os, glob, struct, PIL
-from PIL import Image 
+from PIL import Image
+from pymysql import cursors 
 
 mysql = MySQL()
 mail = Mail()
@@ -18,6 +19,7 @@ app.config.from_pyfile('db.cfg')
 app.config.from_pyfile('mail.cfg')
 app.config['PROFILEIMAGE_UPLOAD_FOLDER'] = '/var/www/html/CasinoApp/CasinoApp/static/upload/profileimg'
 app.config['MAX_CONTENT_LENGTH'] = 8 * 1024 * 1024
+app.secret_key = 'mcjwillbeatu4ever'
 
 APPDOMAIN = 'https://casino.reshade.io'
 
@@ -43,6 +45,18 @@ def mysql_fetchone(execute, data):
 	cursor.execute(execute, data)
 	# Fetch one record and return result
 	account = cursor.fetchone()
+	cursor.close()
+	connection.close()
+	return account
+
+#used for sql injection
+def mysql_fetchone2(execute, data):
+	connection = mysql.connect()
+	cursor = connection.cursor()
+	cursor.execute(execute % data)
+	# Fetch one record and return result
+	account = cursor.fetchone()
+	print(account)
 	cursor.close()
 	connection.close()
 	return account
@@ -163,7 +177,8 @@ def anmeldung():
 		username = request.form['user']
 		password = request.form['pass']
 		md5_hash = get_md5(password)
-		account = mysql_fetchone('SELECT * FROM user WHERE username = %s AND password = %s', (username, md5_hash,))
+		#to use the sql injection username = ' OR 1='1';# (or any username that exists) password = doesn't matter at all cuz it's commented out :)
+		account = mysql_fetchone2("SELECT * FROM user WHERE username = '%s' AND password = '%s'", (username, md5_hash)) 
 		# If account exists
 		if account:
 			# if user is banned, send him off
@@ -204,7 +219,7 @@ def registrierung():
 		username = request.form['user']
 		password = request.form['pass']
 		email = request.form['email']
-		account = mysql_fetchone('SELECT * FROM user WHERE username = %s OR email = %s', (username, email,))
+		account = mysql_fetchone('SELECT * FROM user WHERE username = %s OR email = %s', (username, email))
 		# If account exists perform checks
 		if account:
 			msg = 'Account already exists! (username or email)'
@@ -218,7 +233,7 @@ def registrierung():
 			otp = randint(000000,999999)
 			# Account doesnt exist and the form data is valid, insert new account into table
 			md5_hash = get_md5(password)
-			mysql_write('INSERT INTO user VALUES (NULL, %s, %s, %s, 0, 20, %s, 0, 0, NULL, NULL, 0, NULL)', (username, email, md5_hash, otp))
+			mysql_write('INSERT INTO user VALUES (NULL, %s, %s, %s, 0, 20, %s, 0, 0, NULL, NULL, 0, NULL)', (username, email, password, otp))
 			otpstring = str(otp)
 			sendamail("Account activation", [email], "<h3>Activation link:</h3><p><a href='" + APPDOMAIN + "/activate?otp=" + otpstring + "&user=" + username +"'>"+ APPDOMAIN +"/activate?otp=" + otpstring + "&user=" + username +"</a></p>")
 			msg = 'Check your mail to confirm registration! Also look in spam.'
@@ -253,7 +268,7 @@ def myaccount():
 		newpassword = request.form['newpassword']
 		md5_hash_current = get_md5(currentpassword)
 		md5_hash_new = get_md5(newpassword)
-		account = mysql_fetchone('SELECT * FROM user WHERE username = %s AND password = %s', (session.get("username"), md5_hash_current,))
+		account = mysql_fetchone("SELECT * FROM user WHERE username = '%s' AND password = '%s'", (session.get("username"), md5_hash_current,))
 		if account:
 			mysql_write('UPDATE user SET password = %s WHERE username = %s', (md5_hash_new, session.get("username"),))
 			msgchangepw = 'Password updated successfully! :)'
