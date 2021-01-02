@@ -12,55 +12,55 @@
     		<div class="row content">
 				<div class="col-lg-6">
 					{% if result == True %}
-					<table id="slot-machine">
-						<tr>
-							<td><div id="slot1"><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>X</div></div></td>
-							<td><div id="slot2"><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>X</div></div></td>
-							<td><div id="slot3"><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>X</div></div></td>
-						</tr>
-						<tr>
-							<td><div id="slot4"><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>X</div></div></td>
-							<td><div id="slot5"><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>X</div></div></td>
-							<td><div id="slot6"><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>X</div></div></td>
-						</tr>
-						<tr>
-							<td><div id="slot7"><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>X</div></div></td>
-							<td><div id="slot8"><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>X</div></div></td>
-							<td><div id="slot9"><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>X</div></div></td>
-						</tr>
-					</table>
-					<br><br>
-					<div id="resultlist">
-						{% if matches != None %}
+						<table id="slot-machine">
+							<tr>
+								<td><div id="slot1"><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>X</div></div></td>
+								<td><div id="slot2"><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>X</div></div></td>
+								<td><div id="slot3"><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>X</div></div></td>
+							</tr>
+							<tr>
+								<td><div id="slot4"><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>X</div></div></td>
+								<td><div id="slot5"><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>X</div></div></td>
+								<td><div id="slot6"><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>X</div></div></td>
+							</tr>
+							<tr>
+								<td><div id="slot7"><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>X</div></div></td>
+								<td><div id="slot8"><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>X</div></div></td>
+								<td><div id="slot9"><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>X</div></div></td>
+							</tr>
+						</table>
+						<br><br>
 						<h4>{{winmsg}}</h4>
-							{% for match in matches %}
-								{% if match == "row1vertical" %}
-									<img class="slotresult" src="{{ url_for('static', filename='vendor/slotmachine/images/win6.jpg') }}">
-								{% endif %}
-								{% if match == "row2vertical" %}
-									<img class="slotresult" src="{{ url_for('static', filename='vendor/slotmachine/images/win7.jpg') }}">
-								{% endif %}
-								{% if match == "row3vertical" %}
-									<img class="slotresult" src="{{ url_for('static', filename='vendor/slotmachine/images/win8.jpg') }}">
-								{% endif %}
-								{% if match == "row1horizontal" %}
-									<img class="slotresult" src="{{ url_for('static', filename='vendor/slotmachine/images/win3.jpg') }}">
-								{% endif %}
-								{% if match == "row2horizontal" %}
-									<img class="slotresult" src="{{ url_for('static', filename='vendor/slotmachine/images/win4.jpg') }}">
-								{% endif %}
-								{% if match == "row3horizontal" %}
-									<img class="slotresult" src="{{ url_for('static', filename='vendor/slotmachine/images/win5.jpg') }}">
-								{% endif %}
-								{% if match == "diagonal1" %}
-									<img class="slotresult" src="{{ url_for('static', filename='vendor/slotmachine/images/win1.jpg') }}">
-								{% endif %}
-								{% if match == "diagonal2" %}
-									<img class="slotresult" src="{{ url_for('static', filename='vendor/slotmachine/images/win2.jpg') }}">
-								{% endif %}
-							{% endfor %}
+						{% if matches != None %}
+							<div id="resultlist">
+								{% for match in matches %}
+									{% if match == "row1vertical" %}
+										<img class="slotresult" src="{{ url_for('static', filename='vendor/slotmachine/images/win6.jpg') }}">
+									{% endif %}
+									{% if match == "row2vertical" %}
+										<img class="slotresult" src="{{ url_for('static', filename='vendor/slotmachine/images/win7.jpg') }}">
+									{% endif %}
+									{% if match == "row3vertical" %}
+										<img class="slotresult" src="{{ url_for('static', filename='vendor/slotmachine/images/win8.jpg') }}">
+									{% endif %}
+									{% if match == "row1horizontal" %}
+										<img class="slotresult" src="{{ url_for('static', filename='vendor/slotmachine/images/win3.jpg') }}">
+									{% endif %}
+									{% if match == "row2horizontal" %}
+										<img class="slotresult" src="{{ url_for('static', filename='vendor/slotmachine/images/win4.jpg') }}">
+									{% endif %}
+									{% if match == "row3horizontal" %}
+										<img class="slotresult" src="{{ url_for('static', filename='vendor/slotmachine/images/win5.jpg') }}">
+									{% endif %}
+									{% if match == "diagonal1" %}
+										<img class="slotresult" src="{{ url_for('static', filename='vendor/slotmachine/images/win1.jpg') }}">
+									{% endif %}
+									{% if match == "diagonal2" %}
+										<img class="slotresult" src="{{ url_for('static', filename='vendor/slotmachine/images/win2.jpg') }}">
+									{% endif %}
+								{% endfor %}
+							</div>
 						{% endif %}
-					</div>
 					{% else %}
 					<table id="slot-machine"> 
 						<tr><td>X</td><td>X</td><td>X</td></tr>
