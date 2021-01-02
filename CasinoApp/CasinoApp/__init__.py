@@ -336,15 +336,6 @@ def myaccount():
 					msgimage = 'You do not have an image.'
 	return render_template('myaccount.html', isLoggedIn=True, isAdmin=False, username=accountdata[1], email=accountdata[2], balance=accountdata[5], msgchangepw=msgchangepw, msgdeleteacc=msgdeleteacc, msgimage=msgimage, userid=session.get("id"), hasimage=hasimage, extension=extension)
 
-@app.route('/games/slotmachine')
-def slotmachine():
-	if valid_user():
-		if is_admin():
-			return redirect(url_for('adminpanel'))
-	else:
-		return redirect(url_for('anmeldung'))
-	return render_template('slotmachine.html', isLoggedIn=True, isAdmin=False)
-
 @app.route('/activate', methods=['GET'])
 def activate():
 	# if user is logged in, redirect to account page
@@ -597,8 +588,8 @@ def adduser():
 			msg = 'User was added!'
 	return render_template('adduser.html', isLoggedIn=True, isAdmin=True, msg=msg)
 
-@app.route('/games/slotmachine2', methods=['GET', 'POST'])
-def slotmachine2():
+@app.route('/games/slotmachine', methods=['GET', 'POST'])
+def slotmachine():
 	if valid_user():
 		if is_admin():
 			return redirect(url_for('adminpanel'))
@@ -730,4 +721,4 @@ def slotmachine2():
 				msg = 'An unknown error occured. Please try again later.'
 		else:
 			msg = 'An unknown error occured. Please try again later.'
-	return render_template('slotmachine2.html', isLoggedIn=True, isAdmin=False, msg=msg, gameIsRunning=gameIsRunning, balance=mysql_fetchone('SELECT * FROM user WHERE id = %s', (session.get('id'),))[5], oneone=oneone, onetwo=onetwo, onethree=onethree, twoone=twoone, twotwo=twotwo, twothree=twothree, threeone=threeone, threetwo=threetwo, threethree=threethree, lastamounttobet=lastamounttobet, result=result, winmsg=winmsg)
+	return render_template('slotmachine.html', isLoggedIn=True, isAdmin=False, msg=msg, gameIsRunning=gameIsRunning, balance=mysql_fetchone('SELECT * FROM user WHERE id = %s', (session.get('id'),))[5], oneone=oneone, onetwo=onetwo, onethree=onethree, twoone=twoone, twotwo=twotwo, twothree=twothree, threeone=threeone, threetwo=threetwo, threethree=threethree, lastamounttobet=lastamounttobet, result=result, winmsg=winmsg)
