@@ -179,15 +179,15 @@ const slot9 = new SlotMachine(document.querySelector('#slot9'), {
   }
 });
 
-slot1.shuffle(shuffletimes);
-slot2.shuffle(shuffletimes);
-slot3.shuffle(shuffletimes);
-slot4.shuffle(shuffletimes);
-slot5.shuffle(shuffletimes);
-slot6.shuffle(shuffletimes);
-slot7.shuffle(shuffletimes);
-slot8.shuffle(shuffletimes);
-slot9.shuffle(shuffletimes, onComplete());
+setTimeout(() => slot1.shuffle(shuffletimes), 100);
+setTimeout(() => slot2.shuffle(shuffletimes), 150);
+setTimeout(() => slot3.shuffle(shuffletimes), 200);
+setTimeout(() => slot4.shuffle(shuffletimes), 300);
+setTimeout(() => slot5.shuffle(shuffletimes), 350);
+setTimeout(() => slot6.shuffle(shuffletimes), 400);
+setTimeout(() => slot7.shuffle(shuffletimes), 500);
+setTimeout(() => slot8.shuffle(shuffletimes), 550);
+setTimeout(() => slot9.shuffle(shuffletimes, onComplete()), 560);
 
 </script>
 {% endblock %}
