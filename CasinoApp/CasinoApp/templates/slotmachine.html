@@ -6,18 +6,55 @@
 {% endblock %}
 
 {% block maincontent %}
-        <div style="padding-top: 30px;padding-bottom: 30px">
-            <div id="slotmachine"></div>
-        </div>
+		<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+			{% if gameIsRunning == False %}
+				<p><a href="{{ url_for('slotmachine2', startgame=True) }}"><button type="submit" class="btn btn-secondary">Start game</button></a></p>
+			{% else %}
+				<p>Balance: {{ balance }} Credits</p>
+				<p><a href="{{ url_for('slotmachine2', endgame=True) }}"><button type="submit" class="btn btn-secondary">End game</button></a></p>
+				<br><br>
+				<center>
+					<table id="slot-machine"> 
+					{% if result == True %}		
+						<tr style="height: 40px"><td style="width: 40px">{{ oneone }}</td><td style="width: 40px">{{ onetwo }}</td><td style="width: 40px">{{ onethree }}</td></tr>
+						<tr style="height: 40px"><td style="width: 40px">{{ twoone }}</td><td style="width: 40px">{{ twotwo }}</td><td style="width: 40px">{{ twothree }}</td></tr>
+						<tr style="height: 40px"><td style="width: 40px">{{ threeone }}</td><td style="width: 40px">{{ threetwo }}</td><td style="width: 40px">{{ threethree }}</td></tr>
+					{% else %}	
+						<tr style="height: 40px"><td style="width: 40px">X</td><td style="width: 40px">X</td><td style="width: 40px">X</td></tr>
+						<tr style="height: 40px"><td style="width: 40px">X</td><td style="width: 40px">X</td><td style="width: 40px">X</td></tr>
+						<tr style="height: 40px"><td style="width: 40px">X</td><td style="width: 40px">X</td><td style="width: 40px">X</td></tr>
+					{% endif %}
+					</table>
+				</center>
+				{% if result == True %}
+				<br><br><p><b>{{winmsg}}</b></p>
+				{% endif %}
+				<br><br>
+				<form method="post" action="{{ url_for('slotmachine2') }}">
+                	<div class="form-group">
+                    	<label>Amount to bet</label>
+                    	<select class="form-control" name="amounttobet">
+                     		<option value="1"{% if (lastamounttobet == 1) %} selected="selected"{% endif %}>1 Credit</option>
+                      		<option value="3"{% if (lastamounttobet == 3) %} selected="selected"{% endif %}>3 Credits</option>
+                      		<option value="5"{% if (lastamounttobet == 5) %} selected="selected"{% endif %}>5 Credits</option>
+                      		<option value="10"{% if (lastamounttobet == 10) %} selected="selected"{% endif %}>10 Credits</option>
+                     	</select>
+                  	</div>
+                  	<button style="margin-top: 15px" type="submit" class="btn btn-secondary">Play</button>
+                </form>
+			{% endif %}
+		</div>
+
+		<br><br><b>{{msg}}</b>
 
 {% endblock %}
 
 {% block customcss %}
-<link href="{{ url_for('static', filename= 'vendor/slotmachine/css/style.css') }}" rel="stylesheet">
+<!--<link href="{{ url_for('static', filename= 'vendor/slotmachine2/Style/casino.css') }}" rel="stylesheet">-->
 {% endblock %}
 
 {% block customjs %}
-<script src="{{ url_for('static', filename= 'vendor/slotmachine/js/application.js') }}"></script>
+<script src="{{ url_for('static', filename= 'vendor/slotmachine2/Script/casino.js') }}"></script>
 {% endblock %}
 
 
