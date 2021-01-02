@@ -107,13 +107,12 @@
 <script src="{{ url_for('static', filename= 'node_modules/jquery-slotmachine/dist/slotmachine.min.js') }}"></script>
 <!--<script src="{{ url_for('static', filename= 'vendor/slotmachine/js/main.js') }}"></script>-->
 <script>
-const slot1val = parseInt({{ lineone[0] }}, 10);
 const slot1 = new SlotMachine(document.querySelector('#slot1'), {
   active: 1,
   delay: 1500,
   auto: 0,
   randomize() {
-    return slot1val;
+    return parseInt({{ lineone[0] }}, 10);
   }
 });
 const slot2 = new SlotMachine(document.querySelector('#slot2'), {
@@ -121,7 +120,7 @@ const slot2 = new SlotMachine(document.querySelector('#slot2'), {
   delay: 1500,
   auto: 0,
   randomize() {
-    return {{ lineone[1] }};
+    return parseInt({{ lineone[1] }}, 10);
   }
 });
 const slot3 = new SlotMachine(document.querySelector('#slot3'), {
@@ -129,7 +128,7 @@ const slot3 = new SlotMachine(document.querySelector('#slot3'), {
   delay: 1500,
   auto: 0,
   randomize() {
-    return {{ lineone[2] }};
+    return parseInt({{ lineone[2] }}, 10);
   }
 });
 const slot4 = new SlotMachine(document.querySelector('#slot4'), {
@@ -137,7 +136,7 @@ const slot4 = new SlotMachine(document.querySelector('#slot4'), {
   delay: 1500,
   auto: 0,
   randomize() {
-    return {{ linetwo[0] }};
+    return parseInt({{ linetwo[0] }}, 10);
   }
 });
 const slot5 = new SlotMachine(document.querySelector('#slot5'), {
@@ -145,7 +144,7 @@ const slot5 = new SlotMachine(document.querySelector('#slot5'), {
   delay: 1500,
   auto: 0,
   randomize() {
-    return {{ linetwo[1] }};
+    return parseInt({{ linetwo[1] }}, 10);
   }
 });
 const slot6 = new SlotMachine(document.querySelector('#slot6'), {
@@ -153,7 +152,7 @@ const slot6 = new SlotMachine(document.querySelector('#slot6'), {
   delay: 1500,
   auto: 0,
   randomize() {
-    return {{ linetwo[2] }};
+    return parseInt({{ linetwo[2] }}, 10);
   }
 });
 const slot7 = new SlotMachine(document.querySelector('#slot7'), {
@@ -161,7 +160,7 @@ const slot7 = new SlotMachine(document.querySelector('#slot7'), {
   delay: 1500,
   auto: 0,
   randomize() {
-    return {{ linethree[0] }};
+    return parseInt({{ linethree[0] }}, 10);
   }
 });
 const slot8 = new SlotMachine(document.querySelector('#slot8'), {
@@ -169,7 +168,7 @@ const slot8 = new SlotMachine(document.querySelector('#slot8'), {
   delay: 1500,
   auto: 0,
   randomize() {
-    return {{ linethree[1] }};
+    return parseInt({{ linethree[1] }}, 10);
   }
 });
 const slot9 = new SlotMachine(document.querySelector('#slot9'), {
@@ -177,7 +176,7 @@ const slot9 = new SlotMachine(document.querySelector('#slot9'), {
   delay: 1500,
   auto: 0,
   randomize() {
-    return {{ linethree[2] }};
+    return parseInt({{ linethree[2] }}, 10);
   }
 });
 
