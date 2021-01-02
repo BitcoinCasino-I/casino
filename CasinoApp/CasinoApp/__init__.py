@@ -634,10 +634,11 @@ def slotmachine():
 							#Game stuff
 							newbalance = balance - intamounttobet
 							win = None
+							maxint = 6
 
-							lineone = [randint(0,7), randint(0,7), randint(0,7)]
-							linetwo = [randint(0,7), randint(0,7), randint(0,7)]
-							linethree = [randint(0,7), randint(0,7), randint(0,7)]
+							lineone = [randint(0,maxint), randint(0,maxint), randint(0,maxint)]
+							linetwo = [randint(0,maxint), randint(0,maxint), randint(0,maxint)]
+							linethree = [randint(0,maxint), randint(0,maxint), randint(0,maxint)]
 
 							matches = []
 
