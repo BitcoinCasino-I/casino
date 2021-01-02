@@ -411,6 +411,7 @@ def sendcredits():
 
 @app.route('/my-account/buycredits', methods=['GET', 'POST'])
 def buycredits():
+	# TODO: Implement an overview on how much money spent
 	if valid_user():
 		if is_admin():
 			return redirect(url_for('adminpanel'))
