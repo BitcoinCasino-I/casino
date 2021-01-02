@@ -99,5 +99,18 @@
 
 {% block customjs %}
 <script src="{{ url_for('static', filename= 'node_modules/jquery-slotmachine/dist/slotmachine.min.js') }}"></script>
-<script src="{{ url_for('static', filename= 'vendor/slotmachine/js/main.js') }}"></script>
+<!--<script src="{{ url_for('static', filename= 'vendor/slotmachine/js/main.js') }}"></script>-->
+<script>
+const slot1 = document.querySelector('#testshuffle');
+const testshuffle = new SlotMachine(slot1, {
+  active: 1,
+  delay: 0,
+  auto: 1500,
+  randomize() {
+    return {{ number }};
+  }
+});
+
+testshuffle.shuffle(1));
+</script>
 {% endblock %}
