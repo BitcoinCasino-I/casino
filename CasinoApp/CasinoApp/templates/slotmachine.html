@@ -30,37 +30,38 @@
 							</tr>
 						</table>
 						<br><br>
-						<h4>{{winmsg}}</h4>
-						{% if matches != None %}
-							<div id="resultlist">
-								{% for match in matches %}
-									{% if match == "row1vertical" %}
-										<img class="slotresult" src="{{ url_for('static', filename='vendor/slotmachine/images/win6.jpg') }}">
-									{% endif %}
-									{% if match == "row2vertical" %}
-										<img class="slotresult" src="{{ url_for('static', filename='vendor/slotmachine/images/win7.jpg') }}">
-									{% endif %}
-									{% if match == "row3vertical" %}
-										<img class="slotresult" src="{{ url_for('static', filename='vendor/slotmachine/images/win8.jpg') }}">
-									{% endif %}
-									{% if match == "row1horizontal" %}
-										<img class="slotresult" src="{{ url_for('static', filename='vendor/slotmachine/images/win3.jpg') }}">
-									{% endif %}
-									{% if match == "row2horizontal" %}
-										<img class="slotresult" src="{{ url_for('static', filename='vendor/slotmachine/images/win4.jpg') }}">
-									{% endif %}
-									{% if match == "row3horizontal" %}
-										<img class="slotresult" src="{{ url_for('static', filename='vendor/slotmachine/images/win5.jpg') }}">
-									{% endif %}
-									{% if match == "diagonal1" %}
-										<img class="slotresult" src="{{ url_for('static', filename='vendor/slotmachine/images/win1.jpg') }}">
-									{% endif %}
-									{% if match == "diagonal2" %}
-										<img class="slotresult" src="{{ url_for('static', filename='vendor/slotmachine/images/win2.jpg') }}">
-									{% endif %}
-								{% endfor %}
-							</div>
-						{% endif %}
+						<div id="resultlist">
+							<h4>{{winmsg}}</h4>
+							{% if matches != None %}
+								
+									{% for match in matches %}
+										{% if match == "row1vertical" %}
+											<img class="slotresult" src="{{ url_for('static', filename='vendor/slotmachine/images/win6.jpg') }}">
+										{% endif %}
+										{% if match == "row2vertical" %}
+											<img class="slotresult" src="{{ url_for('static', filename='vendor/slotmachine/images/win7.jpg') }}">
+										{% endif %}
+										{% if match == "row3vertical" %}
+											<img class="slotresult" src="{{ url_for('static', filename='vendor/slotmachine/images/win8.jpg') }}">
+										{% endif %}
+										{% if match == "row1horizontal" %}
+											<img class="slotresult" src="{{ url_for('static', filename='vendor/slotmachine/images/win3.jpg') }}">
+										{% endif %}
+										{% if match == "row2horizontal" %}
+											<img class="slotresult" src="{{ url_for('static', filename='vendor/slotmachine/images/win4.jpg') }}">
+										{% endif %}
+										{% if match == "row3horizontal" %}
+											<img class="slotresult" src="{{ url_for('static', filename='vendor/slotmachine/images/win5.jpg') }}">
+										{% endif %}
+										{% if match == "diagonal1" %}
+											<img class="slotresult" src="{{ url_for('static', filename='vendor/slotmachine/images/win1.jpg') }}">
+										{% endif %}
+										{% if match == "diagonal2" %}
+											<img class="slotresult" src="{{ url_for('static', filename='vendor/slotmachine/images/win2.jpg') }}">
+										{% endif %}
+									{% endfor %}
+							{% endif %}
+					</div>
 					{% else %}
 					<table id="slot-machine"> 
 						<tr><td>X</td><td>X</td><td>X</td></tr>
