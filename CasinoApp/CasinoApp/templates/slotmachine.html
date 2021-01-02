@@ -18,19 +18,19 @@
 						<tr>{% for col in linetwo %}<td>{{ col }}</td>{% endfor %}</tr>
 						<tr>{% for col in linethree %}<td>{{ col }}</td>{% endfor %}</tr>-->
 						<tr>
-							<td id="#slot1"><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div></td>
-							<td id="#slot2"><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div></td>
-							<td id="#slot3"><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div></td>
+							<td id="slot1"><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div></td>
+							<td id="slot2"><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div></td>
+							<td id="slot3"><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div></td>
 						</tr>
 						<tr>
-							<td id="#slot4"><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div></td>
-							<td id="#slot5"><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div></td>
-							<td id="#slot6"><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div></td>
+							<td id="slot4"><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div></td>
+							<td id="slot5"><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div></td>
+							<td id="slot6"><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div></td>
 						</tr>
 						<tr>
-							<td id="#slot7"><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div></td>
-							<td id="#slot8"><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div></td>
-							<td id="#slot9"><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div></td>
+							<td id="slot7"><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div></td>
+							<td id="slot8"><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div></td>
+							<td id="slot9"><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div></td>
 						</tr>
 					</table>
 					<br><br>
@@ -108,7 +108,6 @@
 <!--<script src="{{ url_for('static', filename= 'vendor/slotmachine/js/main.js') }}"></script>-->
 <script>
 const slot1val = parseInt({{ lineone[0] }}, 10);
-alert(slot1val);
 const slot1 = new SlotMachine(document.querySelector('#slot1'), {
   active: 1,
   delay: 1500,
