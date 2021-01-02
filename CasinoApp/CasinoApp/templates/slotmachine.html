@@ -88,4 +88,7 @@
 <link href="{{ url_for('static', filename= 'vendor/slotmachine/css/style.css') }}" rel="stylesheet">
 {% endblock %}
 
-
+{% block customjs %}
+<script src="{{ url_for('static', filename= 'node_modules/jquery-slotmachine/dist/slotmachine.min.js') }}"></script>
+<script src="{{ url_for('static', filename= 'node_modules/jquery-slotmachine/dist/jquery.slotmachine.min.js') }}"></script>
+{% endblock %}
