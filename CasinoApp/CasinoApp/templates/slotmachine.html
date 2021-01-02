@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block maincontent %}
-		<div class="col-lg-6 col-md-12">
+		<div class="col-lg-6">
 			<h2>The slots</h2>
 			<center>
 				<table id="slot-machine"> 
@@ -22,7 +22,7 @@
 				</table>
 			</center>
 		</div>
-		<div class="col-lg-6 col-md-12">
+		<div class="col-lg-6">
 			{% if gameIsRunning == False %}
 				<p><a href="{{ url_for('slotmachine', startgame=True) }}"><button type="submit" class="btn btn-secondary">Start game</button></a></p>
 			{% else %}
