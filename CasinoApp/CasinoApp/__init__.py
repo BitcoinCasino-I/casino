@@ -599,15 +599,9 @@ def slotmachine():
 	winmsg = ''
 	balance = None
 	gameIsRunning = False
-	oneone = None
-	onetwo = None
-	onethree = None
-	twoone = None
-	twotwo = None
-	twothree = None
-	threeone = None
-	threetwo = None
-	threethree = None
+	row1 = None
+	row2 = None
+	row3 = None
 	lastamounttobet = None
 	result = False
 	if request.args.get("startgame") == "True":
@@ -644,15 +638,9 @@ def slotmachine():
 							linetwo = [randint(0,7), randint(0,7), randint(0,7)]
 							linethree = [randint(0,7), randint(0,7), randint(0,7)]
 
-							oneone = lineone[0]
-							onetwo = lineone[1]
-							onethree = lineone[2]
-							twoone = linetwo[0]
-							twotwo = linetwo[1]
-							twothree = linetwo[2]
-							threeone = linethree[0]
-							threetwo = linethree[1]
-							threethree = linethree[2]
+							row1 = lineone
+							row2 = linetwo
+							row3 = linethree
 
 							matches = []
 
@@ -711,4 +699,4 @@ def slotmachine():
 				msg = 'Now place a bet and hit play!'
 		else:
 			msg = 'An unknown error occured. Please try again later.'
-	return render_template('slotmachine.html', isLoggedIn=True, isAdmin=False, msg=msg, gameIsRunning=gameIsRunning, balance=mysql_fetchone('SELECT * FROM user WHERE id = %s', (session.get('id'),))[5], oneone=oneone, onetwo=onetwo, onethree=onethree, twoone=twoone, twotwo=twotwo, twothree=twothree, threeone=threeone, threetwo=threetwo, threethree=threethree, lastamounttobet=lastamounttobet, result=result, winmsg=winmsg)
+	return render_template('slotmachine.html', isLoggedIn=True, isAdmin=False, msg=msg, gameIsRunning=gameIsRunning, balance=mysql_fetchone('SELECT * FROM user WHERE id = %s', (session.get('id'),))[5], row1=row1, row2=row2, row3=row3, lastamounttobet=lastamounttobet, result=result, winmsg=winmsg)

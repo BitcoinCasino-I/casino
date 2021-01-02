@@ -15,10 +15,10 @@
 				<br><br>
 				<center>
 					<table id="slot-machine"> 
-					{% if result == True %}		
-						<tr style="height: 40px"><td style="width: 40px">{{ oneone }}</td><td style="width: 40px">{{ onetwo }}</td><td style="width: 40px">{{ onethree }}</td></tr>
-						<tr style="height: 40px"><td style="width: 40px">{{ twoone }}</td><td style="width: 40px">{{ twotwo }}</td><td style="width: 40px">{{ twothree }}</td></tr>
-						<tr style="height: 40px"><td style="width: 40px">{{ threeone }}</td><td style="width: 40px">{{ threetwo }}</td><td style="width: 40px">{{ threethree }}</td></tr>
+					{% if result == True %}
+						<tr style="height: 40px">{% for col in row1 %}<td style="width: 40px">{{ col }}</td>{% endfor %}</tr>
+						<tr style="height: 40px">{% for col in row2 %}<td style="width: 40px">{{ col }}</td>{% endfor %}</tr>
+						<tr style="height: 40px">{% for col in row3 %}<td style="width: 40px">{{ col }}</td>{% endfor %}</tr>
 					{% else %}	
 						<tr style="height: 40px"><td style="width: 40px">X</td><td style="width: 40px">X</td><td style="width: 40px">X</td></tr>
 						<tr style="height: 40px"><td style="width: 40px">X</td><td style="width: 40px">X</td><td style="width: 40px">X</td></tr>
