@@ -174,7 +174,6 @@ const slot8 = new SlotMachine(document.querySelector('#slot8'), {
 const slot9 = new SlotMachine(document.querySelector('#slot9'), {
   delay: setdelay,
   active: setactive,
-  onComplete: onComplete(),
   randomize() {
     return parseInt({{ linethree[2] }}, 10);
   }
@@ -189,6 +188,8 @@ setTimeout(() => slot6.shuffle(shuffletimes), 1100);
 setTimeout(() => slot7.shuffle(shuffletimes), 1600);
 setTimeout(() => slot8.shuffle(shuffletimes), 1700);
 setTimeout(() => slot9.shuffle(shuffletimes), 1800);
+
+setTimeout(() => onComplete(), 2000);
 
 </script>
 {% endblock %}
