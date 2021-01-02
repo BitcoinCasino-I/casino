@@ -620,9 +620,8 @@ def slotmachine():
 		if account:
 			balance = int(account[5])
 			if request.method == 'POST' and 'amounttobet' in request.form:
-				formamounttobet = request.form['amounttobet']
-				if formamounttobet.isdecimal():
-					intamounttobet = int(formamounttobet)
+				if request.form['amounttobet'].isdecimal():
+					intamounttobet = int(request.form['amounttobet'])
 					if intamounttobet == 1 or intamounttobet == 3 or intamounttobet == 5 or intamounttobet == 10:
 						if intamounttobet > account[5]:
 							msg = 'You do not have enough credits. Buy more from your account page!'
