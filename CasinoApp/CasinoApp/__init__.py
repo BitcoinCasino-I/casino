@@ -603,6 +603,7 @@ def slotmachine():
 	linetwo = None
 	linethree = None
 	lastamounttobet = None
+	matches = None
 	result = False
 	if request.args.get("startgame") == "True":
 		if request.referrer is not None:
@@ -697,4 +698,4 @@ def slotmachine():
 				msg = 'Now place a bet and hit play!'
 		else:
 			msg = 'An unknown error occured. Please try again later.'
-	return render_template('slotmachine.html', isLoggedIn=True, isAdmin=False, msg=msg, gameIsRunning=gameIsRunning, balance=mysql_fetchone('SELECT * FROM user WHERE id = %s', (session.get('id'),))[5], lineone=lineone, linetwo=linetwo, linethree=linethree, lastamounttobet=lastamounttobet, result=result, winmsg=winmsg)
+	return render_template('slotmachine.html', isLoggedIn=True, isAdmin=False, msg=msg, gameIsRunning=gameIsRunning, balance=mysql_fetchone('SELECT * FROM user WHERE id = %s', (session.get('id'),))[5], lineone=lineone, linetwo=linetwo, linethree=linethree, lastamounttobet=lastamounttobet, result=result, winmsg=winmsg, matches=matches)
