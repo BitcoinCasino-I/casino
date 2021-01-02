@@ -5,7 +5,7 @@ const testshuffle = new SlotMachine(machineid, {
   delay: 450,
   auto: 1500,
   randomize() {
-    return 0;
+    return 1;
   }
 });
 
