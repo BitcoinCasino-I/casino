@@ -75,21 +75,23 @@
 					{% if gameIsRunning == False %}
 						<p><a href="{{ url_for('slotmachine', startgame=True) }}"><button type="submit" class="btn btn-secondary">Start game</button></a></p>
 					{% else %}
-						<div id="balance" style="display: none"><p>Balance: {{ balance }} Credits</p></div>
 						<p><a href="{{ url_for('slotmachine', endgame=True) }}"><button type="submit" class="btn btn-secondary">End game</button></a></p>
-						<form method="post" action="{{ url_for('slotmachine') }}">
-		                	<div class="form-group">
-		                    	<label>Amount to bet</label>
-		                    	<select class="form-control" name="amounttobet">
-		                     		<option value="1"{% if (lastamounttobet == 1) %} selected="selected"{% endif %}>1 Credit</option>
-		                      		<option value="3"{% if (lastamounttobet == 3) %} selected="selected"{% endif %}>3 Credits</option>
-		                      		<option value="5"{% if (lastamounttobet == 5) %} selected="selected"{% endif %}>5 Credits</option>
-		                      		<option value="10"{% if (lastamounttobet == 10) %} selected="selected"{% endif %}>10 Credits</option>
-		                     	</select>
-		                  	</div>
-		                  	<button style="margin-top: 15px" type="submit" class="btn btn-secondary">Pull the lever!</button>
-		                </form>
-		                <br><b>{{msg}}</b>
+						<div id="gameaction" style="display: none">
+							<p>Balance: {{ balance }} Credits</p>
+							<form method="post" action="{{ url_for('slotmachine') }}">
+			                	<div class="form-group">
+			                    	<label>Amount to bet</label>
+			                    	<select class="form-control" name="amounttobet">
+			                     		<option value="1"{% if (lastamounttobet == 1) %} selected="selected"{% endif %}>1 Credit</option>
+			                      		<option value="3"{% if (lastamounttobet == 3) %} selected="selected"{% endif %}>3 Credits</option>
+			                      		<option value="5"{% if (lastamounttobet == 5) %} selected="selected"{% endif %}>5 Credits</option>
+			                      		<option value="10"{% if (lastamounttobet == 10) %} selected="selected"{% endif %}>10 Credits</option>
+			                     	</select>
+			                  	</div>
+			                  	<button style="margin-top: 15px" type="submit" class="btn btn-secondary">Pull the lever!</button>
+			                </form>
+		                	<br><b>{{msg}}</b>
+		                </div>
 					{% endif %}
 				</div>
 			</div>
