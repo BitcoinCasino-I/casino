@@ -15,19 +15,19 @@
 					<p><b>{{winmsg}}</b></p><br>
 					<table id="slot-machine">
 						<tr>
-							<td><div id="slot1"><div>X</div><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div></div></td>
-							<td><div id="slot2"><div>X</div><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div></div></td>
-							<td><div id="slot3"><div>X</div><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div></div></td>
+							<td><div id="slot1"><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>X</div></div></td>
+							<td><div id="slot2"><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>X</div></div></td>
+							<td><div id="slot3"><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>X</div></div></td>
 						</tr>
 						<tr>
-							<td><div id="slot4"><div>X</div><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div></div></td>
-							<td><div id="slot5"><div>X</div><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div></div></td>
-							<td><div id="slot6"><div>X</div><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div></div></td>
+							<td><div id="slot4"><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>X</div></div></td>
+							<td><div id="slot5"><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>X</div></div></td>
+							<td><div id="slot6"><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>X</div></div></td>
 						</tr>
 						<tr>
-							<td><div id="slot7"><div>X</div><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div></div></td>
-							<td><div id="slot8"><div>X</div><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div></div></td>
-							<td><div id="slot9"><div>X</div><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div></div></td>
+							<td><div id="slot7"><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>X</div></div></td>
+							<td><div id="slot8"><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>X</div></div></td>
+							<td><div id="slot9"><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>X</div></div></td>
 						</tr>
 					</table>
 					<br><br>
@@ -106,7 +106,7 @@
 
 const setdelay = 200;
 const shuffletimes = 1;
-const setactive = 0;
+const setactive = 8;
 
 const slot1 = new SlotMachine(document.querySelector('#slot1'), {
   delay: setdelay,
