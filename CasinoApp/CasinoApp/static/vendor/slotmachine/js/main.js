@@ -1,12 +1,11 @@
-const machineid = document.querySelector('#testshuffle');
-const buttonid = document.querySelector('#shuffle');
-const testshuffle = new SlotMachine(machineid, {
+const slot1 = document.querySelector('#testshuffle');
+const testshuffle = new SlotMachine(slot1, {
   active: 1,
-  delay: 450,
+  delay: 0,
   auto: 1500,
   randomize() {
-    return 1;
+    return {{ number }};
   }
 });
 
-buttonid.addEventListener('click', () => testshuffle.shuffle(5));
+testshuffle.shuffle(1));
