@@ -14,9 +14,24 @@
 					{% if result == True %}
 					<p><b>{{winmsg}}</b></p><br>
 					<table id="slot-machine"> 
-						<tr>{% for col in lineone %}<td>{{ col }}</td>{% endfor %}</tr>
+						<!--<tr>{% for col in lineone %}<td>{{ col }}</td>{% endfor %}</tr>
 						<tr>{% for col in linetwo %}<td>{{ col }}</td>{% endfor %}</tr>
-						<tr>{% for col in linethree %}<td>{{ col }}</td>{% endfor %}</tr>
+						<tr>{% for col in linethree %}<td>{{ col }}</td>{% endfor %}</tr>-->
+						<tr>
+							<td id="#slot1"><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div></td>
+							<td id="#slot2"><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div></td>
+							<td id="#slot3"><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div></td>
+						</tr>
+						<tr>
+							<td id="#slot4"><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div></td>
+							<td id="#slot5"><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div></td>
+							<td id="#slot6"><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div></td>
+						</tr>
+						<tr>
+							<td id="#slot7"><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div></td>
+							<td id="#slot8"><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div></td>
+							<td id="#slot9"><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div></td>
+						</tr>
 					</table>
 					<br><br>
 						{% if matches != None %}
@@ -101,16 +116,87 @@
 <script src="{{ url_for('static', filename= 'node_modules/jquery-slotmachine/dist/slotmachine.min.js') }}"></script>
 <!--<script src="{{ url_for('static', filename= 'vendor/slotmachine/js/main.js') }}"></script>-->
 <script>
-const slot1 = document.querySelector('#testshuffle');
-const testshuffle = new SlotMachine(slot1, {
+const slot1 = new SlotMachine(document.querySelector('#slot1'), {
   active: 1,
-  delay: 1000,
+  delay: 1500,
   auto: 0,
   randomize() {
-    return {{ number }};
+    return {{ lineone[0] }};
+  }
+});
+const slot2 = new SlotMachine(document.querySelector('#slot2'), {
+  active: 1,
+  delay: 1500,
+  auto: 0,
+  randomize() {
+    return {{ lineone[1] }};
+  }
+});
+const slot3 = new SlotMachine(document.querySelector('#slot3'), {
+  active: 1,
+  delay: 1500,
+  auto: 0,
+  randomize() {
+    return {{ lineone[2] }};
+  }
+});
+const slot4 = new SlotMachine(document.querySelector('#slot4'), {
+  active: 1,
+  delay: 1500,
+  auto: 0,
+  randomize() {
+    return {{ linetwo[0] }};
+  }
+});
+const slot5 = new SlotMachine(document.querySelector('#slot5'), {
+  active: 1,
+  delay: 1500,
+  auto: 0,
+  randomize() {
+    return {{ linetwo[1] }};
+  }
+});
+const slot6 = new SlotMachine(document.querySelector('#slot6'), {
+  active: 1,
+  delay: 1500,
+  auto: 0,
+  randomize() {
+    return {{ linetwo[2] }};
+  }
+});
+const slot7 = new SlotMachine(document.querySelector('#slot7'), {
+  active: 1,
+  delay: 1500,
+  auto: 0,
+  randomize() {
+    return {{ linethree[0] }};
+  }
+});
+const slot8 = new SlotMachine(document.querySelector('#slot8'), {
+  active: 1,
+  delay: 1500,
+  auto: 0,
+  randomize() {
+    return {{ linethree[1] }};
+  }
+});
+const slot9 = new SlotMachine(document.querySelector('#slot9'), {
+  active: 1,
+  delay: 1500,
+  auto: 0,
+  randomize() {
+    return {{ linethree[2] }};
   }
 });
 
-testshuffle.shuffle(1);
+slot1.shuffle(1);
+slot2.shuffle(1);
+slot3.shuffle(1);
+slot4.shuffle(1);
+slot5.shuffle(1);
+slot6.shuffle(1);
+slot7.shuffle(1);
+slot8.shuffle(1);
+slot9.shuffle(1);
 </script>
 {% endblock %}
