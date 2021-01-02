@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 # CODE IST TEILWEISE REDUNDANT UND KANN AUCH ALLGEMEIN NOCH OPTIMIERT WERDEN. FOKUS LAG ERSTMAL AUF FUNKTIONALITÄT.
-# webhook test x
 
 from flask import Flask, render_template, request, redirect, url_for, session, jsonify
 from flaskext.mysql import MySQL
@@ -597,3 +596,138 @@ def adduser():
 			mysql_write('INSERT INTO user VALUES (NULL, %s, %s, %s, 0, %s, %s, 1, %s, NULL, NULL, 0, NULL)', (username, email, md5_hash, balance, otp, isadmin,))
 			msg = 'User was added!'
 	return render_template('adduser.html', isLoggedIn=True, isAdmin=True, msg=msg)
+
+@app.route('/games/slotmachine2', methods=['GET', 'POST'])
+def slotmachine2():
+	if valid_user():
+		if is_admin():
+			return redirect(url_for('adminpanel'))
+	else:
+		return redirect(url_for('anmeldung'))
+	msg = ''
+	winmsg = ''
+	balance = None
+	gameIsRunning = False
+	oneone = None
+	onetwo = None
+	onethree = None
+	twoone = None
+	twotwo = None
+	twothree = None
+	threeone = None
+	threetwo = None
+	threethree = None
+	lastamounttobet = None
+	result = False
+	if request.args.get("startgame") == "True":
+		if request.referrer is not None:
+			if APPDOMAIN + url_for('slotmachine2') in request.referrer:
+				session['gameIsRunning'] = True
+	if request.args.get("endgame") == "True":
+		if request.referrer is not None:
+			if APPDOMAIN + url_for('slotmachine2') in request.referrer:
+				session.pop('gameIsRunning', None)
+				# other todos when ending game
+	if session.get('gameIsRunning') == True:
+		gameIsRunning = True
+		account = mysql_fetchone('SELECT * FROM user WHERE id = %s', (session.get('id'),))
+		if account:
+			balance = int(account[5])
+			if request.method == 'POST' and 'amounttobet' in request.form:
+				formamounttobet = request.form['amounttobet']
+				if formamounttobet.isdecimal():
+					intamounttobet = int(formamounttobet)
+					if intamounttobet == 1 or intamounttobet == 3 or intamounttobet == 5 or intamounttobet == 10:
+						if intamounttobet > account[5]:
+							msg = 'You do not have enough credits. Buy more from your account page!'
+						else:
+							# Template vars
+							lastamounttobet = intamounttobet
+							result = True
+
+							#Game stuff
+							newbalance = balance - intamounttobet
+							win = None
+
+							randoneone = randint(0,7)
+							randonetwo = randint(0,7)
+							randonethree = randint(0,7)
+							randtwoone = randint(0,7)
+							randtwotwo = randint(0,7)
+							randtwothree = randint(0,7)
+							randthreeone = randint(0,7)
+							randthreetwo = randint(0,7)
+							randthreethree = randint(0,7)
+
+							lineone = [randoneone, randonetwo, randonethree]
+							linetwo = [randtwoone, randtwotwo, randtwothree]
+							linethree = [randthreeone, randthreetwo, randthreethree]
+
+							oneone = randoneone
+							onetwo = randonetwo
+							onethree = randonethree
+							twoone = randtwoone
+							twotwo = randtwotwo
+							twothree = randtwothree
+							threeone = randthreeone
+							threetwo = randthreetwo
+							threethree = randthreethree
+
+							matches = []
+
+							if lineone[0] == linetwo[0] and linetwo[0] == linethree[0]:
+								matches.append('row1vertical')
+							if lineone[1] == linetwo[1] and linetwo[1] == linethree[1]:
+								matches.append('row2vertical')
+							if lineone[2] == linetwo[2] and linetwo[2] == linethree[2]:
+								matches.append('row3vertical')
+							if lineone[0] == lineone[1] and lineone[1] == lineone[2]:
+								matches.append('row1horizontal')
+							if linetwo[0] == linetwo[1] and linetwo[1] == linetwo[2]:
+								matches.append('row2horizontal')
+							if linethree[0] == linethree[1] and linethree[1] == linethree[2]:
+								matches.append('row3horizontal')
+							if lineone[0] == linetwo[1] and linetwo[1] == linethree[2]:
+								matches.append('diagonal1')
+							if lineone[2] == linetwo[1] and linetwo[1] == linethree[0]:
+								matches.append('diagonal2')
+
+							if intamounttobet == 1:
+								win = intamounttobet * 2
+							elif intamounttobet == 3:
+								win = intamounttobet * 2.25
+							elif intamounttobet == 5:
+								win = intamounttobet * 2.5
+							else:
+								win = intamounttobet * 3
+
+							if len(matches) == 0:
+								win = 0
+								winmsg = 'No luck :( You lost ' + str(intamounttobet) + ' Credits'
+							elif len(matches) == 1:
+								win = win * 1
+								winmsg = 'SINGLE WIN! You won ' + str(win-intamounttobet) + ' Credits'
+							elif len(matches) == 2:
+								win = win * 2
+								winmsg = 'DOUBLE WIN! You won ' + str(win-intamounttobet) + ' Credits'
+							elif len(matches) == 3:
+								win = win * 3
+								winmsg = 'TRIPLE WIN! You won ' + str(win-intamounttobet) + ' Credits'
+							elif len(matches) == 4:
+								win = win * 4
+								winmsg = 'QUADRUPLE WIN! You won ' + str(win-intamounttobet) + ' Credits'
+							else:
+								win = 0
+								winmsg = 'An unknown error occured.'
+
+							newbalance = newbalance + win
+							mysql_write('UPDATE user SET balance = %s WHERE id = %s', (newbalance, account[0],))
+					else:
+						msg = 'Your bet amount was not valid. Stop tampering with our game!'
+				else:
+					msg = 'Your bet amount was not valid. Stop tampering with our game!'
+			else:
+				msg = 'An unknown error occured. Please try again later.'
+		else:
+			msg = 'An unknown error occured. Please try again later.'
+	return render_template('slotmachine2.html', isLoggedIn=True, isAdmin=False, msg=msg, gameIsRunning=gameIsRunning, balance=mysql_fetchone('SELECT * FROM user WHERE id = %s', (session.get('id'),))[5], oneone=oneone, onetwo=onetwo, onethree=onethree, twoone=twoone, twotwo=twotwo, twothree=twothree, threeone=threeone, threetwo=threetwo, threethree=threethree, lastamounttobet=lastamounttobet, result=result, winmsg=winmsg)
