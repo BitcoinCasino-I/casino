@@ -670,19 +670,19 @@ def slotmachine():
 
 							if len(matches) == 0:
 								win = 0
-								winmsg = 'No luck :( You lost ' + str(intamounttobet) + ' Credits'
+								winmsg = 'No luck :( You lost ' + str(intamounttobet) + ' Credit(s)'
 							elif len(matches) == 1:
 								win = win * 1
-								winmsg = 'SINGLE WIN! You won ' + str(win-intamounttobet) + ' Credits'
+								winmsg = 'SINGLE WIN! You won ' + str(win-intamounttobet) + ' Credit(s)'
 							elif len(matches) == 2:
 								win = win * 2
-								winmsg = 'DOUBLE WIN! You won ' + str(win-intamounttobet) + ' Credits'
+								winmsg = 'DOUBLE WIN! You won ' + str(win-intamounttobet) + ' Credit(s)'
 							elif len(matches) == 3:
 								win = win * 3
-								winmsg = 'TRIPLE WIN! You won ' + str(win-intamounttobet) + ' Credits'
+								winmsg = 'TRIPLE WIN! You won ' + str(win-intamounttobet) + ' Credit(s)'
 							elif len(matches) == 4:
 								win = win * 4
-								winmsg = 'QUADRUPLE WIN! You won ' + str(win-intamounttobet) + ' Credits'
+								winmsg = 'QUADRUPLE WIN! You won ' + str(win-intamounttobet) + ' Credit(s)'
 							else:
 								win = 0
 								winmsg = 'An unknown error occured.'
