@@ -16,9 +16,9 @@
 				<center>
 					<table id="slot-machine"> 
 					{% if result == True %}
-						<tr style="height: 40px">{% for col in row1 %}<td style="width: 40px">{{ col }}</td>{% endfor %}</tr>
-						<tr style="height: 40px">{% for col in row2 %}<td style="width: 40px">{{ col }}</td>{% endfor %}</tr>
-						<tr style="height: 40px">{% for col in row3 %}<td style="width: 40px">{{ col }}</td>{% endfor %}</tr>
+						<tr style="height: 40px">{% for col in lineone %}<td style="width: 40px">{{ col }}</td>{% endfor %}</tr>
+						<tr style="height: 40px">{% for col in linetwo %}<td style="width: 40px">{{ col }}</td>{% endfor %}</tr>
+						<tr style="height: 40px">{% for col in linethree %}<td style="width: 40px">{{ col }}</td>{% endfor %}</tr>
 					{% else %}	
 						<tr style="height: 40px"><td style="width: 40px">X</td><td style="width: 40px">X</td><td style="width: 40px">X</td></tr>
 						<tr style="height: 40px"><td style="width: 40px">X</td><td style="width: 40px">X</td><td style="width: 40px">X</td></tr>
