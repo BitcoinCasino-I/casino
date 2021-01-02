@@ -634,7 +634,7 @@ def slotmachine():
 							#Game stuff
 							newbalance = balance - intamounttobet
 							win = None
-							maxint = 3
+							maxint = 2
 
 							lineone = [randint(0,maxint), randint(0,maxint), randint(0,maxint)]
 							linetwo = [randint(0,maxint), randint(0,maxint), randint(0,maxint)]
