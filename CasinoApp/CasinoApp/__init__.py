@@ -672,6 +672,7 @@ def slotmachine():
 							if len(matches) == 0:
 								win = 0
 								winmsg = 'No luck :( You lost ' + str(intamounttobet) + ' Credit(s)'
+								matches = None
 							elif len(matches) == 1:
 								win = win * 1
 								winmsg = 'SINGLE WIN! You won ' + str(win-intamounttobet) + ' Credit(s)'
