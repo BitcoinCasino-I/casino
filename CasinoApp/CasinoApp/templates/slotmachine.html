@@ -14,19 +14,19 @@
 					{% if result == True %}
 						<table id="slot-machine">
 							<tr>
-								<td><div id="slot1"><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>X</div></div></td>
-								<td><div id="slot2"><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>X</div></div></td>
-								<td><div id="slot3"><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>X</div></div></td>
+								<td><div id="slot1"><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>X</div></div></td>
+								<td><div id="slot2"><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>X</div></div></td>
+								<td><div id="slot3"><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>X</div></div></td>
 							</tr>
 							<tr>
-								<td><div id="slot4"><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>X</div></div></td>
-								<td><div id="slot5"><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>X</div></div></td>
-								<td><div id="slot6"><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>X</div></div></td>
+								<td><div id="slot4"><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>X</div></div></td>
+								<td><div id="slot5"><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>X</div></div></td>
+								<td><div id="slot6"><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>X</div></div></td>
 							</tr>
 							<tr>
-								<td><div id="slot7"><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>X</div></div></td>
-								<td><div id="slot8"><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>X</div></div></td>
-								<td><div id="slot9"><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>X</div></div></td>
+								<td><div id="slot7"><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>X</div></div></td>
+								<td><div id="slot8"><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>X</div></div></td>
+								<td><div id="slot9"><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>X</div></div></td>
 							</tr>
 						</table>
 						<br><br>
@@ -77,7 +77,7 @@
 					{% else %}
 						<p><a href="{{ url_for('slotmachine', endgame=True) }}"><button type="submit" class="btn btn-secondary">End game</button></a></p>
 						{% if result == True %}<div id="gameaction" style="display: none">{% endif %}
-							<p>Balance: {{ balance }} Credits</p>
+							<p><b>Balance: {{ balance }} Credits</b></p>
 							<form method="post" action="{{ url_for('slotmachine') }}">
 			                	<div class="form-group">
 			                    	<label>Amount to bet</label>
@@ -118,7 +118,7 @@ function onComplete(){
 
 const setdelay = 500;
 const shuffletimes = 1;
-const setactive = 8;
+const setactive = 6;
 
 const slot1 = new SlotMachine(document.querySelector('#slot1'), {
   delay: setdelay,
