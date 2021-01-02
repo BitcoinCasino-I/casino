@@ -590,6 +590,7 @@ def adduser():
 
 @app.route('/games/slotmachine', methods=['GET', 'POST'])
 def slotmachine():
+	# TODO: Implement actual end game function with a "checkout"
 	if valid_user():
 		if is_admin():
 			return redirect(url_for('adminpanel'))
