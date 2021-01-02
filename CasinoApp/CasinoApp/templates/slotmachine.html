@@ -12,6 +12,7 @@
     		<div class="row content">
 				<div class="col-lg-6">
 					{% if result == True %}
+						<center>
 						<table id="slot-machine">
 							<tr>
 								<td><div id="slot1"><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>X</div></div></td>
@@ -29,6 +30,7 @@
 								<td><div id="slot9"><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>X</div></div></td>
 							</tr>
 						</table>
+						</center>
 						<br><br>
 						<div id="resultlist" style="display:none">
 							<h4>{{winmsg}}</h4>
@@ -63,11 +65,13 @@
 							{% endif %}
 					</div>
 					{% else %}
+					<center>
 					<table id="slot-machine"> 
 						<tr><td>X</td><td>X</td><td>X</td></tr>
 						<tr><td>X</td><td>X</td><td>X</td></tr>
 						<tr><td>X</td><td>X</td><td>X</td></tr>
 					</table>
+					</center>
 					{% endif %}
 				</div>
 				<div class="col-lg-6">
