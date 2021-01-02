@@ -405,10 +405,6 @@ def sendcredits():
 			msg = 'Amount needs to be a number!'
 	return render_template('sendcredits.html', isLoggedIn=True, isAdmin=False, msg=msg, credits=mysql_fetchone('SELECT * FROM user WHERE username = %s', (session.get("username",)))[5])
 
-#@app.route('/_getcredits')
-#def getcredits():
-#	return jsonify(amount=10)
-
 @app.route('/my-account/buycredits', methods=['GET', 'POST'])
 def buycredits():
 	# TODO: Implement an overview on how much money spent
