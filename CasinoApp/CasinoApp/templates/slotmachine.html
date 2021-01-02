@@ -104,8 +104,8 @@
 const slot1 = document.querySelector('#testshuffle');
 const testshuffle = new SlotMachine(slot1, {
   active: 1,
-  delay: 0,
-  auto: 1500,
+  delay: 1000,
+  auto: 0,
   randomize() {
     return {{ number }};
   }
