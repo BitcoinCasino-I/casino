@@ -103,56 +103,59 @@
 {% block customjs %}
 <script src="{{ url_for('static', filename= 'node_modules/jquery-slotmachine/dist/slotmachine.min.js') }}"></script>
 <script>
+
+const setdelay = 200;
+
 const slot1 = new SlotMachine(document.querySelector('#slot1'), {
-  delay: 300,
+  delay: setdelay,
   randomize() {
     return parseInt({{ lineone[0] }}, 10);
   }
 });
 const slot2 = new SlotMachine(document.querySelector('#slot2'), {
-  delay: 300,
+  delay: setdelay,
   randomize() {
     return parseInt({{ lineone[1] }}, 10);
   }
 });
 const slot3 = new SlotMachine(document.querySelector('#slot3'), {
-  delay: 300,
+  delay: setdelay,
   randomize() {
     return parseInt({{ lineone[2] }}, 10);
   }
 });
 const slot4 = new SlotMachine(document.querySelector('#slot4'), {
-  delay: 300,
+  delay: setdelay,
   randomize() {
     return parseInt({{ linetwo[0] }}, 10);
   }
 });
 const slot5 = new SlotMachine(document.querySelector('#slot5'), {
-  delay: 300,
+  delay: setdelay,
   randomize() {
     return parseInt({{ linetwo[1] }}, 10);
   }
 });
 const slot6 = new SlotMachine(document.querySelector('#slot6'), {
-  delay: 300,
+  delay: setdelay,
   randomize() {
     return parseInt({{ linetwo[2] }}, 10);
   }
 });
 const slot7 = new SlotMachine(document.querySelector('#slot7'), {
-  delay: 300,
+  delay: setdelay,
   randomize() {
     return parseInt({{ linethree[0] }}, 10);
   }
 });
 const slot8 = new SlotMachine(document.querySelector('#slot8'), {
-  delay: 300,
+  delay: setdelay,
   randomize() {
     return parseInt({{ linethree[1] }}, 10);
   }
 });
 const slot9 = new SlotMachine(document.querySelector('#slot9'), {
-  delay: 300,
+  delay: setdelay,
   randomize() {
     return parseInt({{ linethree[2] }}, 10);
   }
@@ -167,5 +170,6 @@ slot6.shuffle(1);
 slot7.shuffle(1);
 slot8.shuffle(1);
 slot9.shuffle(1);
+
 </script>
 {% endblock %}
