@@ -8,4 +8,6 @@ table#slot-machine td{
 
 img.slotresult{
 	max-width: 100px;
+	padding-right: 20px;
+	padding-bottom: 20px;
 }
