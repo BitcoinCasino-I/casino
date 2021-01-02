@@ -640,29 +640,19 @@ def slotmachine():
 							newbalance = balance - intamounttobet
 							win = None
 
-							randoneone = randint(0,7)
-							randonetwo = randint(0,7)
-							randonethree = randint(0,7)
-							randtwoone = randint(0,7)
-							randtwotwo = randint(0,7)
-							randtwothree = randint(0,7)
-							randthreeone = randint(0,7)
-							randthreetwo = randint(0,7)
-							randthreethree = randint(0,7)
+							lineone = [randint(0,7), randint(0,7), randint(0,7)]
+							linetwo = [randint(0,7), randint(0,7), randint(0,7)]
+							linethree = [randint(0,7), randint(0,7), randint(0,7)]
 
-							lineone = [randoneone, randonetwo, randonethree]
-							linetwo = [randtwoone, randtwotwo, randtwothree]
-							linethree = [randthreeone, randthreetwo, randthreethree]
-
-							oneone = randoneone
-							onetwo = randonetwo
-							onethree = randonethree
-							twoone = randtwoone
-							twotwo = randtwotwo
-							twothree = randtwothree
-							threeone = randthreeone
-							threetwo = randthreetwo
-							threethree = randthreethree
+							oneone = lineone[0]
+							onetwo = lineone[1]
+							onethree = lineone[2]
+							twoone = linetwo[0]
+							twotwo = linetwo[1]
+							twothree = linetwo[2]
+							threeone = linethree[0]
+							threetwo = linethree[1]
+							threethree = linethree[2]
 
 							matches = []
 
