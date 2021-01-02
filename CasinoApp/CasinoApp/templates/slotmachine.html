@@ -6,48 +6,54 @@
 {% endblock %}
 
 {% block maincontent %}
-		<div class="col-lg-6">
-			<h2>The slots</h2>
-			<center>
-				<table id="slot-machine"> 
-				{% if result == True %}
-					<tr style="height: 40px">{% for col in lineone %}<td style="width: 40px">{{ col }}</td>{% endfor %}</tr>
-					<tr style="height: 40px">{% for col in linetwo %}<td style="width: 40px">{{ col }}</td>{% endfor %}</tr>
-					<tr style="height: 40px">{% for col in linethree %}<td style="width: 40px">{{ col }}</td>{% endfor %}</tr>
-				{% else %}	
-					<tr style="height: 40px"><td style="width: 40px">X</td><td style="width: 40px">X</td><td style="width: 40px">X</td></tr>
-					<tr style="height: 40px"><td style="width: 40px">X</td><td style="width: 40px">X</td><td style="width: 40px">X</td></tr>
-					<tr style="height: 40px"><td style="width: 40px">X</td><td style="width: 40px">X</td><td style="width: 40px">X</td></tr>
-				{% endif %}
-				</table>
-			</center>
-		</div>
-		<div class="col-lg-6">
-			{% if gameIsRunning == False %}
-				<p><a href="{{ url_for('slotmachine', startgame=True) }}"><button type="submit" class="btn btn-secondary">Start game</button></a></p>
-			{% else %}
-				<p>Balance: {{ balance }} Credits</p>
-				<p><a href="{{ url_for('slotmachine', endgame=True) }}"><button type="submit" class="btn btn-secondary">End game</button></a></p>
-				{% if result == True %}
-				<br><br><p><b>{{winmsg}}</b></p>
-				{% endif %}
-				<br><br>
-				<form method="post" action="{{ url_for('slotmachine') }}">
-                	<div class="form-group">
-                    	<label>Amount to bet</label>
-                    	<select class="form-control" name="amounttobet">
-                     		<option value="1"{% if (lastamounttobet == 1) %} selected="selected"{% endif %}>1 Credit</option>
-                      		<option value="3"{% if (lastamounttobet == 3) %} selected="selected"{% endif %}>3 Credits</option>
-                      		<option value="5"{% if (lastamounttobet == 5) %} selected="selected"{% endif %}>5 Credits</option>
-                      		<option value="10"{% if (lastamounttobet == 10) %} selected="selected"{% endif %}>10 Credits</option>
-                     	</select>
-                  	</div>
-                  	<button style="margin-top: 15px" type="submit" class="btn btn-secondary">Play</button>
-                </form>
-			{% endif %}
-		</div>
 
-		<br><br><b>{{msg}}</b>
+    <section id="about" class="about">
+    	<div class="container" data-aos="fade-up">
+    		<div class="row content">
+				<div class="col-lg-6">
+					<h2>The slots</h2>
+					<center>
+						<table id="slot-machine"> 
+						{% if result == True %}
+							<tr style="height: 40px">{% for col in lineone %}<td style="width: 40px">{{ col }}</td>{% endfor %}</tr>
+							<tr style="height: 40px">{% for col in linetwo %}<td style="width: 40px">{{ col }}</td>{% endfor %}</tr>
+							<tr style="height: 40px">{% for col in linethree %}<td style="width: 40px">{{ col }}</td>{% endfor %}</tr>
+						{% else %}	
+							<tr style="height: 40px"><td style="width: 40px">X</td><td style="width: 40px">X</td><td style="width: 40px">X</td></tr>
+							<tr style="height: 40px"><td style="width: 40px">X</td><td style="width: 40px">X</td><td style="width: 40px">X</td></tr>
+							<tr style="height: 40px"><td style="width: 40px">X</td><td style="width: 40px">X</td><td style="width: 40px">X</td></tr>
+						{% endif %}
+						</table>
+					</center>
+				</div>
+				<div class="col-lg-6">
+					{% if gameIsRunning == False %}
+						<p><a href="{{ url_for('slotmachine', startgame=True) }}"><button type="submit" class="btn btn-secondary">Start game</button></a></p>
+					{% else %}
+						<p>Balance: {{ balance }} Credits</p>
+						<p><a href="{{ url_for('slotmachine', endgame=True) }}"><button type="submit" class="btn btn-secondary">End game</button></a></p>
+						{% if result == True %}
+						<br><br><p><b>{{winmsg}}</b></p>
+						{% endif %}
+						<br><br>
+						<form method="post" action="{{ url_for('slotmachine') }}">
+		                	<div class="form-group">
+		                    	<label>Amount to bet</label>
+		                    	<select class="form-control" name="amounttobet">
+		                     		<option value="1"{% if (lastamounttobet == 1) %} selected="selected"{% endif %}>1 Credit</option>
+		                      		<option value="3"{% if (lastamounttobet == 3) %} selected="selected"{% endif %}>3 Credits</option>
+		                      		<option value="5"{% if (lastamounttobet == 5) %} selected="selected"{% endif %}>5 Credits</option>
+		                      		<option value="10"{% if (lastamounttobet == 10) %} selected="selected"{% endif %}>10 Credits</option>
+		                     	</select>
+		                  	</div>
+		                  	<button style="margin-top: 15px" type="submit" class="btn btn-secondary">Play</button>
+		                </form>
+		                <br><br><b>{{msg}}</b>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+	</section>
 
 {% endblock %}
 
