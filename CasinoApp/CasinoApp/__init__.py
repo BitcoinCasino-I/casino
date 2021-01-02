@@ -670,6 +670,8 @@ def slotmachine():
 							else:
 								win = intamounttobet * 3
 
+							win = round(win)
+
 							if len(matches) == 0:
 								win = 0
 								winmsg = 'No luck :( You lost ' + str(intamounttobet) + ' Credits'
