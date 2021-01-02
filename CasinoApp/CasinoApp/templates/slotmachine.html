@@ -116,12 +116,14 @@
 <script src="{{ url_for('static', filename= 'node_modules/jquery-slotmachine/dist/slotmachine.min.js') }}"></script>
 <!--<script src="{{ url_for('static', filename= 'vendor/slotmachine/js/main.js') }}"></script>-->
 <script>
+const slot1val = parseInt({{ lineone[0] }}, 10);
+alert(slot1val);
 const slot1 = new SlotMachine(document.querySelector('#slot1'), {
   active: 1,
   delay: 1500,
   auto: 0,
   randomize() {
-    return {{ lineone[0] }};
+    return slot1val;
   }
 });
 const slot2 = new SlotMachine(document.querySelector('#slot2'), {
