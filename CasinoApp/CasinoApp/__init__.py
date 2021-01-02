@@ -718,7 +718,7 @@ def slotmachine():
 				else:
 					msg = 'Your bet amount was not valid. Stop tampering with our game!'
 			else:
-				msg = 'An unknown error occured. Please try again later.'
+				msg = 'Now place a bet and hit play!'
 		else:
 			msg = 'An unknown error occured. Please try again later.'
 	return render_template('slotmachine.html', isLoggedIn=True, isAdmin=False, msg=msg, gameIsRunning=gameIsRunning, balance=mysql_fetchone('SELECT * FROM user WHERE id = %s', (session.get('id'),))[5], oneone=oneone, onetwo=onetwo, onethree=onethree, twoone=twoone, twotwo=twotwo, twothree=twothree, threeone=threeone, threetwo=threetwo, threethree=threethree, lastamounttobet=lastamounttobet, result=result, winmsg=winmsg)
