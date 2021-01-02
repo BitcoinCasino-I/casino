@@ -15,19 +15,19 @@
 					<p><b>{{winmsg}}</b></p><br>
 					<table id="slot-machine">
 						<tr>
-							<td><div id="slot1"><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div></div></td>
-							<td><div id="slot2"><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div></div></td>
-							<td><div id="slot3"><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div></div></td>
+							<td><div id="slot1"><div>X</div><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div></div></td>
+							<td><div id="slot2"><div>X</div><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div></div></td>
+							<td><div id="slot3"><div>X</div><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div></div></td>
 						</tr>
 						<tr>
-							<td><div id="slot4"><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div></div></td>
-							<td><div id="slot5"><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div></div></td>
-							<td><div id="slot6"><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div></div></td>
+							<td><div id="slot4"><div>X</div><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div></div></td>
+							<td><div id="slot5"><div>X</div><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div></div></td>
+							<td><div id="slot6"><div>X</div><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div></div></td>
 						</tr>
 						<tr>
-							<td><div id="slot7"><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div></div></td>
-							<td><div id="slot8"><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div></div></td>
-							<td><div id="slot9"><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div></div></td>
+							<td><div id="slot7"><div>X</div><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div></div></td>
+							<td><div id="slot8"><div>X</div><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div></div></td>
+							<td><div id="slot9"><div>X</div><div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div></div></td>
 						</tr>
 					</table>
 					<br><br>
@@ -105,58 +105,68 @@
 <script>
 
 const setdelay = 200;
-const shuffletimes = 3;
+const shuffletimes = 1;
+const setactive = 0;
 
 const slot1 = new SlotMachine(document.querySelector('#slot1'), {
   delay: setdelay,
+  active: setactive,
   randomize() {
     return parseInt({{ lineone[0] }}, 10);
   }
 });
 const slot2 = new SlotMachine(document.querySelector('#slot2'), {
   delay: setdelay,
+  active: setactive,
   randomize() {
     return parseInt({{ lineone[1] }}, 10);
   }
 });
 const slot3 = new SlotMachine(document.querySelector('#slot3'), {
   delay: setdelay,
+  active: setactive,
   randomize() {
     return parseInt({{ lineone[2] }}, 10);
   }
 });
 const slot4 = new SlotMachine(document.querySelector('#slot4'), {
   delay: setdelay,
+  active: setactive,
   randomize() {
     return parseInt({{ linetwo[0] }}, 10);
   }
 });
 const slot5 = new SlotMachine(document.querySelector('#slot5'), {
   delay: setdelay,
+  active: setactive,
   randomize() {
     return parseInt({{ linetwo[1] }}, 10);
   }
 });
 const slot6 = new SlotMachine(document.querySelector('#slot6'), {
   delay: setdelay,
+  active: setactive,
   randomize() {
     return parseInt({{ linetwo[2] }}, 10);
   }
 });
 const slot7 = new SlotMachine(document.querySelector('#slot7'), {
   delay: setdelay,
+  active: setactive,
   randomize() {
     return parseInt({{ linethree[0] }}, 10);
   }
 });
 const slot8 = new SlotMachine(document.querySelector('#slot8'), {
   delay: setdelay,
+  active: setactive,
   randomize() {
     return parseInt({{ linethree[1] }}, 10);
   }
 });
 const slot9 = new SlotMachine(document.querySelector('#slot9'), {
   delay: setdelay,
+  active: setactive,
   randomize() {
     return parseInt({{ linethree[2] }}, 10);
   }
