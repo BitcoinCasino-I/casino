@@ -6,18 +6,50 @@
 {% endblock %}
 
 {% block maincontent %}
-        <div style="padding-top: 30px;padding-bottom: 30px">
-            <div id="slotmachine"></div>
-        </div>
 
-{% endblock %}
+<h1>Randomize your stuff!</h1>
 
-{% block customcss %}
-<link href="{{ url_for('static', filename= 'vendor/slotmachine/css/style.css') }}" rel="stylesheet">
+<div class="row">
+  <div class="col-sm-4">
+    <div>
+      <div id="casino1" class="randomizeMachine" style="overflow: hidden;">
+
+      <div class=""><img src="/static/vendor/slot-machine/img/slot6.png"></div><div class=""><img src="/static/vendor/slot-machine/img/slot1.png"></div><div class=""><img src="/static/vendor/slot-machine/img/slot2.png"></div><div class=""><img src="/static/vendor/slot-machine/img/slot3.png"></div><div class=""><img src="/static/vendor/slot-machine/img/slot4.png"></div><div class=""><img src="/static/vendor/slot-machine/img/slot5.png"></div><div class=""><img src="/static/vendor/slot-machine/img/slot6.png"></div><div class=""><img src="/static/vendor/slot-machine/img/slot1.png"></div></div>
+    </div>
+    <div id="machine1Result" class="col-xs-4 machineResult">Index: 3</div>
+  </div>
+
+  <div class="col-sm-4">
+    <div>
+      <div id="casino2" class="randomizeMachine" style="overflow: hidden;">
+
+      <div class=""><img src="/static/vendor/slot-machine/img/slot6.png"></div><div class=""><img src="/static/vendor/slot-machine/img/slot1.png"></div><div class=""><img src="/static/vendor/slot-machine/img/slot2.png"></div><div class=""><img src="/static/vendor/slot-machine/img/slot3.png"></div><div class=""><img src="/static/vendor/slot-machine/img/slot4.png"></div><div class=""><img src="/static/vendor/slot-machine/img/slot5.png"></div><div class=""><img src="/static/vendor/slot-machine/img/slot6.png"></div><div class=""><img src="/static/vendor/slot-machine/img/slot1.png"></div></div>
+    </div>
+    <div id="machine2Result" class="col-xs-4 machineResult">Index: 3</div>
+  </div>
+
+  <div class="col-sm-4">
+    <div>
+      <div id="casino3" class="randomizeMachine" style="overflow: hidden;">
+
+      <div class=""><img src="/static/vendor/slot-machine/img/slot6.png"></div><div class=""><img src="/static/vendor/slot-machine/img/slot1.png"></div><div class=""><img src="/static/vendor/slot-machine/img/slot2.png"></div><div class=""><img src="/static/vendor/slot-machine/img/slot3.png"></div><div class=""><img src="/static/vendor/slot-machine/img/slot4.png"></div><div class=""><img src="/static/vendor/slot-machine/img/slot5.png"></div><div class=""><img src="/static/vendor/slot-machine/img/slot6.png"></div><div class=""><img src="/static/vendor/slot-machine/img/slot1.png"></div></div>
+    </div>
+    <div id="machine3Result" class="col-xs-4 machineResult">Index: 0</div>
+  </div>
+
+  <div class="btn-group btn-group-justified" role="group">
+    <button id="randomizeButton" type="button" class="btn btn-danger btn-lg">Shuffle</button>
+  </div>
+</div>
 {% endblock %}
 
 {% block customjs %}
-<script src="{{ url_for('static', filename= 'vendor/slotmachine/js/application.js') }}"></script>
+<script src="{{ url_for('static', filename= 'vendor/slot-machine/dist/slotmachine.min.js') }}"></script>
+<script src="{{ url_for('static', filename= 'js/slotmachine.js') }}"></script>
+{% endblock %}
+
+{% block customcss %}
+<link href="{{ url_for('static', filename= 'vendor/slot-machine/dist/jquery.slotmachine.min.css') }}" rel="stylesheet">
 {% endblock %}
 
 

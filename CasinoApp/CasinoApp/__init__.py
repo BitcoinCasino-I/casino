@@ -339,11 +339,11 @@ def myaccount():
 
 @app.route('/games/slotmachine')
 def slotmachine():
-	if valid_user():
-		if is_admin():
-			return redirect(url_for('adminpanel'))
-	else:
-		return redirect(url_for('anmeldung'))
+	# if valid_user():
+	# 	if is_admin():
+	# 		return redirect(url_for('adminpanel'))
+	# else:
+	# 	return redirect(url_for('anmeldung'))
 	return render_template('slotmachine.html', isLoggedIn=True, isAdmin=False)
 
 @app.route('/activate', methods=['GET'])
@@ -597,3 +597,7 @@ def adduser():
 			mysql_write('INSERT INTO user VALUES (NULL, %s, %s, %s, 0, %s, %s, 1, %s, NULL, NULL, 0, NULL)', (username, email, md5_hash, balance, otp, isadmin,))
 			msg = 'User was added!'
 	return render_template('adduser.html', isLoggedIn=True, isAdmin=True, msg=msg)
+
+if __name__ == "__main__":
+	app.secret_key = 'mcjwillbeatu4ever'
+	app.run()
