@@ -12,21 +12,20 @@
     		<div class="row content">
 				<div class="col-lg-6">
 					<h2>The slots</h2>
-					<center>
-						<table id="slot-machine"> 
-						{% if result == True %}
-							<tr style="height: 40px">{% for col in lineone %}<td style="width: 40px">{{ col }}</td>{% endfor %}</tr>
-							<tr style="height: 40px">{% for col in linetwo %}<td style="width: 40px">{{ col }}</td>{% endfor %}</tr>
-							<tr style="height: 40px">{% for col in linethree %}<td style="width: 40px">{{ col }}</td>{% endfor %}</tr>
-						{% else %}	
-							<tr style="height: 40px"><td style="width: 40px">X</td><td style="width: 40px">X</td><td style="width: 40px">X</td></tr>
-							<tr style="height: 40px"><td style="width: 40px">X</td><td style="width: 40px">X</td><td style="width: 40px">X</td></tr>
-							<tr style="height: 40px"><td style="width: 40px">X</td><td style="width: 40px">X</td><td style="width: 40px">X</td></tr>
-						{% endif %}
-						</table>
-					</center>
+					<table id="slot-machine"> 
+					{% if result == True %}
+						<tr style="height: 40px">{% for col in lineone %}<td style="width: 40px">{{ col }}</td>{% endfor %}</tr>
+						<tr style="height: 40px">{% for col in linetwo %}<td style="width: 40px">{{ col }}</td>{% endfor %}</tr>
+						<tr style="height: 40px">{% for col in linethree %}<td style="width: 40px">{{ col }}</td>{% endfor %}</tr>
+					{% else %}	
+						<tr style="height: 40px"><td style="width: 40px">X</td><td style="width: 40px">X</td><td style="width: 40px">X</td></tr>
+						<tr style="height: 40px"><td style="width: 40px">X</td><td style="width: 40px">X</td><td style="width: 40px">X</td></tr>
+						<tr style="height: 40px"><td style="width: 40px">X</td><td style="width: 40px">X</td><td style="width: 40px">X</td></tr>
+					{% endif %}
+					</table>
 				</div>
 				<div class="col-lg-6">
+					<h2>Actions</h2>
 					{% if gameIsRunning == False %}
 						<p><a href="{{ url_for('slotmachine', startgame=True) }}"><button type="submit" class="btn btn-secondary">Start game</button></a></p>
 					{% else %}
