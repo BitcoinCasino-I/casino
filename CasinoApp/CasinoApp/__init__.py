@@ -607,11 +607,11 @@ def slotmachine():
 	result = False
 	if request.args.get("startgame") == "True":
 		if request.referrer is not None:
-			if APPDOMAIN + url_for('slotmachine2') in request.referrer:
+			if APPDOMAIN + url_for('slotmachine') in request.referrer:
 				session['gameIsRunning'] = True
 	if request.args.get("endgame") == "True":
 		if request.referrer is not None:
-			if APPDOMAIN + url_for('slotmachine2') in request.referrer:
+			if APPDOMAIN + url_for('slotmachine') in request.referrer:
 				session.pop('gameIsRunning', None)
 				# other todos when ending game
 	if session.get('gameIsRunning') == True:
