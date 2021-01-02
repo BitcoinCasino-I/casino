@@ -30,7 +30,7 @@
 						</tr>
 					</table>
 					<br><br>
-					<div id="resultlist" style="display:none">
+					<div id="resultlist">
 						{% if matches != None %}
 						<h4>{{winmsg}}</h4>
 							{% for match in matches %}
@@ -105,10 +105,10 @@
 <script src="{{ url_for('static', filename= 'node_modules/jquery-slotmachine/dist/slotmachine.min.js') }}"></script>
 <script>
 
-function onComplete(){
+/*function onComplete(){
 	var x = document.getElementById('resultlist');
 	x.style.display = "block";
-}
+}*/
 
 const setdelay = 500;
 const shuffletimes = 1;
