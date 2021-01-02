@@ -1,0 +1,11 @@
+table#slot-machine tr{
+	height: 40px;
+}
+
+table#slot-machine td{
+	width: 40px;
+}
+
+img.slotresult{
+	max-width: 100px;
+}

@@ -14,42 +14,42 @@
 					<h2>The slots</h2>
 					{% if result == True %}
 					<table id="slot-machine"> 
-						<tr style="height: 40px">{% for col in lineone %}<td style="width: 40px">{{ col }}</td>{% endfor %}</tr>
-						<tr style="height: 40px">{% for col in linetwo %}<td style="width: 40px">{{ col }}</td>{% endfor %}</tr>
-						<tr style="height: 40px">{% for col in linethree %}<td style="width: 40px">{{ col }}</td>{% endfor %}</tr>
+						<tr>{% for col in lineone %}<td>{{ col }}</td>{% endfor %}</tr>
+						<tr>{% for col in linetwo %}<td>{{ col }}</td>{% endfor %}</tr>
+						<tr>{% for col in linethree %}<td>{{ col }}</td>{% endfor %}</tr>
 					</table>
 					<br><br>
 					{% for match in matches %}
 						{% if match == "row1vertical" %}
-							<img src="{{ url_for('static', filename='vendor/slotmachine/images/win6.jpg') }}">
+							<img class="slotresult" src="{{ url_for('static', filename='vendor/slotmachine/images/win6.jpg') }}">
 						{% endif %}
 						{% if match == "row2vertical" %}
-							<img src="{{ url_for('static', filename='vendor/slotmachine/images/win7.jpg') }}">
+							<img class="slotresult" src="{{ url_for('static', filename='vendor/slotmachine/images/win7.jpg') }}">
 						{% endif %}
 						{% if match == "row3vertical" %}
-							<img src="{{ url_for('static', filename='vendor/slotmachine/images/win8.jpg') }}">
+							<img class="slotresult" src="{{ url_for('static', filename='vendor/slotmachine/images/win8.jpg') }}">
 						{% endif %}
 						{% if match == "row1horizontal" %}
-							<img src="{{ url_for('static', filename='vendor/slotmachine/images/win3.jpg') }}">
+							<img class="slotresult" src="{{ url_for('static', filename='vendor/slotmachine/images/win3.jpg') }}">
 						{% endif %}
 						{% if match == "row2horizontal" %}
-							<img src="{{ url_for('static', filename='vendor/slotmachine/images/win4.jpg') }}">
+							<img class="slotresult" src="{{ url_for('static', filename='vendor/slotmachine/images/win4.jpg') }}">
 						{% endif %}
 						{% if match == "row3horizontal" %}
-							<img src="{{ url_for('static', filename='vendor/slotmachine/images/win5.jpg') }}">
+							<img class="slotresult" src="{{ url_for('static', filename='vendor/slotmachine/images/win5.jpg') }}">
 						{% endif %}
 						{% if match == "diagonal1" %}
-							<img src="{{ url_for('static', filename='vendor/slotmachine/images/win1.jpg') }}">
+							<img class="slotresult" src="{{ url_for('static', filename='vendor/slotmachine/images/win1.jpg') }}">
 						{% endif %}
 						{% if match == "diagonal2" %}
-							<img src="{{ url_for('static', filename='vendor/slotmachine/images/win2.jpg') }}">
+							<img class="slotresult" src="{{ url_for('static', filename='vendor/slotmachine/images/win2.jpg') }}">
 						{% endif %}
 					{% endfor %}
 					{% else %}
 					<table id="slot-machine"> 
-						<tr style="height: 40px"><td style="width: 40px">X</td><td style="width: 40px">X</td><td style="width: 40px">X</td></tr>
-						<tr style="height: 40px"><td style="width: 40px">X</td><td style="width: 40px">X</td><td style="width: 40px">X</td></tr>
-						<tr style="height: 40px"><td style="width: 40px">X</td><td style="width: 40px">X</td><td style="width: 40px">X</td></tr>
+						<tr><td>X</td><td>X</td><td>X</td></tr>
+						<tr><td>X</td><td>X</td><td>X</td></tr>
+						<tr><td>X</td><td>X</td><td>X</td></tr>
 					</table>
 					{% endif %}
 				</div>
@@ -86,7 +86,7 @@
 {% endblock %}
 
 {% block customcss %}
-<!--<link href="{{ url_for('static', filename= 'vendor/slotmachine/Style/casino.css') }}" rel="stylesheet">-->
+<link href="{{ url_for('static', filename= 'vendor/slotmachine/css/style.css') }}" rel="stylesheet">-->
 {% endblock %}
 
 
