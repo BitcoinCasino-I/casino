@@ -174,20 +174,21 @@ const slot8 = new SlotMachine(document.querySelector('#slot8'), {
 const slot9 = new SlotMachine(document.querySelector('#slot9'), {
   delay: setdelay,
   active: setactive,
+  onComplete: onComplete(),
   randomize() {
     return parseInt({{ linethree[2] }}, 10);
   }
 });
 
 setTimeout(() => slot1.shuffle(shuffletimes), 200);
-setTimeout(() => slot2.shuffle(shuffletimes), 250);
-setTimeout(() => slot3.shuffle(shuffletimes), 300);
-setTimeout(() => slot4.shuffle(shuffletimes), 600);
-setTimeout(() => slot5.shuffle(shuffletimes), 650);
-setTimeout(() => slot6.shuffle(shuffletimes), 700);
-setTimeout(() => slot7.shuffle(shuffletimes), 1000);
-setTimeout(() => slot8.shuffle(shuffletimes), 1050);
-setTimeout(() => slot9.shuffle(shuffletimes, onComplete()), 1100);
+setTimeout(() => slot2.shuffle(shuffletimes), 300);
+setTimeout(() => slot3.shuffle(shuffletimes), 400);
+setTimeout(() => slot4.shuffle(shuffletimes), 900);
+setTimeout(() => slot5.shuffle(shuffletimes), 1000);
+setTimeout(() => slot6.shuffle(shuffletimes), 1100);
+setTimeout(() => slot7.shuffle(shuffletimes), 1600);
+setTimeout(() => slot8.shuffle(shuffletimes), 1700);
+setTimeout(() => slot9.shuffle(shuffletimes), 1800);
 
 </script>
 {% endblock %}
