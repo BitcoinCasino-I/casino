@@ -316,7 +316,6 @@ def myaccount():
 					if pilwidth <= 600:
 						hasimage = True
 						extension = ext
-						msgimage = binary
 					else:
 						hasimage = False
 						for filePath in fileList:
