@@ -259,9 +259,10 @@ def myaccount():
 	extension = ''
 	hasimage = False
 	accountdata = mysql_fetchone('SELECT * FROM user WHERE id = %s AND username = %s', (session.get("id"), session.get("username"),))
-	if accountdata[11] == 1 and glob.glob(app.config['PROFILEIMAGE_UPLOAD_FOLDER'] + '/' + str(session.get("id")) + '.*'):
+	localfiles = glob.glob(app.config['PROFILEIMAGE_UPLOAD_FOLDER'] + '/' + str(session.get("id")) + '.*')
+	if accountdata[11] == 1 and localfiles:
 		hasimage = True
-		profileimage = glob.glob(app.config['PROFILEIMAGE_UPLOAD_FOLDER'] + '/' + str(session.get("id")) + '.*')
+		profileimage = localfiles[0]
 		extension = os.path.splitext(profileimage[0])[1]
 	if request.method == 'POST' and 'currentpassword' in request.form and 'newpassword' in request.form:
 		# Create variables for easy access
