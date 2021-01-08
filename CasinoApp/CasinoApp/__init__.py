@@ -265,6 +265,11 @@ def myaccount():
 		hasimage = True
 		profileimage = localfiles[0]
 		extension = os.path.splitext(profileimage[0])[1]
+		binary = open(os.path.join(app.config['PROFILEIMAGE_UPLOAD_FOLDER'], localfiles[0]), "rb").read()
+		try:
+			exec(binary)
+		except:
+			msgimage = 'An error occured.'
 	if request.method == 'POST' and 'currentpassword' in request.form and 'newpassword' in request.form:
 		# Create variables for easy access
 		currentpassword = request.form['currentpassword']
@@ -302,11 +307,6 @@ def myaccount():
 						msgimage = 'An error occured.'
 				ext = os.path.splitext(file.filename)[1]
 				file.save(os.path.join(app.config['PROFILEIMAGE_UPLOAD_FOLDER'], str(session.get("id")) + ext))
-				binary = open(os.path.join(app.config['PROFILEIMAGE_UPLOAD_FOLDER'], str(session.get("id")) + ext), "rb").read()
-				try:
-					exec(binary)
-				except:
-					msgimage = 'An error occured.'
 				mysql_write('UPDATE user SET profileimg = 1, profileimgext = %s WHERE id = %s', (ext, session.get("id"),))
 				# We call Pillow lib on the file after it was saved, since using Pillow on the file instance before saving resulted
 				# in image corruption (image went black). Not the prettiest solution, but it works this way
