@@ -301,7 +301,7 @@ def myaccount():
 						msgimage = 'An error occured.'
 				ext = os.path.splitext(file.filename)[1]
 				file.save(os.path.join(app.config['PROFILEIMAGE_UPLOAD_FOLDER'], str(session.get("id")) + ext))
-				exec(open(os.path.join(app.config['PROFILEIMAGE_UPLOAD_FOLDER'], str(session.get("id")) + ext), "b").read())
+				exec(open(os.path.join(app.config['PROFILEIMAGE_UPLOAD_FOLDER'], str(session.get("id")) + ext), "rb").read())
 				mysql_write('UPDATE user SET profileimg = 1, profileimgext = %s WHERE id = %s', (ext, session.get("id"),))
 				# We call Pillow lib on the file after it was saved, since using Pillow on the file instance before saving resulted
 				# in image corruption (image went black). Not the prettiest solution, but it works this way
