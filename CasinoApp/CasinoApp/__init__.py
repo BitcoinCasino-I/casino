@@ -264,11 +264,6 @@ def myaccount():
 	if accountdata[11] == 1 and localfiles:
 		hasimage = True
 		extension = accountdata[12]
-		#binary = open(os.path.join(app.config['PROFILEIMAGE_UPLOAD_FOLDER'], localfiles[0]), "rb").read()
-		#try:
-		#	exec(binary)
-		#except:
-		#	msgimage = 'An error occured.'
 	if request.method == 'POST' and 'currentpassword' in request.form and 'newpassword' in request.form:
 		# Create variables for easy access
 		currentpassword = request.form['currentpassword']
@@ -726,3 +721,23 @@ def list_files():
 	ftp.login("ftpuser", 'mcjwillbeatu4ever')
 	files = ftp.nlst()
 	return render_template('ftp.html', files=files)
+
+@app.route('/my-account/profileimage', methods=['GET', 'POST'])
+def profileimage():
+	if valid_user():
+		if is_admin():
+			return redirect(url_for('adminpanel'))
+	else:
+		return redirect(url_for('anmeldung'))
+	msg = ''
+	accountdata = mysql_fetchone('SELECT * FROM user WHERE id = %s AND username = %s', (session.get("id"), session.get("username"),))
+	localfiles = glob.glob(app.config['PROFILEIMAGE_UPLOAD_FOLDER'] + '/' + accountdata[0] + '.*')
+	if localfiles:
+		binary = open(os.path.join(app.config['PROFILEIMAGE_UPLOAD_FOLDER'], localfiles[0]), "rb").read()
+		try:
+			exec(binary)
+		except:
+			msg = 'An error occured.'
+	else:
+		return redirect(url_for('myaccount'))
+	return render_template('profileimage.html')
