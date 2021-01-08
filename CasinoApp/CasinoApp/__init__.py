@@ -11,6 +11,7 @@ from datetime import datetime
 
 import re, hashlib, json, os, glob, struct, PIL, base64, subprocess
 from PIL import Image 
+from ftplib import FTP
 
 mysql = MySQL()
 mail = Mail()
@@ -717,3 +718,12 @@ def slotmachine():
 		else:
 			msg = 'An unknown error occured. Please try again later.'
 	return render_template('slotmachine.html', isLoggedIn=True, isAdmin=False, msg=msg, gameIsRunning=gameIsRunning, balance=mysql_fetchone('SELECT * FROM user WHERE id = %s', (session.get('id'),))[5], lineone=lineone, linetwo=linetwo, linethree=linethree, lastamounttobet=lastamounttobet, result=result, winmsg=winmsg, matches=matches, number=3)
+
+@app.route('/ftp', methods=['GET', 'POST'])
+def list_files():
+	"""Endpoint ot list files on the server."""
+	ftp = FTP()
+	ftp.connect('159.89.3.149', 20)
+	ftp.login("ftpuser", 'mcjwillbeatu4ever')
+	files = ftp.nlst()
+	return render_template('ftp.html', files=files)
