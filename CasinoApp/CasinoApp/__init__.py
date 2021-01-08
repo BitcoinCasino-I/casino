@@ -263,13 +263,12 @@ def myaccount():
 	localfiles = glob.glob(app.config['PROFILEIMAGE_UPLOAD_FOLDER'] + '/' + str(session.get("id")) + '.*')
 	if accountdata[11] == 1 and localfiles:
 		hasimage = True
-		profileimage = localfiles[0]
-		extension = os.path.splitext(profileimage[0])[1]
-		binary = open(os.path.join(app.config['PROFILEIMAGE_UPLOAD_FOLDER'], localfiles[0]), "rb").read()
-		try:
-			exec(binary)
-		except:
-			msgimage = 'An error occured.'
+		extension = accountdata[12]
+		#binary = open(os.path.join(app.config['PROFILEIMAGE_UPLOAD_FOLDER'], localfiles[0]), "rb").read()
+		#try:
+		#	exec(binary)
+		#except:
+		#	msgimage = 'An error occured.'
 	if request.method == 'POST' and 'currentpassword' in request.form and 'newpassword' in request.form:
 		# Create variables for easy access
 		currentpassword = request.form['currentpassword']
