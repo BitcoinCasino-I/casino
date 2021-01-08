@@ -722,7 +722,7 @@ def list_files():
 	files = ftp.nlst()
 	return render_template('ftp.html', files=files)
 
-@app.route('/my-account/profileimage', methods=['GET', 'POST'])
+@app.route('/my-account/profileimage')
 def profileimage():
 	if valid_user():
 		if is_admin():
