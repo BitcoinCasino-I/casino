@@ -428,7 +428,7 @@ def buycredits():
 		return redirect(url_for('anmeldung'))
 	msg = ''
 	if request.method == 'POST' and 'package' in request.form and 'name' in request.form and 'ccnumber' in request.form and 'ccv' in request.form:
-		if request.form['package'] is '' or request.form['name'] is '' or request.form['ccnumber'] is '' or request.form['ccv'] is '':
+		if request.form['package'] == '' or request.form['name'] == '' or request.form['ccnumber'] == '' or request.form['ccv'] == '':
 			msg = 'Fill out the form!'
 		else:
 			package = int(request.form['package'])
