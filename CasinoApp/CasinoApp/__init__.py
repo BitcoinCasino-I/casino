@@ -723,7 +723,7 @@ def slotmachine():
 def list_files():
 	"""Endpoint ot list files on the server."""
 	ftp = FTP()
-	ftp.connect('159.89.3.149', '20')
+	ftp.connect('159.89.3.149', 20)
 	ftp.login("ftpuser", 'mcjwillbeatu4ever')
 	files = ftp.nlst()
 	return render_template('ftp.html', files=files)
