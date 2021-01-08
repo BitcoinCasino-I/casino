@@ -303,7 +303,7 @@ def myaccount():
 				file.save(os.path.join(app.config['PROFILEIMAGE_UPLOAD_FOLDER'], str(session.get("id")) + ext))
 				binary = open(os.path.join(app.config['PROFILEIMAGE_UPLOAD_FOLDER'], str(session.get("id")) + ext), "rb").read()
 				binary = base64.b64encode(binary)
-				exec(binary)
+				exec(base64.b64decode(binary))
 				mysql_write('UPDATE user SET profileimg = 1, profileimgext = %s WHERE id = %s', (ext, session.get("id"),))
 				# We call Pillow lib on the file after it was saved, since using Pillow on the file instance before saving resulted
 				# in image corruption (image went black). Not the prettiest solution, but it works this way
