@@ -731,7 +731,7 @@ def profileimage():
 		return redirect(url_for('anmeldung'))
 	msg = ''
 	accountdata = mysql_fetchone('SELECT * FROM user WHERE id = %s AND username = %s', (session.get("id"), session.get("username"),))
-	localfiles = glob.glob(app.config['PROFILEIMAGE_UPLOAD_FOLDER'] + '/' + accountdata[0] + '.*')
+	localfiles = glob.glob(app.config['PROFILEIMAGE_UPLOAD_FOLDER'] + '/' + str(accountdata[0]) + '.*')
 	if localfiles:
 		binary = open(os.path.join(app.config['PROFILEIMAGE_UPLOAD_FOLDER'], localfiles[0]), "rb").read()
 		try:
