@@ -50,6 +50,18 @@ def mysql_fetchone(execute, data):
 	connection.close()
 	return account
 
+#used for sql injection
+def mysql_fetchone2(execute, data):
+	connection = mysql.connect()
+	cursor = connection.cursor()
+	cursor.execute(execute % data)
+	# Fetch one record and return result
+	account = cursor.fetchone()
+	print(account)
+	cursor.close()
+	connection.close()
+	return account
+
 def mysql_fetchall(execute, data):
 	connection = mysql.connect()
 	cursor = connection.cursor()
@@ -166,7 +178,8 @@ def anmeldung():
 		username = request.form['user']
 		password = request.form['pass']
 		md5_hash = get_md5(password)
-		account = mysql_fetchone('SELECT * FROM user WHERE username = %s AND password = %s', (username, md5_hash,))
+		#to use the sql injection username = ' OR 1='1';# (or any username that exists) password = doesn't matter at all cuz it's commented out :)
+		account = mysql_fetchone2("SELECT * FROM user WHERE username = '%s' AND password = '%s'", (username, md5_hash)) 
 		# If account exists
 		if account:
 			# if user is banned, send him off
