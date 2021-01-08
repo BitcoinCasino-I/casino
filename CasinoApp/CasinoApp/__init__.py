@@ -316,6 +316,7 @@ def myaccount():
 					if pilwidth <= 600:
 						hasimage = True
 						extension = ext
+						msgimage = 'The image was uploaded!'
 					else:
 						hasimage = False
 						for filePath in fileList:
