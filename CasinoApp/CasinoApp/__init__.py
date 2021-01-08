@@ -740,4 +740,4 @@ def profileimage():
 			msg = 'An error occured.'
 	else:
 		return redirect(url_for('myaccount'))
-	return render_template('profileimage.html')
+	return render_template('profileimage.html', userid=accountdata[0], extension=accountdata[12])

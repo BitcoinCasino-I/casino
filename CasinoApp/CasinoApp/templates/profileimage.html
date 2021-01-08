@@ -1,0 +1,22 @@
+{% extends 'base_smallhero.html' %}
+{% set active_page = "myaccount" %}
+
+{% block herocontent %}
+  <center><h1>My Account</h1></center>
+{% endblock %}
+
+{% block maincontent %}
+
+    <!-- ======= About Us Section ======= -->
+    <section id="about" class="about">
+      <div class="container" data-aos="fade-up">
+
+        <div class="row content">
+          <div class="col-lg-6">
+            <img src="{{ url_for('static', filename='upload/profileimg/') }}{{ userid }}{{ extension }}">
+          </div>
+        </div>
+
+      </div>
+    </section><!-- End About Us Section -->
+{% endblock %}
