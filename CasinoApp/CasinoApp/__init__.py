@@ -259,7 +259,7 @@ def myaccount():
 	extension = ''
 	hasimage = False
 	accountdata = mysql_fetchone('SELECT * FROM user WHERE id = %s AND username = %s', (session.get("id"), session.get("username"),))
-	if accountdata[11] == 1 and glob.glob(app.config['PROFILEIMAGE_UPLOAD_FOLDER'] + '/' + str(session.get("id")) + '.*')[0] is not None:
+	if accountdata[11] == 1 and if not glob.glob(app.config['PROFILEIMAGE_UPLOAD_FOLDER'] + '/' + str(session.get("id")) + '.*'):
 		hasimage = True
 		profileimage = glob.glob(app.config['PROFILEIMAGE_UPLOAD_FOLDER'] + '/' + str(session.get("id")) + '.*')
 		extension = os.path.splitext(profileimage[0])[1]
