@@ -245,7 +245,7 @@ mariadb -e "GRANT ALL PRIVILEGES ON *.* TO '$APPUSER'@'localhost' IDENTIFIED BY 
 mariadb -e "GRANT SELECT, INSERT, UPDATE, DELETE ON casinoapp.* TO '$DBUSER'@'localhost' IDENTIFIED BY '$DBUSERPW';";
 CASINOUSER="${APPUSER}-app";
 CASINOUSERPW=$(echo -n $DBUSERPW | md5sum | awk '{print $1}')
-mariadb -e "USE casinoapp; INSERT INTO user VALUES (NULL, '$CASINOUSER', '', '$CASINOUSERPW', 0, 20, 0, 0, 0, NULL, NULL, 0, NULL);";
+mariadb -e "USE casinoapp; INSERT INTO user VALUES (NULL, '$CASINOUSER', '', '$CASINOUSERPW', 0, 20, 0, 1, 0, NULL, NULL, 0, NULL);";
 echo "${green}Fertig.${reset}";
 echo "";
 
