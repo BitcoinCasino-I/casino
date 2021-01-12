@@ -8,7 +8,8 @@
 # - root / sudo Checks
 # - Automatischer Purge aller relevanten Pakete
 # - Automatische Installation aller relevanten Pakete
-# - Manuelles Aufsetzen von phpMyAdmin aus dessen Quellcode
+# - Automatisches Aufsetzen der Firewall
+# - Automatisches Aufsetzen und Konfigurieren von MariaDB und phpMyAdmin aus dessen Quellcode
 # - Automatisches Datenbanksetup mit verschiedenen Usern
 # - Automatisches Anpassen der relevanten configs
 # - Automatisches De/Aktivieren aller relevanten Apache Module
@@ -28,6 +29,8 @@
 # - Dynamische Konfiguration des Mail-Users (mail.cfg)
 # - Am Ende des Skripts 1x alle Nutzerdaten ausgeben (mit PWs)
 # - Automatische Installation des Webhooks (nötig?)
+# - Funktionen verwenden (Code kürzen)
+# - >/dev/null statt >/dev/null 2>&1 verwenden, wo es Sinn macht
 
 # Definiere Farbcodes
 red=`tput setaf 1`;
@@ -40,6 +43,16 @@ if [[ $EUID > 0 ]]; then
         # Abbruch
         echo "${red}Bitte als ROOT ausführen!${reset}"
         exit -1
+fi
+
+echo ""
+echo "${red}Achtung: Dieses Programm entfernt alle vorhandenen Datenbanken und Websites, deinstalliert und installiert Systempakete!";
+echo "Die Installation sollte nur auf einem frisch eingerichteten Debian 10 Server gestartet werden.${reset}";
+read -p "Fortfahren? (Y/N) " -n 1 -r
+echo ""
+if [[ ! $REPLY =~ ^[Yy]$ ]]
+then
+    exit -1
 fi
 
 # Führe apt update aus, da sonst manche benötigte Pakete nicht gefunden werden (und upgrade)
@@ -156,15 +169,21 @@ echo ""
 # Passwort für sudo vorweg ausfüllen
 sudo -H -u "$APPUSER" bash -c "(echo '$APPUSERPW' | sudo -Si >/dev/null 2>&1);"
 
-# Diverse Programme / Ordner zurücksetzen
-sudo -H -u "$APPUSER" bash -c "sudo apt-get -qq purge apache2 ufw mariadb-server mariadb-client >/dev/null 2>&1";
-sudo -H -u "$APPUSER" bash -c "sudo rm -r /var/www/html/* >/dev/null 2>&1";
-sudo -H -u "$APPUSER" bash -c "sudo rm -r /var/lib/phpmyadmin >/dev/null 2>&1";
-sudo -H -u "$APPUSER" bash -c "sudo rm -r /usr/share/phpmyadmin >/dev/null 2>&1";
+# Diverse Programme / Ordner /Datenbanken zurücksetzen
+echo "${yellow}Setze Programme zurück...${reset}"
+sudo -H -u "$APPUSER" bash -c "sudo rm -rf /var/lib/mysql/* >/dev/null 2>&1";
+sudo -H -u "$APPUSER" bash -c "sudo rm -rf /var/www/html >/dev/null 2>&1";
+sudo -H -u "$APPUSER" bash -c "sudo rm -rf /var/lib/phpmyadmin >/dev/null 2>&1";
+sudo -H -u "$APPUSER" bash -c "sudo rm -rf /usr/share/phpmyadmin >/dev/null 2>&1";
+sudo -H -u "$APPUSER" bash -c "sudo rm -rf /etc/apache2 >/dev/null 2>&1";
+sudo -H -u "$APPUSER" bash -c "sudo rm -rf /etc/mysql >/dev/null 2>&1";
+sudo -H -u "$APPUSER" bash -c "sudo apt-get -qq purge ufw apache2 libapache2-mod-php7.3 libsodium23 php php-common php7.3 php7.3-cli php7.3-common php7.3-json php7.3-opcache php7.3-readline psmisc php7.3-mbstring php7.3-zip php7.3-gd php7.3-xml php7.3-curl php7.3-mysql mariadb-server mariadb-client mysql-common curl python3.7 python3-dev python3-pip python3-venv python3.7-venv libapache2-mod-wsgi-py3 libapache2-mod-security2 libmariadb-dev-compat libmariadb-dev >/dev/null 2>&1";
+echo "${green}Fertig.${reset}"
+echo ""
 
 # Alle notwendigen Systempakete installieren
 echo "${yellow}Installiere alle nötigen Systempakete...${reset}";
-sudo -H -u "$APPUSER" bash -c "sudo apt-get -qq install git ufw openssh-server apache2 libapache2-mod-php7.3 libsodium23 php php-common php7.3 php7.3-cli php7.3-common php7.3-json php7.3-opcache php7.3-readline psmisc php7.3-mbstring php7.3-zip php7.3-gd php7.3-xml php7.3-curl php7.3-mysql mariadb-server mariadb-client curl python3.7 python3-dev python3-pip python3-venv python3.7-venv libapache2-mod-wsgi-py3 libapache2-mod-security2 libmariadb-dev-compat libmariadb-dev >/dev/null 2>&1";
+sudo -H -u "$APPUSER" bash -c "sudo apt-get -qq install git ufw openssh-server apache2 libapache2-mod-php7.3 libsodium23 php php-common php7.3 php7.3-cli php7.3-common php7.3-json php7.3-opcache php7.3-readline psmisc php7.3-mbstring php7.3-zip php7.3-gd php7.3-xml php7.3-curl php7.3-mysql mariadb-server mariadb-client mysql-common curl python3.7 python3-dev python3-pip python3-venv python3.7-venv libapache2-mod-wsgi-py3 libapache2-mod-security2 libmariadb-dev-compat libmariadb-dev >/dev/null 2>&1";
 echo "${green}Fertig.${reset}";
 echo ""
 
@@ -179,68 +198,96 @@ echo "${green}Fertig.${reset}";
 echo "";
 
 # Lade Setup-Dateien herunter
+echo "${yellow}Bereite App-Dateien vor...${reset}";
 sudo -H -u "$APPUSER" bash -c "mkdir /home/$APPUSER/casinoapp-download";
-sudo -H -u "$APPUSER" bash -c "sudo git clone https://github.com/Lartsch/casinoapp-deploy-test.git /home/$APPUSER/casinoapp-download";
+sudo -H -u "$APPUSER" bash -c "sudo git clone -q https://github.com/Lartsch/casinoapp-deploy-test.git /home/$APPUSER/casinoapp-download >/dev/null";
+echo "${green}Fertig.${reset}";
+echo "";
 
 # Beginne Apache-Setup
 echo "${yellow}Konfiguriere Apache...${reset}";
+echo "${yellow}Setze Rechte...${reset}";
 sudo -H -u "$APPUSER" bash -c "sudo usermod -aG www-data $APPUSER";
 sudo -H -u "$APPUSER" bash -c "sudo chown www-data:www-data -R /var/www";
 sudo -H -u "$APPUSER" bash -c "sudo chmod 755 -R /var/www";
+echo "${yellow}Bereite .conf-Dateien vor...${reset}";
 sudo -H -u "$APPUSER" bash -c "sudo cp /home/$APPUSER/casinoapp-download/phpmyadmin.conf /etc/apache2/conf-available";
-sudo -H -u "$APPUSER" bash -c "sudo a2enconf phpmyadmin";
 sudo -H -u "$APPUSER" bash -c "sudo cp /home/$APPUSER/casinoapp-download/Casino.conf /etc/apache2/sites-available";
-sudo -H -u "$APPUSER" bash -c "sudo a2ensite Casino";
-sudo -H -u "$APPUSER" bash -c "sudo a2dissite 000-default";
+echo "${yellow}De/Aktiviere .conf-Dateien...${reset}";
+sudo -H -u "$APPUSER" bash -c "sudo a2enconf -q phpmyadmin >/dev/null";
+sudo -H -u "$APPUSER" bash -c "sudo a2ensite -q Casino >/dev/null";
+sudo -H -u "$APPUSER" bash -c "sudo a2dissite -q 000-default >/dev/null";
+echo "${yellow}Bereite Webdateien vor...${reset}";
 sudo -H -u "$APPUSER" bash -c "sudo rm /var/www/html/index.html";
 sudo -H -u "$APPUSER" bash -c "sudo mv /home/$APPUSER/casinoapp-download/CasinoApp /var/www/html";
+echo "${yellow}De/Aktiviere alle relevanten Module...${reset}";
 ENAPACHEMODULES="access_compat authz_user dir negotiation php7.3 reqtimeout status mpm_prefork alias autoindex env rewrite wsgi filter setenvif auth_basic cgid headers authn_core proxy socache_shmcb authn_file deflate mime ssl authz_core proxy_http authz_host";
 DISAPACHEMODULES="mpm_event";
 for VALDIS in $DISAPACHEMODULES; do
-        sudo -H -u "$APPUSER" bash -c "sudo a2dismod -q $VALDIS";
+        sudo -H -u "$APPUSER" bash -c "sudo a2dismod -q $VALDIS >/dev/null";
 done
 for VALEN in $ENAPACHEMODULES; do
-        sudo -H -u "$APPUSER" bash -c "sudo a2enmod -q $VALEN";
+        sudo -H -u "$APPUSER" bash -c "sudo a2enmod -q $VALEN >/dev/null";
 done
-# TODO apache settings, site file, enable mods, enable site, set directives
 echo "${green}Fertig.${reset}";
 echo "";
 
 # Beginne MariaDB / phpMyAdmin Setup
+echo "${yellow}Richte Datenbanken und phpMyAdmin ein...${reset}";
+echo "${yellow}Bereite Dateien für phpMyAdmin vor...${reset}";
 sudo -H -u "$APPUSER" bash -c "wget -q -P /home/$APPUSER/casinoapp-download https://www.phpmyadmin.net/downloads/phpMyAdmin-latest-all-languages.tar.gz";
 sudo -H -u "$APPUSER" bash -c "sudo mkdir -p /usr/share/phpmyadmin";
 sudo -H -u "$APPUSER" bash -c "sudo tar xvf /home/$APPUSER/casinoapp-download/phpMyAdmin-latest-all-languages.tar.gz --strip-components=1 -C /usr/share/phpmyadmin >/dev/null 2>&1";
 sudo -H -u "$APPUSER" bash -c "sudo cp /home/$APPUSER/casinoapp-download/config.inc.php /usr/share/phpmyadmin";
 sudo -H -u "$APPUSER" bash -c "sudo cp /home/$APPUSER/casinoapp-download/app-db.sql /usr/share/phpmyadmin/sql";
-sudo -H -u "$APPUSER" bash -c "sudo sed -i \"s/PHPUSERPW/$PHPUSERPW/g\" /usr/share/phpmyadmin/config.inc.php"
 sudo -H -u "$APPUSER" bash -c "sudo mkdir -p /var/lib/phpmyadmin/tmp";
+echo "${yellow}Bearbeite Konfiguration für phpMyAdmin...${reset}";
+sudo -H -u "$APPUSER" bash -c "sudo sed -i \"s/PHPUSERPW/$PHPUSERPW/g\" /usr/share/phpmyadmin/config.inc.php"
+echo "${yellow}Setze Rechte...${reset}";
 sudo -H -u "$APPUSER" bash -c "sudo chown -R www-data:www-data /var/lib/phpmyadmin";
 sudo -H -u "$APPUSER" bash -c "sudo chown -R www-data:www-data /usr/share/phpmyadmin";
 sudo -H -u "$APPUSER" bash -c "sudo chmod -R 755 /var/lib/phpmyadmin";
 sudo -H -u "$APPUSER" bash -c "sudo chmod -R 755 /usr/share/phpmyadmin";
+echo "${yellow}Erstelle Datenbank für phpMyAdmin...${reset}";
 sudo -H -u "$APPUSER" bash -c "sudo mariadb < /usr/share/phpmyadmin/sql/create_tables.sql";
+echo "${yellow}Erstelle Datenbank für CasinoApp...${reset}";
 sudo -H -u "$APPUSER" bash -c "sudo mariadb < /usr/share/phpmyadmin/sql/app-db.sql";
+echo "${yellow}Erstelle alle Datenbanknutzer...${reset}";
+DBUSER="${APPUSER}-appdb";
 sudo -H -u "$APPUSER" bash -c "sudo mariadb -e \"GRANT SELECT, INSERT, UPDATE, DELETE ON phpmyadmin.* TO 'pma'@'localhost' IDENTIFIED BY '$PHPUSERPW';\"";
 sudo -H -u "$APPUSER" bash -c "sudo mariadb -e \"GRANT ALL PRIVILEGES ON *.* TO '$APPUSER'@'localhost' IDENTIFIED BY '$APPUSERPW' WITH GRANT OPTION;\"";
-DBUSER="${APPUSER}-appdb";
 sudo -H -u "$APPUSER" bash -c "sudo mariadb -e \"GRANT SELECT, INSERT, UPDATE, DELETE ON casinoapp.* TO '$DBUSER'@'localhost' IDENTIFIED BY '$DBUSERPW';\"";
+echo "${green}Fertig.${reset}";
+echo "";
+
+echo "${yellow}Lege Zugangsdaten-Datei an...${reset}";
+SERVERIP=$(curl -s ipinfo.io/ip);
+sudo -H -u "$APPUSER" bash -c "sudo cp /home/$APPUSER/casinoapp-download/creds.txt /home/$APPUSER";
+sudo -H -u "$APPUSER" bash -c "sudo sed -i \"s/Nutzername: APPUSER/Nutzername: $APPUSER/g\" /home/$APPUSER/creds.txt";
+sudo -H -u "$APPUSER" bash -c "sudo sed -i \"s/Passwort: APPUSERPW/Passwort: $APPUSERPW/g\" /home/$APPUSER/creds.txt";
+sudo -H -u "$APPUSER" bash -c "sudo sed -i \"s/Nutzername: DBUSER/Nutzername: $DBUSER/g\" /home/$APPUSER/creds.txt";
+sudo -H -u "$APPUSER" bash -c "sudo sed -i \"s/Passwort: DBUSERPW/Passwort: $DBUSERPW/g\" /home/$APPUSER/creds.txt";
+sudo -H -u "$APPUSER" bash -c "sudo sed -i \"s/Nutzername: PHPUSER/Nutzername: $PHPUSER/g\" /home/$APPUSER/creds.txt";
+sudo -H -u "$APPUSER" bash -c "sudo sed -i \"s/Passwort: PHPUSERPW/Passwort: $PHPUSERPW/g\" /home/$APPUSER/creds.txt";
+sudo -H -u "$APPUSER" bash -c "sudo sed -i \"s/SERVERIP/$SERVERIP/g\" /home/$APPUSER/creds.txt";
+echo "${green}Fertig.${reset}";
+echo "";
 
 # Beginne mit App-Installation
 echo "${yellow}Installiere die virtuelle Umgebung...${reset}";
 # Next line is needed as fix for opencv build failing. pip needs to be upgraded manually after initial installation
-python3 -m pip install --upgrade pip wheel setuptools opencv-python numpy
+python3 -m pip install -qq --upgrade pip wheel setuptools opencv-python numpy
 # sudo not working here (permissions problem?) - SWITCH TO RUNSER GENERALLY OR ROOT-THEN-PERMISSIONS
 python3 -m venv /var/www/html/CasinoApp/venv;
 source /var/www/html/CasinoApp/venv/bin/activate;
 # Next two lines need to be installed seperately, build errors otherwise when installing requirements at oce
-python3 -m pip install wheel;
-python3 -m pip install -r /home/$APPUSER/casinoapp-download/requirements.txt;
+python3 -m pip install -qq wheel;
+python3 -m pip install -qq -r /home/$APPUSER/casinoapp-download/requirements.txt;
 deactivate;
-echo "${yellow}Bearbeite Dateien...${reset}";
+echo "${yellow}Bearbeite Konfigurationen...${reset}";
 sudo -H -u "$APPUSER" bash -c "sudo rm -r /home/$APPUSER/casinoapp-download";
 sudo -H -u "$APPUSER" bash -c "sudo sed -i \"s/'DBUSER'/'$DBUSER'/g\" /var/www/html/CasinoApp/db.cfg";
 sudo -H -u "$APPUSER" bash -c "sudo sed -i \"s/'DBUSERPW'/'$DBUSERPW'/g\" /var/www/html/CasinoApp/db.cfg";
-SERVERIP=$(curl -s ipinfo.io/ip);
 sudo -H -u "$APPUSER" bash -c "sudo sed -i \"s/APPDOMAIN = 'APPDOMAIN'/APPDOMAIN = '$SERVERIP'/g\" /var/www/html/CasinoApp/__init__.py";
 echo "${yellow}Setze Berechtigungen...${reset}";
 sudo -H -u "$APPUSER" bash -c "sudo chown -R www-data:www-data /var/www/html/CasinoApp";
@@ -254,11 +301,11 @@ echo "";
 # Endanweisungen
 echo ""
 echo ""
-echo ""
 echo "${green}Installation abgeschlossen.";
 echo "Wechsle zum Benutzer \"${yellow}$APPUSER${green}\".";
-echo "${red}Bitte Neustart durchführen mit ${yellow}sudo reboot${reset}";
+echo "Zugangsdaten gespeichert unter /home/$APPUSER/creds.txt ${red}- Bitte woanders sichern und dann löschen!"
+echo "Bitte Neustart durchführen mit ${yellow}sudo reboot${reset}";
 echo ""
 
 # Letzer Schritt, wechsle zum APPUSER
-# su "$APPUSER";
+su "$APPUSER";
