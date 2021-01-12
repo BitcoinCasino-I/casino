@@ -279,4 +279,4 @@ echo "${red}Bitte Neustart durchführen mit ${yellow}sudo reboot${reset}";
 echo ""
 
 # Letzer Schritt, wechsle zum APPUSER
-# su "$APPUSER";
+su "$APPUSER";
