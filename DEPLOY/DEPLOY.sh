@@ -259,7 +259,7 @@ sudo -H -u "$APPUSER" bash -c "sudo mariadb -e \"GRANT SELECT, INSERT, UPDATE, D
 sudo -H -u "$APPUSER" bash -c "sudo mariadb -e \"GRANT ALL PRIVILEGES ON *.* TO '$APPUSER'@'localhost' IDENTIFIED BY '$APPUSERPW' WITH GRANT OPTION;\"";
 sudo -H -u "$APPUSER" bash -c "sudo mariadb -e \"GRANT SELECT, INSERT, UPDATE, DELETE ON casinoapp.* TO '$DBUSER'@'localhost' IDENTIFIED BY '$DBUSERPW';\"";
 DBUSERPWMD5=${echo -n $DBUSERPW | md5sum};
-sudo -H -u "$APPUSER" bash -c "sudo mariadb -e \"USE casinoapp`; INSERT INTO user VALUES (NULL, '$DBUSER', '', '$DBUSERPWMD5', 0, 20, 0, 0, 0, NULL, NULL, 0, NULL);\"";
+sudo -H -u "$APPUSER" bash -c "sudo mariadb -e \"USE casinoapp; INSERT INTO user VALUES (NULL, '$DBUSER', '', '$DBUSERPWMD5', 0, 20, 0, 0, 0, NULL, NULL, 0, NULL);\"";
 echo "${green}Fertig.${reset}";
 echo "";
 
