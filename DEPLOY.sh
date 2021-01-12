@@ -159,8 +159,9 @@ echo ""
 # Passwort für sudo vorweg ausfüllen
 sudo -H -u "$APPUSER" bash -c "(echo '$APPUSERPW' | sudo -Si >/dev/null 2>&1);"
 
-# Diverse Programme / Ordner zurücksetzen
+# Diverse Programme / Ordner /Datenbanken zurücksetzen
 sudo -H -u "$APPUSER" bash -c "sudo apt-get -qq purge apache2 ufw mariadb-server mariadb-client >/dev/null 2>&1";
+sudo -H -u "$APPUSER" bash -c "sudo rm -r /var/lib/mysql/* >/dev/null 2>&1";
 sudo -H -u "$APPUSER" bash -c "sudo rm -r /var/www/html/* >/dev/null 2>&1";
 sudo -H -u "$APPUSER" bash -c "sudo rm -r /var/lib/phpmyadmin >/dev/null 2>&1";
 sudo -H -u "$APPUSER" bash -c "sudo rm -r /usr/share/phpmyadmin >/dev/null 2>&1";
