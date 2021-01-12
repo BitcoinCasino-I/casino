@@ -29,6 +29,8 @@
 # - Dynamische Konfiguration des Mail-Users (mail.cfg)
 # - Am Ende des Skripts 1x alle Nutzerdaten ausgeben (mit PWs)
 # - Automatische Installation des Webhooks (nötig?)
+# - Funktionen verwenden (Code kürzen)
+# - >/dev/null statt >/dev/null 2>&1 verwenden, wo es Sinn macht
 
 # Definiere Farbcodes
 red=`tput setaf 1`;
