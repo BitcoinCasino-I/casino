@@ -16,6 +16,12 @@ Nutzername: APPUSER (Vollzugriff)
 Passwort: APPUSERPW
 
 
+Website-Nutzer
+--------------
+Benutzername: CASINOUSER (Admin - neue Account können über das Adminpanel, die Registrierung oder über phpMyAdmin angelegt werden)
+Passwort: CASINOUSERPW
+
+
 Links der App
 -------------
 Website: SERVERIP

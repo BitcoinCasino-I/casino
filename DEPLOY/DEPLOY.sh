@@ -171,7 +171,7 @@ echo ""
 sudo -H -u "$APPUSER" bash -c "(echo '$APPUSERPW' | sudo -Si >/dev/null 2>&1);"
 
 # Diverse Programme / Ordner /Datenbanken zurücksetzen
-echo "${yellow}Setze Programme zurück...${reset}"
+echo "${yellow}Setze Programme und Ordner zurück...${reset}"
 sudo -H -u "$APPUSER" bash -c "sudo rm -rf /var/lib/mysql/* >/dev/null 2>&1";
 sudo -H -u "$APPUSER" bash -c "sudo rm -rf /var/www/html >/dev/null 2>&1";
 sudo -H -u "$APPUSER" bash -c "sudo rm -rf /var/lib/phpmyadmin >/dev/null 2>&1";
@@ -258,8 +258,9 @@ DBUSER="${APPUSER}-appdb";
 sudo -H -u "$APPUSER" bash -c "sudo mariadb -e \"GRANT SELECT, INSERT, UPDATE, DELETE ON phpmyadmin.* TO 'pma'@'localhost' IDENTIFIED BY '$PHPUSERPW';\"";
 sudo -H -u "$APPUSER" bash -c "sudo mariadb -e \"GRANT ALL PRIVILEGES ON *.* TO '$APPUSER'@'localhost' IDENTIFIED BY '$APPUSERPW' WITH GRANT OPTION;\"";
 sudo -H -u "$APPUSER" bash -c "sudo mariadb -e \"GRANT SELECT, INSERT, UPDATE, DELETE ON casinoapp.* TO '$DBUSER'@'localhost' IDENTIFIED BY '$DBUSERPW';\"";
-DBUSERPWMD5=${echo -n $DBUSERPW | md5sum};
-sudo -H -u "$APPUSER" bash -c "sudo mariadb -e \"USE casinoapp; INSERT INTO user VALUES (NULL, '$DBUSER', '', '$DBUSERPWMD5', 0, 20, 0, 0, 0, NULL, NULL, 0, NULL);\"";
+CASINOUSER="${APPUSER}-app";
+CASINOUSERPW=$(echo -n $DBUSERPW | md5sum | awk '{print $1}')
+sudo -H -u "$APPUSER" bash -c "sudo mariadb -e \"USE casinoapp; INSERT INTO user VALUES (NULL, '$CASINOUSER', '', '$CASINOUSERPW', 0, 20, 0, 0, 0, NULL, NULL, 0, NULL);\"";
 echo "${green}Fertig.${reset}";
 echo "";
 
@@ -273,6 +274,8 @@ sudo -H -u "$APPUSER" bash -c "sudo sed -i \"s/Passwort: DBUSERPW/Passwort: $DBU
 sudo -H -u "$APPUSER" bash -c "sudo sed -i \"s/Nutzername: PHPUSER/Nutzername: $PHPUSER/g\" /home/$APPUSER/creds.txt";
 sudo -H -u "$APPUSER" bash -c "sudo sed -i \"s/Passwort: PHPUSERPW/Passwort: $PHPUSERPW/g\" /home/$APPUSER/creds.txt";
 sudo -H -u "$APPUSER" bash -c "sudo sed -i \"s/SERVERIP/$SERVERIP/g\" /home/$APPUSER/creds.txt";
+sudo -H -u "$APPUSER" bash -c "sudo sed -i \"s/CASINOUSER/$CASINOUSER/g\" /home/$APPUSER/creds.txt";
+sudo -H -u "$APPUSER" bash -c "sudo sed -i \"s/CASINOUSERPW/$CASINOUSERPW/g\" /home/$APPUSER/creds.txt";
 echo "${green}Fertig.${reset}";
 echo "";
 
