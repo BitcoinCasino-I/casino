@@ -27,6 +27,7 @@
 # - Virtualenv fixen, sodass die manuellen Fixes (s. unten) nicht mehr nötig sind
 # - Dynamische Konfiguration des Mail-Users (mail.cfg)
 # - Am Ende des Skripts 1x alle Nutzerdaten ausgeben (mit PWs)
+# - Automatische Installation des Webhooks (nötig?)
 
 # Definiere Farbcodes
 red=`tput setaf 1`;
