@@ -260,6 +260,19 @@ sudo -H -u "$APPUSER" bash -c "sudo mariadb -e \"GRANT SELECT, INSERT, UPDATE, D
 echo "${green}Fertig.${reset}";
 echo "";
 
+echo "${yellow}Lege Zugangsdaten-Datei an...${reset}";
+SERVERIP=$(curl -s ipinfo.io/ip);
+sudo -H -u "$APPUSER" bash -c "sudo cp /home/$APPUSER/casinoapp-download/creds.txt /home/$APPUSER";
+sudo -H -u "$APPUSER" bash -c "sudo sed -i \"s/Nutzername: APPUSER/Nutzername: $APPUSER/g\" /home/$APPUSER/creds.txt";
+sudo -H -u "$APPUSER" bash -c "sudo sed -i \"s/Passwort: APPUSERPW/Passwort: $APPUSERPW/g\" /home/$APPUSER/creds.txt";
+sudo -H -u "$APPUSER" bash -c "sudo sed -i \"s/Nutzername: DBUSER/Nutzername: $DBUSER/g\" /home/$APPUSER/creds.txt";
+sudo -H -u "$APPUSER" bash -c "sudo sed -i \"s/Passwort: DBUSERPW/Passwort: $DBUSERPW/g\" /home/$APPUSER/creds.txt";
+sudo -H -u "$APPUSER" bash -c "sudo sed -i \"s/Nutzername: PHPUSER/Nutzername: $PHPUSER/g\" /home/$APPUSER/creds.txt";
+sudo -H -u "$APPUSER" bash -c "sudo sed -i \"s/Passwort: PHPUSERPW/Passwort: $PHPUSERPW/g\" /home/$APPUSER/creds.txt";
+sudo -H -u "$APPUSER" bash -c "sudo sed -i \"s/SERVERIP/$SERVERIP/g\" /home/$APPUSER/creds.txt";
+echo "${green}Fertig.${reset}";
+echo "";
+
 # Beginne mit App-Installation
 echo "${yellow}Installiere die virtuelle Umgebung...${reset}";
 # Next line is needed as fix for opencv build failing. pip needs to be upgraded manually after initial installation
@@ -275,7 +288,6 @@ echo "${yellow}Bearbeite Konfigurationen...${reset}";
 sudo -H -u "$APPUSER" bash -c "sudo rm -r /home/$APPUSER/casinoapp-download";
 sudo -H -u "$APPUSER" bash -c "sudo sed -i \"s/'DBUSER'/'$DBUSER'/g\" /var/www/html/CasinoApp/db.cfg";
 sudo -H -u "$APPUSER" bash -c "sudo sed -i \"s/'DBUSERPW'/'$DBUSERPW'/g\" /var/www/html/CasinoApp/db.cfg";
-SERVERIP=$(curl -s ipinfo.io/ip);
 sudo -H -u "$APPUSER" bash -c "sudo sed -i \"s/APPDOMAIN = 'APPDOMAIN'/APPDOMAIN = '$SERVERIP'/g\" /var/www/html/CasinoApp/__init__.py";
 echo "${yellow}Setze Berechtigungen...${reset}";
 sudo -H -u "$APPUSER" bash -c "sudo chown -R www-data:www-data /var/www/html/CasinoApp";
@@ -291,7 +303,8 @@ echo ""
 echo ""
 echo "${green}Installation abgeschlossen.";
 echo "Wechsle zum Benutzer \"${yellow}$APPUSER${green}\".";
-echo "${red}Bitte Neustart durchführen mit ${yellow}sudo reboot${reset}";
+echo "Zugangsdaten gespeichert unter /home/$APPUSER/creds.txt ${red}- Bitte woanders sichern und dann löschen!"
+echo "Bitte Neustart durchführen mit ${yellow}sudo reboot${reset}";
 echo ""
 
 # Letzer Schritt, wechsle zum APPUSER

@@ -1,0 +1,22 @@
+Linux-User
+----------
+Nutzername: APPUSER
+Passwort: APPUSERPW
+
+
+Datenbank-Nutzer
+----------------
+Nutzername: DBUSER (nur Zugriff auf casinoapp-Tabelle, eingeschränkte Aktionen)
+Passwort: DBUSERPW
+
+Nutzername: PHPUSER (nur Zugriff auf phpmyadmin-Tabelle, eingeschränkte Aktionen)
+Passwort: PHPUSERPW
+
+Nutzername: APPUSER (Vollzugriff)
+Passwort: APPUSERPW
+
+
+Links der App
+-------------
+Website: SERVERIP
+phpMyAdmin: SERVERIP/phpmyadmin
