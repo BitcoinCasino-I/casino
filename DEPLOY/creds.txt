@@ -18,7 +18,7 @@ Passwort: APPUSERPW
 
 Website-Nutzer
 --------------
-Benutzername: CASINOUSER (Admin - neue Account können über das Adminpanel, die Registrierung oder über phpMyAdmin angelegt werden)
+Benutzername: CASINOUSER (Admin - neue Accounts können über das Adminpanel, die Registrierung oder über phpMyAdmin angelegt werden)
 Passwort: CASINOUSERPW
 
 
