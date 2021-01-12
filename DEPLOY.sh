@@ -45,6 +45,16 @@ if [[ $EUID > 0 ]]; then
         exit -1
 fi
 
+echo ""
+echo "${red}Achtung: Dieses Programm entfernt alle vorhandenen Datenbanken und Websites, deinstalliert und installiert Systempakete!";
+echo "Die Installation sollte nur auf einem frisch eingerichteten Debian 10 Server gestartet werden.${reset}";
+read -p "Fortfahren? (Y/N) " -n 1 -r
+echo ""
+if [[ ! $REPLY =~ ^[Yy]$ ]]
+then
+    exit -1
+fi
+
 # Führe apt update aus, da sonst manche benötigte Pakete nicht gefunden werden (und upgrade)
 echo ""
 echo "${yellow}Führe apt update und apt upgrade aus...${reset}"
