@@ -31,6 +31,7 @@
 # - Automatische Installation des Webhooks (nötig?)
 # - Funktionen verwenden (Code kürzen)
 # - >/dev/null statt >/dev/null 2>&1 verwenden, wo es Sinn macht
+# - separater Update-Script
 
 # Definiere Farbcodes
 red=`tput setaf 1`;
@@ -276,12 +277,12 @@ echo "";
 # Beginne mit App-Installation
 echo "${yellow}Installiere die virtuelle Umgebung...${reset}";
 # Next line is needed as fix for opencv build failing. pip needs to be upgraded manually after initial installation
-python3 -m pip install -qq --upgrade pip wheel setuptools opencv-python numpy
+python3 -m pip install -qq --upgrade pip wheel setuptools
 # sudo not working here (permissions problem?) - SWITCH TO RUNSER GENERALLY OR ROOT-THEN-PERMISSIONS
 python3 -m venv /var/www/html/CasinoApp/venv;
 source /var/www/html/CasinoApp/venv/bin/activate;
 # Next two lines need to be installed seperately, build errors otherwise when installing requirements at oce
-python3 -m pip install -qq wheel;
+python3 -m pip install -qq pip wheel setuptools;
 python3 -m pip install -qq -r /home/$APPUSER/casinoapp-download/requirements.txt;
 deactivate;
 echo "${yellow}Bearbeite Konfigurationen...${reset}";
