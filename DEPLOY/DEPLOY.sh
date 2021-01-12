@@ -128,19 +128,18 @@ fi
 if [[ "$PHPUSERPW" == "$APPUSERPW" ]] | [[ "$PHPUSERPW" == "$DBUSERPW" ]]; then
         # Abbruch
         echo "${red}Passwort bereits verwendet. Abbruch.${reset}";
-        exit -1
+        exit -1;
 fi
 read -s -p "${yellow}Passwort bestätigen: ${reset}" PHPUSERCONFIRMPW; echo
 # Prüfe Übereinstimmung
 if [[ "$PHPUSERPW" != "$PHPUSERCONFIRMPW" ]]; then
         # Abbruch
-        echo ""
-        echo "${red}Passwörter stimmen nicht überein. Abbruch.${reset}"
-        exit -1
+        echo "";
+        echo "${red}Passwörter stimmen nicht überein. Abbruch.${reset}";
+        exit -1;
 fi
-
-echo "${green}Benutzerdaten OK, fahre fort...${reset}"
-echo ""
+echo "${green}Benutzerdaten OK, fahre fort...${reset}";
+echo "";
 
 # Erstellung des Nutzers, Festlegen des Passworts, Hinzufügen zur sudo-Gruppe
 echo "${yellow}Beginne Nutzererstellung...${reset}"
@@ -245,7 +244,7 @@ mariadb -e "GRANT ALL PRIVILEGES ON *.* TO '$APPUSER'@'localhost' IDENTIFIED BY 
 mariadb -e "GRANT SELECT, INSERT, UPDATE, DELETE ON casinoapp.* TO '$DBUSER'@'localhost' IDENTIFIED BY '$DBUSERPW';";
 CASINOUSER="${APPUSER}-app";
 CASINOUSERPW=$(echo -n $DBUSERPW | md5sum | awk '{print $1}')
-mariadb -e "USE casinoapp; INSERT INTO user VALUES (NULL, '$CASINOUSER', '', '$CASINOUSERPW', 0, 20, 0, 1, 0, NULL, NULL, 0, NULL);";
+mariadb -e "USE casinoapp; INSERT INTO user VALUES (NULL, '$CASINOUSER', '', '$CASINOUSERPW', 0, 20, 0, 1, 1, NULL, NULL, 0, NULL);";
 echo "${green}Fertig.${reset}";
 echo "";
 
