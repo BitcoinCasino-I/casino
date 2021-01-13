@@ -62,6 +62,7 @@ apt-get -qq upgrade >/dev/null 2>&1;
 echo "${green}Fertig.${reset}"
 echo ""
 
+#WEBSTUFF
 # Frage Benutzernamen für Installation ab
 read -p "${yellow}Benutzername für den Linux-User der WebApp: ${reset}" APPUSER
 # Falls leer oder kürzer als 3 Zeichen, breche ab (ALTERNATIV: LOOP)
@@ -92,6 +93,8 @@ if [[ "$APPUSERPW" != "$APPUSERCONFIRMPW" ]]; then
         echo "${red}Passwörter stimmen nicht überein. Abbruch.${reset}"
         exit -1
 fi
+
+#FTP SERVER
 # Frage Benutzernamen für Installation ab
 read -p "${yellow}Benutzername für den FTP-User der WebApp: ${reset}" FTPUSER
 # Falls leer oder kürzer als 3 Zeichen, breche ab (ALTERNATIV: LOOP)
@@ -114,7 +117,7 @@ if [ -z "$FTPUSERPW" ] || [ ${#FTPUSERPW} -lt 9 ]; then
         echo "${red}Passwort leer oder weniger als 9 Zeichen. Abbruch.${reset}"
         exit -1
 fi
-read -s -p "${yellow}Passwort bestätigen: ${reset}" APPUSERCONFIRMPW; echo
+read -s -p "${yellow}Passwort bestätigen: ${reset}" FTPUSERCONFIRMPW; echo
 # Prüfe Übereinstimmung
 if [[ "$FTPUSERPW" != "$FTPUSERCONFIRMPW" ]]; then
         # Abbruch
@@ -122,6 +125,8 @@ if [[ "$FTPUSERPW" != "$FTPUSERCONFIRMPW" ]]; then
         echo "${red}Passwörter stimmen nicht überein. Abbruch.${reset}"
         exit -1
 fi
+
+#DBUSER
 # Frage Passwort für eingeschränkten Datenbanknutzer ab (und Bestätigung dafür)
 read -s -p "${yellow}Passwort für den eingeschränkten Datenbanknutzer der App: ${reset}" DBUSERPW; echo
 # Falls leer oder kürzer als 9 Zeichen, breche ab (ALTERNATIV: LOOP)
@@ -145,6 +150,7 @@ if [[ "$DBUSERPW" != "$DBUSERCONFIRMPW" ]]; then
         exit -1
 fi
 
+#PHPUSER
 # Frage Passwort für eingeschränkten phpMyAdmin-User ab (und Bestätigung dafür)
 read -s -p "${yellow}Passwort für den eingeschränkten phpMyAdmin-User: ${reset}" PHPUSERPW; echo
 # Falls leer oder kürzer als 9 Zeichen, breche ab (ALTERNATIV: LOOP)
