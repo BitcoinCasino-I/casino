@@ -155,7 +155,7 @@ if [[ "$sslyn" == [yY1]* ]]; then
         echo "${red}Domain leer oder fehlerhaft. Abbruch.${reset}";
         exit -1;
     fi
-    read -p "${yellow}Ihre E-Mail-Adresse): ${reset}" EMAILADDRESS
+    read -p "${yellow}Ihre E-Mail-Adresse: ${reset}" EMAILADDRESS
     EMAILCHECKED=$(echo "$EMAILADDRESS" | grep -P "^([A-Za-z]+[A-Za-z0-9]*((\.|\-|\_)?[A-Za-z]+[A-Za-z0-9]*){1,})@(([A-Za-z]+[A-Za-z0-9]*)+((\.|\-|\_)?([A-Za-z]+[A-Za-z0-9]*)+){1,})+\.([A-Za-z]{2,})+");
     if [ -z "$EMAILCHECKED" ]; then
         # Abbruch
@@ -202,11 +202,7 @@ echo "${yellow}Richte Firewall ein...${reset}";
 ufw default deny incoming >/dev/null;
 ufw default allow outgoing >/dev/null;
 ufw allow OpenSSH >/dev/null;
-if [[ "$sslyn" == [yY1]* ]]; then
-    ufw allow 'WWW Secure' >/dev/null;
-else
-    ufw allow 'WWW' >/dev/null;
-fi
+ufw allow 'WWW Full' >/dev/null;
 echo 'y' | ufw enable >/dev/null;
 echo "${green}Fertig.${reset}";
 echo "";
