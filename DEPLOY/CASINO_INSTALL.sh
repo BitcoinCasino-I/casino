@@ -249,7 +249,6 @@ if [[ "$sslyn" == [yY1]* ]]; then
 else
     cat /home/$APPUSER/casinoapp-download/Casino.http.conf >> /etc/apache2/sites-available/Casino.conf;
     sed -i "s/ServerName SERVERNAME/ServerName $SERVERIP/g" /etc/apache2/sites-available/Casino.conf;
-    sed -i "s/ServerAlias SERVERALIAS//g" /etc/apache2/sites-available/Casino.conf;
 fi
 echo "${yellow}Bereite Webdateien vor...${reset}";
 rm /var/www/html/index.html;
