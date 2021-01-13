@@ -227,6 +227,15 @@ echo "${yellow}Konfiguriere Apache...${reset}";
 echo "${yellow}Setze Rechte...${reset}";
 chown www-data:www-data -R /var/www;
 chmod 755 -R /var/www;
+echo "${yellow}De/Aktiviere alle relevanten Module...${reset}";
+ENAPACHEMODULES="access_compat authz_user dir negotiation php7.3 reqtimeout status mpm_prefork alias autoindex env rewrite wsgi filter setenvif auth_basic cgid headers authn_core proxy socache_shmcb authn_file deflate mime ssl authz_core proxy_http authz_host";
+DISAPACHEMODULES="mpm_event";
+for VALDIS in $DISAPACHEMODULES; do
+        a2dismod -q $VALDIS >/dev/null;
+done
+for VALEN in $ENAPACHEMODULES; do
+        a2enmod -q $VALEN >/dev/null;
+done
 echo "${yellow}Bereite .conf-Dateien vor...${reset}";
 SERVERIP=$(curl -s ipinfo.io/ip);
 cp /home/$APPUSER/casinoapp-download/phpmyadmin.conf /etc/apache2/conf-available;
@@ -235,6 +244,8 @@ if [[ "$sslyn" == [yY1]* ]]; then
     cat /home/$APPUSER/casinoapp-download/Casino.https.conf >> /etc/apache2/sites-available/Casino.conf;
     sed -i "s/ServerName SERVERNAME/ServerName $DOMAINCHECKED/g" /etc/apache2/sites-available/Casino.conf;
     sed -i "s/ServerAlias SERVERALIAS/ServerAlias *.$DOMAINCHECKED/g" /etc/apache2/sites-available/Casino.conf;
+    sed -i "s/Redirect permanent \/ https:\/\/SERVERNAME/Redirect permanent \/ https:\/\/$DOMAINCHECKED/g" /etc/apache2/sites-available/Casino.conf;
+    sed -i "s/ServerName www.SERVERNAME/ServerName www.$DOMAINCHECKED/g" /etc/apache2/sites-available/Casino.conf;
 else
     cat /home/$APPUSER/casinoapp-download/Casino.http.conf >> /etc/apache2/sites-available/Casino.conf;
     sed -i "s/ServerName SERVERNAME/ServerName $SERVERIP/g" /etc/apache2/sites-available/Casino.conf;
@@ -248,17 +259,8 @@ a2enconf -q phpmyadmin >/dev/null;
 a2ensite -q Casino >/dev/null;
 a2dissite -q 000-default >/dev/null;
 if [[ "$sslyn" == [yY1]* ]]; then
-    certbot --apache --non-interactive --agree-tos -m "$EMAILCHECKED" -d "$DOMAINCHECKED";
+    certbot --apache --non-interactive --agree-tos -m "$EMAILCHECKED" -d "$DOMAINCHECKED" -d "www.$DOMAINCHECKED";
 fi
-echo "${yellow}De/Aktiviere alle relevanten Module...${reset}";
-ENAPACHEMODULES="access_compat authz_user dir negotiation php7.3 reqtimeout status mpm_prefork alias autoindex env rewrite wsgi filter setenvif auth_basic cgid headers authn_core proxy socache_shmcb authn_file deflate mime ssl authz_core proxy_http authz_host";
-DISAPACHEMODULES="mpm_event";
-for VALDIS in $DISAPACHEMODULES; do
-        a2dismod -q $VALDIS >/dev/null;
-done
-for VALEN in $ENAPACHEMODULES; do
-        a2enmod -q $VALEN >/dev/null;
-done
 echo "${green}Fertig.${reset}";
 echo "";
 
