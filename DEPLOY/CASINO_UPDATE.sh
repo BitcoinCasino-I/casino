@@ -37,11 +37,13 @@ echo "${yellow}Sichere Profilbilder...${reset}";
 mkdir -p /home/$CURRENTUSER/casinoapp-update/backup/images;
 mv /var/www/html/CasinoApp/static/upload/profileimg/* /home/$CURRENTUSER/casinoapp-update/backup/images >/dev/null;
 echo "${green}Fertig.${reset}";
-echo "";
-
 echo "${yellow}Sichere Konfiguration...${reset}";
 mkdir -p /home/$CURRENTUSER/casinoapp-update/backup/configs;
 mv /var/www/html/CasinoApp/*.cfg /home/$CURRENTUSER/casinoapp-update/backup/configs >/dev/null;
+echo "${green}Fertig.${reset}";
+echo "${yellow}Sichere Logs...${reset}";
+mkdir -p /home/$CURRENTUSER/casinoapp-update/backup/logs;
+mv /var/www/html/CasinoApp/logs/* /home/$CURRENTUSER/casinoapp-update/backup/logs >/dev/null;
 echo "${green}Fertig.${reset}";
 echo "";
 
@@ -54,6 +56,7 @@ echo "${yellow}Installiere CasinoApp...${reset}";
 mv /home/$CURRENTUSER/casinoapp-update/CasinoApp /var/www/html >/dev/null;
 mv /home/$CURRENTUSER/casinoapp-update/backup/images/* /var/www/html/CasinoApp/static/upload/profileimg;
 mv /home/$CURRENTUSER/casinoapp-update/backup/configs/* /var/www/html/CasinoApp;
+mv /home/$CURRENTUSER/casinoapp-update/backup/logs/* /var/www/html/CasinoApp/logs;
 echo "${green}Fertig.${reset}";
 echo "";
 
