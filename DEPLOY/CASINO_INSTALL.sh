@@ -255,7 +255,6 @@ sed -i "s/Nutzername: APPUSER/Nutzername: $APPUSER/g" /home/$APPUSER/creds.txt;
 sed -i "s/Passwort: APPUSERPW/Passwort: $APPUSERPW/g" /home/$APPUSER/creds.txt;
 sed -i "s/Nutzername: DBUSER/Nutzername: $DBUSER/g" /home/$APPUSER/creds.txt;
 sed -i "s/Passwort: DBUSERPW/Passwort: $DBUSERPW/g" /home/$APPUSER/creds.txt;
-sed -i "s/Nutzername: PHPUSER/Nutzername: $PHPUSER/g" /home/$APPUSER/creds.txt;
 sed -i "s/Passwort: PHPUSERPW/Passwort: $PHPUSERPW/g" /home/$APPUSER/creds.txt;
 sed -i "s/SERVERIP/$SERVERIP/g" /home/$APPUSER/creds.txt;
 sed -i "s/Passwort: CASINOUSERPW/Passwort: $DBUSERPW/g" /home/$APPUSER/creds.txt;
