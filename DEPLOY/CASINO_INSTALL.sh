@@ -143,7 +143,7 @@ echo "";
 
 # Erstellung des Nutzers, Festlegen des Passworts, Hinzufügen zur sudo-Gruppe
 echo "${yellow}Beginne Nutzererstellung...${reset}"
-adduser --disabled-password --gecos "" $APPUSER >/dev/null;
+adduser --disabled-password --gecos "" $APPUSER >/dev/null 2>&1;
 echo -e "$APPUSERPW\n$APPUSERPW" | passwd $APPUSER >/dev/null 2>&1;
 echo "${green}Fertig.${reset}"
 echo ""
