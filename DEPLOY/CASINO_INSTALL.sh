@@ -92,6 +92,36 @@ if [[ "$APPUSERPW" != "$APPUSERCONFIRMPW" ]]; then
         echo "${red}Passwörter stimmen nicht überein. Abbruch.${reset}"
         exit -1
 fi
+# Frage Benutzernamen für Installation ab
+read -p "${yellow}Benutzername für den FTP-User der WebApp: ${reset}" FTPUSER
+# Falls leer oder kürzer als 3 Zeichen, breche ab (ALTERNATIV: LOOP)
+if [ -z "$FTPUSER" ] || [ ${#FTPUSER} -lt 3 ]; then
+        # Abbruch
+        echo "${red}Benutzername leer oder weniger als 3 Zeichen. Abbruch.${reset}"
+        exit -1
+fi
+# Falls User bereits existiert, breche ab
+if grep "${FTPUSER}" /etc/passwd >/dev/null 2>&1; then
+        # Abbruch
+        echo "${red}Benutzer existiert bereits. Abbruch.${reset}"
+        exit -1
+fi
+# Frage Passwort ab (und Bestätigung dafür)
+read -s -p "${yellow}Passwort für den FTP-User der WebApp: ${reset}" FTPUSERPW; echo
+# Falls leer oder kürzer als 9 Zeichen, breche ab (ALTERNATIV: LOOP)
+if [ -z "$FTPUSERPW" ] || [ ${#FTPUSERPW} -lt 9 ]; then
+        # Abbruch
+        echo "${red}Passwort leer oder weniger als 9 Zeichen. Abbruch.${reset}"
+        exit -1
+fi
+read -s -p "${yellow}Passwort bestätigen: ${reset}" APPUSERCONFIRMPW; echo
+# Prüfe Übereinstimmung
+if [[ "$FTPUSERPW" != "$FTPUSERCONFIRMPW" ]]; then
+        # Abbruch
+        echo ""
+        echo "${red}Passwörter stimmen nicht überein. Abbruch.${reset}"
+        exit -1
+fi
 # Frage Passwort für eingeschränkten Datenbanknutzer ab (und Bestätigung dafür)
 read -s -p "${yellow}Passwort für den eingeschränkten Datenbanknutzer der App: ${reset}" DBUSERPW; echo
 # Falls leer oder kürzer als 9 Zeichen, breche ab (ALTERNATIV: LOOP)
@@ -173,6 +203,8 @@ echo ""
 echo "${yellow}Beginne Nutzererstellung...${reset}"
 adduser --disabled-password --gecos "" $APPUSER >/dev/null 2>&1;
 echo -e "$APPUSERPW\n$APPUSERPW" | passwd $APPUSER >/dev/null 2>&1;
+adduser --disabled-password --gecos "" $FTPUSER --group ftpuser --shell /bin/false >/dev/null 2>&1;
+echo -e "$FTPUSERPW\n$FTPUSERPW" | passwd $FTPUSER >/dev/null 2>&1;
 echo "${green}Fertig.${reset}"
 echo ""
 
@@ -185,13 +217,14 @@ rm -rf /usr/share/phpmyadmin >/dev/null 2>&1;
 rm -rf /etc/apache2 >/dev/null 2>&1;
 rm -rf /etc/mysql >/dev/null 2>&1;
 rm -rf /etc/letsencrypt >/dev/null 2>&1;
-apt-get -qq purge sudo ufw certbot python3-certbot-apache apache2 libapache2-mod-php7.3 libsodium23 php php-common php7.3 php7.3-cli php7.3-common php7.3-json php7.3-opcache php7.3-readline psmisc php7.3-mbstring php7.3-zip php7.3-gd php7.3-xml php7.3-curl php7.3-mysql mariadb-server mariadb-client mysql-common curl python3.7 python3-dev python3-pip python3-venv python3.7-venv libapache2-mod-wsgi-py3 libapache2-mod-security2 libmariadb-dev-compat libmariadb-dev >/dev/null 2>&1;
+rm -rf /etc/proftpd >/dev/null 2>&1;
+apt-get -qq purge sudo ufw certbot python3-certbot-apache apache2 libapache2-mod-php7.3 libsodium23 php php-common php7.3 php7.3-cli php7.3-common php7.3-json php7.3-opcache php7.3-readline psmisc php7.3-mbstring php7.3-zip php7.3-gd php7.3-xml php7.3-curl php7.3-mysql mariadb-server mariadb-client mysql-common curl python3.7 python3-dev python3-pip python3-venv python3.7-venv libapache2-mod-wsgi-py3 libapache2-mod-security2 libmariadb-dev-compat libmariadb-dev proftpd-basic >/dev/null 2>&1;
 echo "${green}Fertig.${reset}"
 echo ""
 
 # Alle notwendigen Systempakete installieren
 echo "${yellow}Installiere alle nötigen Systempakete...${reset}";
-apt-get -qq install sudo git ufw openssh-server apache2 libapache2-mod-php7.3 libsodium23 php php-common php7.3 php7.3-cli php7.3-common php7.3-json php7.3-opcache php7.3-readline psmisc php7.3-mbstring php7.3-zip php7.3-gd php7.3-xml php7.3-curl php7.3-mysql mariadb-server mariadb-client mysql-common curl python3.7 python3-dev python3-pip python3-venv python3.7-venv libapache2-mod-wsgi-py3 libapache2-mod-security2 libmariadb-dev-compat libmariadb-dev >/dev/null 2>&1;
+apt-get -qq install sudo git ufw openssh-server apache2 libapache2-mod-php7.3 libsodium23 php php-common php7.3 php7.3-cli php7.3-common php7.3-json php7.3-opcache php7.3-readline psmisc php7.3-mbstring php7.3-zip php7.3-gd php7.3-xml php7.3-curl php7.3-mysql mariadb-server mariadb-client mysql-common curl python3.7 python3-dev python3-pip python3-venv python3.7-venv libapache2-mod-wsgi-py3 libapache2-mod-security2 libmariadb-dev-compat libmariadb-dev proftpd-basic >/dev/null 2>&1;
 if [[ "$sslyn" == [yY1]* ]]; then
     apt-get -qq install certbot python3-certbot-apache >/dev/null 2>&1;
 fi
@@ -203,6 +236,8 @@ echo "${yellow}Richte Firewall ein...${reset}";
 echo 'y' | ufw reset >/dev/null;
 ufw default deny incoming >/dev/null;
 ufw default allow outgoing >/dev/null;
+ufw allow 60000:65535/tcp >/dev/null;
+ufw allow 20/tcp >/dev/null;
 ufw allow OpenSSH >/dev/null;
 ufw allow 'WWW Full' >/dev/null;
 echo 'y' | ufw enable >/dev/null;
@@ -246,9 +281,13 @@ if [[ "$sslyn" == [yY1]* ]]; then
     sed -i "s/ServerAlias SERVERALIAS/ServerAlias *.$DOMAINCHECKED/g" /etc/apache2/sites-available/Casino.conf;
     sed -i "s/Redirect permanent \/ https:\/\/SERVERNAME/Redirect permanent \/ https:\/\/$DOMAINCHECKED/g" /etc/apache2/sites-available/Casino.conf;
     sed -i "s/ServerAlias WWWSERVERNAME/ServerAlias *.$DOMAINCHECKED/g" /etc/apache2/sites-available/Casino.conf;
+    sed -i "s/Alias \/ftp \/home\/FTPUSER\//Alias \/ftp/home\/$FTPUSER/g" /etc/apache2/sites-available/Casino.conf;
+    sed -i "s/<Directory \/home\/FTPUSER\/>/<Directory \/home\/$FTPUSER\/>/g" /etc/apache2/sites-available/Casino.conf;
 else
     cat /home/$APPUSER/casinoapp-download/Casino.http.conf >> /etc/apache2/sites-available/Casino.conf;
     sed -i "s/ServerName SERVERNAME/ServerName $SERVERIP/g" /etc/apache2/sites-available/Casino.conf;
+    sed -i "s/Alias \/ftp \/home\/FTPUSER\//Alias \/ftp/home\/$FTPUSER/g" /etc/apache2/sites-available/Casino.conf;
+    sed -i "s/<Directory \/home\/FTPUSER\/>/<Directory \/home\/$FTPUSER\/>/g" /etc/apache2/sites-available/Casino.conf;
 fi
 echo "${yellow}Bereite Webdateien vor...${reset}";
 rm /var/www/html/index.html;
@@ -260,6 +299,19 @@ a2dissite -q 000-default >/dev/null;
 if [[ "$sslyn" == [yY1]* ]]; then
     certbot --apache --quiet --non-interactive --agree-tos -m "$EMAILCHECKED" -d "$DOMAINCHECKED" -d "www.$DOMAINCHECKED";
 fi
+echo "${green}Fertig.${reset}";
+echo "";
+
+# Beginne FTP-Setup
+echo "${yellow}Konfiguriere FTP...${reset}";
+echo "${yellow}Setze Rechte...${reset}";
+chown -R $FTPUSER:www-data /home/$FTPUSER/;
+echo "${yellow}Bereite .conf-Dateien vor...${reset}";
+cp /home/$APPUSER/casinoapp-download/custom.conf /etc/proftpd/conf.d/;
+rm /etc/proftpd/proftpd.conf;
+cp /home/$APPUSER/casinoapp-download/proftpd.conf >> /etc/proftpd/proftpd.conf;
+echo "${yellow}Starte FTP neu...${reset}";
+systemctl restart proftpd;
 echo "${green}Fertig.${reset}";
 echo "";
 
@@ -308,6 +360,8 @@ else
 fi
 sed -i "s/Passwort: CASINOUSERPW/Passwort: $DBUSERPW/g" /home/$APPUSER/creds.txt;
 sed -i "s/Benutzername: CASINOUSER/Benutzername: $CASINOUSER/g" /home/$APPUSER/creds.txt;
+sed -i "s/Nutzername: FTPUSER/Nutzername: $FTPUSER/g" /home/$APPUSER/creds.txt;
+sed -i "s/Passwort: FTPUSERPW/Passwort: $FTPUSERPW/g" /home/$APPUSER/creds.txt;
 chown ${APPUSER}:${APPUSER} /home/$APPUSER/creds.txt;
 chmod 750 /home/$APPUSER/creds.txt;
 echo "${green}Fertig.${reset}";

@@ -21,9 +21,16 @@ Website-Nutzer
 Benutzername: CASINOUSER (Admin - neue Accounts können über das Adminpanel, die Registrierung oder über phpMyAdmin angelegt werden)
 Passwort: CASINOUSERPW
 
+FTP-User
+--------------
+ServerIP: SERVERIP
+Port: 20
+Benutzername: FTPUSER
+Passwort: FTPUSERPW
 
 Links der App
 -------------
 Website: SERVERIP
 phpMyAdmin: SERVERIP/phpmyadmin
+FTP: SERVERIP:20
 
