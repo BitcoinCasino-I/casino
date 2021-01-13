@@ -184,6 +184,7 @@ rm -rf /var/lib/phpmyadmin >/dev/null 2>&1;
 rm -rf /usr/share/phpmyadmin >/dev/null 2>&1;
 rm -rf /etc/apache2 >/dev/null 2>&1;
 rm -rf /etc/mysql >/dev/null 2>&1;
+rm -rf /etc/letsencrypt >/dev/null 2>&1;
 apt-get -qq purge sudo ufw certbot python3-certbot-apache apache2 libapache2-mod-php7.3 libsodium23 php php-common php7.3 php7.3-cli php7.3-common php7.3-json php7.3-opcache php7.3-readline psmisc php7.3-mbstring php7.3-zip php7.3-gd php7.3-xml php7.3-curl php7.3-mysql mariadb-server mariadb-client mysql-common curl python3.7 python3-dev python3-pip python3-venv python3.7-venv libapache2-mod-wsgi-py3 libapache2-mod-security2 libmariadb-dev-compat libmariadb-dev >/dev/null 2>&1;
 echo "${green}Fertig.${reset}"
 echo ""
@@ -247,7 +248,7 @@ a2enconf -q phpmyadmin >/dev/null;
 a2ensite -q Casino >/dev/null;
 a2dissite -q 000-default >/dev/null;
 if [[ "$sslyn" == [yY1]* ]]; then
-    certbot --apache --non-interactive --agree-tos -m "$EMAILCHECKED" -d "*.$DOMAINCHECKED";
+    certbot --apache --non-interactive --agree-tos -m "$EMAILCHECKED" -d "$DOMAINCHECKED";
 fi
 echo "${yellow}De/Aktiviere alle relevanten Module...${reset}";
 ENAPACHEMODULES="access_compat authz_user dir negotiation php7.3 reqtimeout status mpm_prefork alias autoindex env rewrite wsgi filter setenvif auth_basic cgid headers authn_core proxy socache_shmcb authn_file deflate mime ssl authz_core proxy_http authz_host";
