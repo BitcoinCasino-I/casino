@@ -199,6 +199,7 @@ echo ""
 
 # Beginne mit UFW-Setup
 echo "${yellow}Richte Firewall ein...${reset}";
+echo 'y' | ufw reset >/dev/null;
 ufw default deny incoming >/dev/null;
 ufw default allow outgoing >/dev/null;
 ufw allow OpenSSH >/dev/null;
