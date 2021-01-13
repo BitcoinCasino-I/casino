@@ -33,6 +33,13 @@ rm /home/$CURRENTUSER/casinoapp-update/CasinoApp/*.cfg;
 echo "${green}Fertig.${reset}";
 echo "";
 
+# Lade Setup-Dateien herunter
+echo "${yellow}Stoppe Apache...${reset}";
+systemctl stop apache2 >/dev/null 2>&1;
+echo "${green}Fertig.${reset}";
+echo "";
+
+
 echo "${yellow}Sichere Profilbilder...${reset}";
 mkdir -p /home/$CURRENTUSER/casinoapp-update/backup/images;
 mv /var/www/html/CasinoApp/static/upload/profileimg/* /home/$CURRENTUSER/casinoapp-update/backup/images >/dev/null;
@@ -79,7 +86,8 @@ chmod -R 770 /var/www/html/CasinoApp/static/upload/profileimg;
 echo "${green}Fertig.${reset}";
 echo "";
 
-echo "${yellow}Starte Apache-Webserver neu...${reset}";
-sudo systemctl restart apache2;
+# Lade Setup-Dateien herunter
+echo "${yellow}Starte Apache...${reset}";
+systemctl start apache2 >/dev/null 2>&1;
 echo "${green}Fertig.${reset}";
 echo "";

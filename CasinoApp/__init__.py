@@ -333,8 +333,8 @@ def myaccount():
 				msgimage = 'File not accepted.'
 	deleteimage = request.args.get("deleteimage")
 	if deleteimage == "True":
-		if request.environ.get('HTTP_REFERER') is not None:
-			if request.environ.get('HTTP_REFERER') == APPDOMAIN + url_for('myaccount'):
+		if request.referrer is not None:
+			if APPDOMAIN + url_for('myaccount') in request.referrer:
 				msgimage = deleteimage
 				if accountdata[11] == 1:
 					hasimage = False
@@ -513,8 +513,8 @@ def edituser():
 				editmode = False
 				msg = 'User "' + mysql_fetchone('SELECT * FROM user WHERE id = %s', (userid,))[1] + '" with ID ' + userid + ' was edited!'
 	else:
-		if request.environ.get('HTTP_REFERER') is not None:
-			if request.environ.get('HTTP_REFERER') == APPDOMAIN + url_for('showusers'):
+		if request.referrer is not None:
+			if APPDOMAIN + url_for('showusers') in request.referrer:
 				usernameform = request.args.get("user")
 				account = mysql_fetchone('SELECT * FROM user WHERE username = %s', (usernameform,))
 				if account:
@@ -560,8 +560,8 @@ def deleteuser():
 				else:
 					msg = 'User not found!'
 	else:
-		if request.environ.get('HTTP_REFERER') is not None:
-			if request.environ.get('HTTP_REFERER') == APPDOMAIN + url_for('showusers') or request.environ.get('HTTP_REFERER') == APPDOMAIN + url_for('deleteuser'):
+		if request.referrer is not None:
+			if APPDOMAIN + url_for('showusers') in request.referrer or APPDOMAIN + url_for('deleteuser') in request.referrer:
 				return render_template('deleteuser.html', isLoggedIn=True, isAdmin=True, username=request.args.get("user"))
 	return render_template('deleteuser.html', isLoggedIn=True, isAdmin=True, msg=msg)
 
