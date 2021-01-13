@@ -278,7 +278,7 @@ rm -r /home/$APPUSER/casinoapp-download;
 echo "${yellow}Bearbeite Konfigurationen...${reset}";
 sed -i "s/'DBUSER'/'$DBUSER'/g" /var/www/html/CasinoApp/db.cfg;
 sed -i "s/'DBUSERPW'/'$DBUSERPW'/g" /var/www/html/CasinoApp/db.cfg;
-sed -i "s/APPDOMAIN = 'APPDOMAIN'/APPDOMAIN = '$SERVERIP'/g" /var/www/html/CasinoApp/__init__.py;
+sed -i "s/APPDOMAIN = 'https:\/\/casino.reshade.io'/APPDOMAIN = '$SERVERIP'/g" /var/www/html/CasinoApp/__init__.py;
 echo "${yellow}Setze Berechtigungen...${reset}";
 chown -R www-data:www-data /var/www/html/CasinoApp;
 chmod -R 750 /var/www/html/CasinoApp;
