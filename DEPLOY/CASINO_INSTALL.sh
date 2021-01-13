@@ -247,7 +247,7 @@ a2enconf -q phpmyadmin >/dev/null;
 a2ensite -q Casino >/dev/null;
 a2dissite -q 000-default >/dev/null;
 if [[ "$sslyn" == [yY1]* ]]; then
-    certbot --apache --non-interactive --agree-tos --redirect -m "$EMAILCHECKED" -d "$DOMAINCHECKED";
+    certbot --apache --non-interactive --agree-tos --redirect -m "$EMAILCHECKED" -d "*.$DOMAINCHECKED";
 fi
 echo "${yellow}De/Aktiviere alle relevanten Module...${reset}";
 ENAPACHEMODULES="access_compat authz_user dir negotiation php7.3 reqtimeout status mpm_prefork alias autoindex env rewrite wsgi filter setenvif auth_basic cgid headers authn_core proxy socache_shmcb authn_file deflate mime ssl authz_core proxy_http authz_host";
