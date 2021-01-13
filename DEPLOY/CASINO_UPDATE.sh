@@ -6,11 +6,10 @@ yellow=`tput setaf 3`;
 green=`tput setaf 2`;
 reset=`tput setaf 7`;
 
-CURRENTUSER=$(who am i | awk '{print $1}');
 SERVERIP=$(curl -s ipinfo.io/ip);
 
 # Skript muss als root oder mit sudo ausgeführt werden
-if [[ $EUID > 0 ]] || [ $CURRENTUSER == "root" ]; then
+if [[ $EUID > 0 ]] || [ -z "$SUDO_USER" ]; then
         # Abbruch
         echo "${red}Bitte als Nutzer der Webapp mit SUDO ausführen!${reset}";
         exit -1;
