@@ -64,10 +64,10 @@ python3 -m venv /var/www/html/CasinoApp/venv;
 source /var/www/html/CasinoApp/venv/bin/activate;
 # Next line needs to be installed seperately, build errors otherwise when installing requirements at oce
 python3 -m pip install -qq pip wheel setuptools;
-python3 -m pip install -qq -r /home/$APPUSER/casinoapp-download/requirements.txt;
+python3 -m pip install -qq -r /home/$CURRENTUSER/casinoapp-update/requirements.txt;
 deactivate;
 echo "${yellow}Entferne temporäre Dateien...${reset}";
-rm -rf /home/$APPUSER/casinoapp-update;
+rm -rf /home/$CURRENTUSER/casinoapp-update;
 echo "${yellow}Bearbeite Konfigurationen...${reset}";
 sed -i "s/APPDOMAIN = 'APPDOMAIN'/APPDOMAIN = '$SERVERIP'/g" /var/www/html/CasinoApp/__init__.py;
 echo "${yellow}Setze Berechtigungen...${reset}";
