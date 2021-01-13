@@ -71,6 +71,6 @@ echo "${green}Fertig.${reset}";
 echo "";
 
 echo "${yellow}Starte Apache-Webserver neu...${reset}";
-systemctl restart apache2;
+sudo systemctl restart apache2;
 echo "${green}Fertig.${reset}";
 echo "";
