@@ -142,7 +142,7 @@ echo "";
 
 echo ""
 echo "${red}Möchten Sie für die App SSL aktivieren? Dazu benötigen Sie eine gültige Domain und E-Mail-Adresse.";
-echo "Der A-Record der Domain muss auf die öffentliche IP dieses Servers verweisen, damit Sie die Seite nach der Einrichtung erreichen können.";
+echo "Der A-Record der Domain muss bereits auf die öffentliche IP dieses Servers verweisen, damit die Einrichtung funktioniert.";
 echo "Falls sie die Seite ohne SSL installieren, wird sie nur unter der öffentlichen IP des Servers erreichbar sein.${reset}";
 read -p "SSL aktivieren? (Y/N) " sslyn
 if [[ "$sslyn" == [yY1]* ]]; then
@@ -162,8 +162,10 @@ if [[ "$sslyn" == [yY1]* ]]; then
         echo "${red}E-Mail-Adresse leer oder fehlerhaft. Abbruch.${reset}";
         exit -1;
     fi
+    echo "${green}OK, fahre fort mit SSL-Installation...${reset}";
+else
+    echo "${green}OK, fahre fort ohne SSL-Installation...${reset}";
 fi
-echo "${green}OK, fahre fort...${reset}";
 echo ""
 
 
@@ -200,7 +202,11 @@ echo "${yellow}Richte Firewall ein...${reset}";
 ufw default deny incoming >/dev/null;
 ufw default allow outgoing >/dev/null;
 ufw allow OpenSSH >/dev/null;
-ufw allow 'WWW Full' >/dev/null;
+if [[ "$sslyn" == [yY1]* ]]; then
+    ufw allow 'WWW Secure' >/dev/null;
+else
+    ufw allow 'WWW' >/dev/null;
+fi
 echo 'y' | ufw enable >/dev/null;
 echo "${green}Fertig.${reset}";
 echo "";
@@ -228,9 +234,11 @@ SERVERIP=$(curl -s ipinfo.io/ip);
 cp /home/$APPUSER/casinoapp-download/phpmyadmin.conf /etc/apache2/conf-available;
 cp /home/$APPUSER/casinoapp-download/Casino.conf /etc/apache2/sites-available;
 if [[ "$sslyn" == [yY1]* ]]; then
+    cat /home/$APPUSER/casinoapp-download/Casino.https.conf >> /etc/apache2/sites-available/Casino.conf;
     sed -i "s/ServerName SERVERNAME/ServerName $DOMAINCHECKED/g" /etc/apache2/sites-available/Casino.conf;
     sed -i "s/ServerAlias SERVERALIAS/ServerAlias *.$DOMAINCHECKED/g" /etc/apache2/sites-available/Casino.conf;
 else
+    cat /home/$APPUSER/casinoapp-download/Casino.http.conf >> /etc/apache2/sites-available/Casino.conf;
     sed -i "s/ServerName SERVERNAME/ServerName $SERVERIP/g" /etc/apache2/sites-available/Casino.conf;
     sed -i "s/ServerAlias SERVERALIAS//g" /etc/apache2/sites-available/Casino.conf;
 fi
@@ -238,6 +246,9 @@ echo "${yellow}De/Aktiviere .conf-Dateien...${reset}";
 a2enconf -q phpmyadmin >/dev/null;
 a2ensite -q Casino >/dev/null;
 a2dissite -q 000-default >/dev/null;
+if [[ "$sslyn" == [yY1]* ]]; then
+    certbot --apache --non-interactive --agree-tos --redirect -m "$EMAILCHECKED" -d "$DOMAINCHECKED";
+fi
 echo "${yellow}Bereite Webdateien vor...${reset}";
 rm /var/www/html/index.html;
 mv /home/$APPUSER/casinoapp-download/CasinoApp /var/www/html;
@@ -291,7 +302,11 @@ sed -i "s/Passwort: APPUSERPW/Passwort: $APPUSERPW/g" /home/$APPUSER/creds.txt;
 sed -i "s/Nutzername: DBUSER/Nutzername: $DBUSER/g" /home/$APPUSER/creds.txt;
 sed -i "s/Passwort: DBUSERPW/Passwort: $DBUSERPW/g" /home/$APPUSER/creds.txt;
 sed -i "s/Passwort: PHPUSERPW/Passwort: $PHPUSERPW/g" /home/$APPUSER/creds.txt;
-sed -i "s/SERVERIP/$SERVERIP/g" /home/$APPUSER/creds.txt;
+if [[ "$sslyn" == [yY1]* ]]; then
+    sed -i "s/SERVERIP/$DOMAINCHECKED/g" /home/$APPUSER/creds.txt;
+else
+    sed -i "s/SERVERIP/$SERVERIP/g" /home/$APPUSER/creds.txt;
+fi
 sed -i "s/Passwort: CASINOUSERPW/Passwort: $DBUSERPW/g" /home/$APPUSER/creds.txt;
 sed -i "s/Benutzername: CASINOUSER/Benutzername: $CASINOUSER/g" /home/$APPUSER/creds.txt;
 chown ${APPUSER}:${APPUSER} /home/$APPUSER/creds.txt;
@@ -314,7 +329,11 @@ rm -r /home/$APPUSER/casinoapp-download;
 echo "${yellow}Bearbeite Konfigurationen...${reset}";
 sed -i "s/'DBUSER'/'$DBUSER'/g" /var/www/html/CasinoApp/db.cfg;
 sed -i "s/'DBUSERPW'/'$DBUSERPW'/g" /var/www/html/CasinoApp/db.cfg;
-sed -i "s/APPDOMAIN = 'https:\/\/casino.reshade.io'/APPDOMAIN = '$SERVERIP'/g" /var/www/html/CasinoApp/__init__.py;
+if [[ "$sslyn" == [yY1]* ]]; then
+    sed -i "s/APPDOMAIN = 'https:\/\/casino.reshade.io'/APPDOMAIN = 'https:\/\/$DOMAINCHECKED'/g" /var/www/html/CasinoApp/__init__.py;
+else
+    sed -i "s/APPDOMAIN = 'https:\/\/casino.reshade.io'/APPDOMAIN = '$SERVERIP'/g" /var/www/html/CasinoApp/__init__.py;
+fi
 echo "${yellow}Setze Berechtigungen...${reset}";
 chown -R www-data:www-data /var/www/html/CasinoApp;
 chmod -R 750 /var/www/html/CasinoApp;
