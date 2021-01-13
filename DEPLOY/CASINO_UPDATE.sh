@@ -6,7 +6,7 @@ yellow=`tput setaf 3`;
 green=`tput setaf 2`;
 reset=`tput setaf 7`;
 
-SERVERIP=$(curl -s ipinfo.io/ip);
+SERVERIP=$(grep "APPDOMAIN = '" /var/www/html/CasinoApp/__init__.py | awk -F "'" '{print $2}');;
 
 # Skript muss als root oder mit sudo ausgeführt werden
 if [[ $EUID > 0 ]] || [ -z "$SUDO_USER" ]; then
