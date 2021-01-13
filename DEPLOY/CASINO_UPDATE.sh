@@ -6,6 +6,13 @@ yellow=`tput setaf 3`;
 green=`tput setaf 2`;
 reset=`tput setaf 7`;
 
+# Skript muss als root oder mit sudo ausgeführt werden
+if [[ $EUID > 0 ]]; then
+        # Abbruch
+        echo "${red}Bitte als ROOT / mit SUDO ausführen!${reset}"
+        exit -1
+fi
+
 echo ""
 echo "${red}Achtung: Dieses Programm löscht den kompletten Ordner /var/www/html/CasinoApp, ausgenommen den Profilbild-Ordner.";
 echo "Datenbanken bleiben ebenfalls erhalten.${reset}";
