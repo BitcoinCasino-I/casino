@@ -242,6 +242,9 @@ else
     sed -i "s/ServerName SERVERNAME/ServerName $SERVERIP/g" /etc/apache2/sites-available/Casino.conf;
     sed -i "s/ServerAlias SERVERALIAS//g" /etc/apache2/sites-available/Casino.conf;
 fi
+echo "${yellow}Bereite Webdateien vor...${reset}";
+rm /var/www/html/index.html;
+mv /home/$APPUSER/casinoapp-download/CasinoApp /var/www/html;
 echo "${yellow}De/Aktiviere .conf-Dateien...${reset}";
 a2enconf -q phpmyadmin >/dev/null;
 a2ensite -q Casino >/dev/null;
@@ -249,9 +252,6 @@ a2dissite -q 000-default >/dev/null;
 if [[ "$sslyn" == [yY1]* ]]; then
     certbot --apache --non-interactive --agree-tos --redirect -m "$EMAILCHECKED" -d "$DOMAINCHECKED";
 fi
-echo "${yellow}Bereite Webdateien vor...${reset}";
-rm /var/www/html/index.html;
-mv /home/$APPUSER/casinoapp-download/CasinoApp /var/www/html;
 echo "${yellow}De/Aktiviere alle relevanten Module...${reset}";
 ENAPACHEMODULES="access_compat authz_user dir negotiation php7.3 reqtimeout status mpm_prefork alias autoindex env rewrite wsgi filter setenvif auth_basic cgid headers authn_core proxy socache_shmcb authn_file deflate mime ssl authz_core proxy_http authz_host";
 DISAPACHEMODULES="mpm_event";
