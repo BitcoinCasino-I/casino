@@ -48,12 +48,11 @@ fi
 echo ""
 echo "${red}Achtung: Dieses Programm entfernt alle vorhandenen Datenbanken und Websites, deinstalliert und installiert Systempakete!";
 echo "Die Installation sollte nur auf einem frisch eingerichteten Debian 10 Server gestartet werden.${reset}";
-read -p "Fortfahren? (Y/N) " -n 1 -r
-echo ""
-if [[ ! $REPLY =~ ^[Yy]$ ]]
-then
+read -p "Fortfahren? (Y/N) " runyn
+if [[ ! "$runyn" == [yY1]* ]]; then
     exit -1
 fi
+echo ""
 
 # Führe apt update aus, da sonst manche benötigte Pakete nicht gefunden werden (und upgrade)
 echo ""
@@ -141,6 +140,33 @@ fi
 echo "${green}Benutzerdaten OK, fahre fort...${reset}";
 echo "";
 
+echo ""
+echo "${red}Möchten Sie für die App SSL aktivieren? Dazu benötigen Sie eine gültige Domain und E-Mail-Adresse.";
+echo "Der A-Record der Domain muss auf die öffentliche IP dieses Servers verweisen, damit Sie die Seite nach der Einrichtung erreichen können.";
+echo "Falls sie die Seite ohne SSL installieren, wird sie nur unter der öffentlichen IP des Servers erreichbar sein.${reset}";
+read -p "SSL aktivieren? (Y/N) " sslyn
+if [[ "$sslyn" == [yY1]* ]]; then
+    echo ""
+    # Frage Domain ab
+    read -p "${yellow}Ihre Domain (ohne \"www\", zum Beispiel test.de): ${reset}" DOMAINNAME
+    DOMAINCHECKED=$(echo "$DOMAINNAME" | grep -P '(?=^.{4,253}$)(^(?:[a-zA-Z0-9](?:(?:[a-zA-Z0-9\-]){0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$)');
+    if [ -z "$DOMAINCHECKED" ]; then
+        # Abbruch
+        echo "${red}Domain leer oder fehlerhaft. Abbruch.${reset}";
+        exit -1;
+    fi
+    read -p "${yellow}Ihre E-Mail-Adresse): ${reset}" EMAILADDRESS
+    EMAILCHECKED=$(echo "$EMAILADDRESS" | grep -P "^([A-Za-z]+[A-Za-z0-9]*((\.|\-|\_)?[A-Za-z]+[A-Za-z0-9]*){1,})@(([A-Za-z]+[A-Za-z0-9]*)+((\.|\-|\_)?([A-Za-z]+[A-Za-z0-9]*)+){1,})+\.([A-Za-z]{2,})+");
+    if [ -z "$EMAILCHECKED" ]; then
+        # Abbruch
+        echo "${red}E-Mail-Adresse leer oder fehlerhaft. Abbruch.${reset}";
+        exit -1;
+    fi
+fi
+echo "${green}OK, fahre fort...${reset}";
+echo ""
+
+
 # Erstellung des Nutzers, Festlegen des Passworts, Hinzufügen zur sudo-Gruppe
 echo "${yellow}Beginne Nutzererstellung...${reset}"
 adduser --disabled-password --gecos "" $APPUSER >/dev/null 2>&1;
@@ -156,13 +182,16 @@ rm -rf /var/lib/phpmyadmin >/dev/null 2>&1;
 rm -rf /usr/share/phpmyadmin >/dev/null 2>&1;
 rm -rf /etc/apache2 >/dev/null 2>&1;
 rm -rf /etc/mysql >/dev/null 2>&1;
-apt-get -qq purge sudo ufw apache2 libapache2-mod-php7.3 libsodium23 php php-common php7.3 php7.3-cli php7.3-common php7.3-json php7.3-opcache php7.3-readline psmisc php7.3-mbstring php7.3-zip php7.3-gd php7.3-xml php7.3-curl php7.3-mysql mariadb-server mariadb-client mysql-common curl python3.7 python3-dev python3-pip python3-venv python3.7-venv libapache2-mod-wsgi-py3 libapache2-mod-security2 libmariadb-dev-compat libmariadb-dev >/dev/null 2>&1;
+apt-get -qq purge sudo ufw certbot python3-certbot-apache apache2 libapache2-mod-php7.3 libsodium23 php php-common php7.3 php7.3-cli php7.3-common php7.3-json php7.3-opcache php7.3-readline psmisc php7.3-mbstring php7.3-zip php7.3-gd php7.3-xml php7.3-curl php7.3-mysql mariadb-server mariadb-client mysql-common curl python3.7 python3-dev python3-pip python3-venv python3.7-venv libapache2-mod-wsgi-py3 libapache2-mod-security2 libmariadb-dev-compat libmariadb-dev >/dev/null 2>&1;
 echo "${green}Fertig.${reset}"
 echo ""
 
 # Alle notwendigen Systempakete installieren
 echo "${yellow}Installiere alle nötigen Systempakete...${reset}";
 apt-get -qq install sudo git ufw openssh-server apache2 libapache2-mod-php7.3 libsodium23 php php-common php7.3 php7.3-cli php7.3-common php7.3-json php7.3-opcache php7.3-readline psmisc php7.3-mbstring php7.3-zip php7.3-gd php7.3-xml php7.3-curl php7.3-mysql mariadb-server mariadb-client mysql-common curl python3.7 python3-dev python3-pip python3-venv python3.7-venv libapache2-mod-wsgi-py3 libapache2-mod-security2 libmariadb-dev-compat libmariadb-dev >/dev/null 2>&1;
+if [[ "$sslyn" == [yY1]* ]]; then
+    apt-get -qq install certbot python3-certbot-apache >/dev/null 2>&1;
+fi
 echo "${green}Fertig.${reset}";
 echo ""
 
@@ -195,8 +224,16 @@ echo "${yellow}Setze Rechte...${reset}";
 chown www-data:www-data -R /var/www;
 chmod 755 -R /var/www;
 echo "${yellow}Bereite .conf-Dateien vor...${reset}";
+SERVERIP=$(curl -s ipinfo.io/ip);
 cp /home/$APPUSER/casinoapp-download/phpmyadmin.conf /etc/apache2/conf-available;
 cp /home/$APPUSER/casinoapp-download/Casino.conf /etc/apache2/sites-available;
+if [[ "$sslyn" == [yY1]* ]]; then
+    sed -i "s/ServerName SERVERNAME/ServerName $DOMAINCHECKED/g" /etc/apache2/sites-available/Casino.conf;
+    sed -i "s/ServerAlias SERVERALIAS/ServerAlias *.$DOMAINCHECKED/g" /etc/apache2/sites-available/Casino.conf;
+else
+    sed -i "s/ServerName SERVERNAME/ServerName $SERVERIP/g" /etc/apache2/sites-available/Casino.conf;
+    sed -i "s/ServerAlias SERVERALIAS//g" /etc/apache2/sites-available/Casino.conf;
+fi
 echo "${yellow}De/Aktiviere .conf-Dateien...${reset}";
 a2enconf -q phpmyadmin >/dev/null;
 a2ensite -q Casino >/dev/null;
@@ -248,7 +285,6 @@ echo "${green}Fertig.${reset}";
 echo "";
 
 echo "${yellow}Lege Zugangsdaten-Datei an...${reset}";
-SERVERIP=$(curl -s ipinfo.io/ip);
 cp /home/$APPUSER/casinoapp-download/creds.txt /home/$APPUSER;
 sed -i "s/Nutzername: APPUSER/Nutzername: $APPUSER/g" /home/$APPUSER/creds.txt;
 sed -i "s/Passwort: APPUSERPW/Passwort: $APPUSERPW/g" /home/$APPUSER/creds.txt;

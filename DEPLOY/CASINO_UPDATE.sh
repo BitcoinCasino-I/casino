@@ -18,12 +18,11 @@ fi
 echo ""
 echo "${red}Achtung: Dieses Programm löscht den kompletten Ordner /var/www/html/CasinoApp, ausgenommen den Profilbild-Ordner.";
 echo "Datenbanken bleiben ebenfalls erhalten.${reset}";
-read -p "Fortfahren? (Y/N) " -n 1 -r
-echo ""
-if [[ ! $REPLY =~ ^[Yy]$ ]]
-then
-    exit -1
+read -p "Fortfahren? (Y/N) " runyn
+if [[ ! "$runyn" == [yY1]* ]]; then
+    exit -1;
 fi
+echo ""
 
 # Lade Setup-Dateien herunter
 echo "${yellow}Bereite App-Dateien vor...${reset}";
