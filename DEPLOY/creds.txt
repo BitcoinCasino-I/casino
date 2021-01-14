@@ -12,8 +12,8 @@ Passwort: DBUSERPW
 Nutzername: pma (nur Zugriff auf phpmyadmin-Tabelle, eingeschränkte Aktionen)
 Passwort: PHPUSERPW
 
-Nutzername: APPUSER (Vollzugriff)
-Passwort: APPUSERPW
+Nutzername: DBADMIN (Vollzugriff)
+Passwort: DBADMINPW
 
 
 Website-Nutzer

@@ -164,6 +164,8 @@ PHPUSERPW=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-16};);
 CASINOUSER="${APPUSER}-app";
 CASINOUSERPW=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-16};);
 CASINOUSERPWMD5=$(echo -n $CASINOUSERPW | md5sum | awk '{print $1}');
+DBADMIN="${APPUSER}-db";
+DBADMINPW=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-16};);
 echo "${green}Fertig.${reset}";
 echo "";
 
@@ -273,6 +275,7 @@ echo "${yellow}Bearbeite Konfiguration für phpMyAdmin...${reset}";
 sed -i "s/PHPUSERPW/$PHPUSERPW/g" /usr/share/phpmyadmin/config.inc.php;
 echo "${yellow}Setze Rechte...${reset}";
 chown -R $APPUSER:www-data /var/lib/phpmyadmin;
+chown -R www-data:www-data /var/lib/phpmyadmin/tmp;
 chown -R $APPUSER:www-data /usr/share/phpmyadmin;
 chmod -R 750 /var/lib/phpmyadmin;
 chmod -R 750 /usr/share/phpmyadmin;
@@ -282,7 +285,7 @@ echo "${yellow}Erstelle Datenbank für CasinoApp...${reset}";
 mariadb < /usr/share/phpmyadmin/sql/app-db.sql;
 echo "${yellow}Erstelle alle Datenbanknutzer...${reset}";
 mariadb -e "GRANT SELECT, INSERT, UPDATE, DELETE ON phpmyadmin.* TO 'pma'@'localhost' IDENTIFIED BY '$PHPUSERPW';";
-mariadb -e "GRANT ALL PRIVILEGES ON *.* TO '$APPUSER'@'localhost' IDENTIFIED BY '$APPUSERPW' WITH GRANT OPTION;";
+mariadb -e "GRANT ALL PRIVILEGES ON *.* TO '$DBADMIN'@'localhost' IDENTIFIED BY '$DBADMINPW' WITH GRANT OPTION;";
 mariadb -e "GRANT SELECT, INSERT, UPDATE, DELETE ON casinoapp.* TO '$DBUSER'@'localhost' IDENTIFIED BY '$DBUSERPW';";
 mariadb -e "USE casinoapp; INSERT INTO user VALUES (NULL, '$CASINOUSER', '', '$CASINOUSERPWMD5', 0, 20, 0, 1, 1, NULL, NULL, 0, NULL);";
 echo "${green}Fertig.${reset}";
@@ -295,6 +298,8 @@ sed -i "s/Passwort: APPUSERPW/Passwort: $APPUSERPW/g" /home/$APPUSER/creds.txt;
 sed -i "s/Nutzername: DBUSER/Nutzername: $DBUSER/g" /home/$APPUSER/creds.txt;
 sed -i "s/Passwort: DBUSERPW/Passwort: $DBUSERPW/g" /home/$APPUSER/creds.txt;
 sed -i "s/Passwort: PHPUSERPW/Passwort: $PHPUSERPW/g" /home/$APPUSER/creds.txt;
+sed -i "s/Nutzername: DBADMIN/Nutzername: $DBADMIN/g" /home/$APPUSER/creds.txt;
+sed -i "s/Passwort: DBADMINPW/Passwort: $DBADMINPW/g" /home/$APPUSER/creds.txt;
 if [[ "$sslyn" == [yY1]* ]]; then
     sed -i "s/SERVERIP/$DOMAINCHECKED/g" /home/$APPUSER/creds.txt;
 else
