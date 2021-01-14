@@ -1,18 +1,18 @@
 Linux-User
 ----------
-Nutzername: APPUSER
+Beutzername: APPUSER
 Passwort: APPUSERPW
 
 
 Datenbank-Nutzer
 ----------------
-Nutzername: DBUSER (nur Zugriff auf casinoapp-Tabelle, eingeschränkte Aktionen)
+Beutzername: DBUSER (nur Zugriff auf casinoapp-Tabelle, eingeschränkte Aktionen)
 Passwort: DBUSERPW
 
-Nutzername: pma (nur Zugriff auf phpmyadmin-Tabelle, eingeschränkte Aktionen)
+Benutzername: pma (nur Zugriff auf phpmyadmin-Tabelle, eingeschränkte Aktionen)
 Passwort: PHPUSERPW
 
-Nutzername: DBADMIN (Vollzugriff)
+Benutzername: DBADMIN (Vollzugriff)
 Passwort: DBADMINPW
 
 
@@ -21,16 +21,16 @@ Website-Nutzer
 Benutzername: CASINOUSER (Admin - neue Accounts können über das Adminpanel, die Registrierung oder über phpMyAdmin angelegt werden)
 Passwort: CASINOUSERPW
 
-FTP-User
+
+FTP
 --------------
-ServerIP: SERVERIP
+Server-IP: SERVERIP
 Port: 20
 Benutzername: FTPUSER
 Passwort: FTPUSERPW
+
 
 Links der App
 -------------
 Website: SERVERIP
 phpMyAdmin: SERVERIP/phpmyadmin
-FTP: SERVERIP:20
-

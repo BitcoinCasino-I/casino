@@ -295,12 +295,12 @@ echo "";
 
 echo "${yellow}Lege Zugangsdaten-Datei an...${reset}";
 cp /home/$APPUSER/casinoapp-download/"${GITCONFIGSUBFOLDER}"creds.txt /home/$APPUSER;
-sed -i "s/Nutzername: APPUSER/Nutzername: $APPUSER/g" /home/$APPUSER/creds.txt;
+sed -i "s/Benutzername: APPUSER/Benutzername: $APPUSER/g" /home/$APPUSER/creds.txt;
 sed -i "s/Passwort: APPUSERPW/Passwort: $APPUSERPW/g" /home/$APPUSER/creds.txt;
-sed -i "s/Nutzername: DBUSER/Nutzername: $DBUSER/g" /home/$APPUSER/creds.txt;
+sed -i "s/Benutzername: DBUSER/Benutzername: $DBUSER/g" /home/$APPUSER/creds.txt;
 sed -i "s/Passwort: DBUSERPW/Passwort: $DBUSERPW/g" /home/$APPUSER/creds.txt;
 sed -i "s/Passwort: PHPUSERPW/Passwort: $PHPUSERPW/g" /home/$APPUSER/creds.txt;
-sed -i "s/Nutzername: DBADMIN/Nutzername: $DBADMIN/g" /home/$APPUSER/creds.txt;
+sed -i "s/Benutzername: DBADMIN/Benutzername: $DBADMIN/g" /home/$APPUSER/creds.txt;
 sed -i "s/Passwort: DBADMINPW/Passwort: $DBADMINPW/g" /home/$APPUSER/creds.txt;
 if [[ "$sslyn" == [yY1]* ]]; then
     sed -i "s/SERVERIP/$DOMAINCHECKED/g" /home/$APPUSER/creds.txt;
@@ -309,7 +309,7 @@ else
 fi
 sed -i "s/Passwort: CASINOUSERPW/Passwort: $CASINOUSERPW/g" /home/$APPUSER/creds.txt;
 sed -i "s/Benutzername: CASINOUSER/Benutzername: $CASINOUSER/g" /home/$APPUSER/creds.txt;
-sed -i "s/Nutzername: FTPUSER/Nutzername: $FTPUSER/g" /home/$APPUSER/creds.txt;
+sed -i "s/Benutzername: FTPUSER/Benutzername: $FTPUSER/g" /home/$APPUSER/creds.txt;
 sed -i "s/Passwort: FTPUSERPW/Passwort: $FTPUSERPW/g" /home/$APPUSER/creds.txt;
 chown ${APPUSER}:${APPUSER} /home/$APPUSER/creds.txt;
 chmod 750 /home/$APPUSER/creds.txt;
