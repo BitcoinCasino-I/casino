@@ -94,7 +94,7 @@ DBUSERPW=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-16};);
 PHPUSERPW=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-16};);
 CASINOUSER="${APPUSER}-app";
 CASINOUSERPW=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-16};);
-CASINOUSERPWMD5=$(echo -n $CASINOUSERPW | head -c${1:-16};) | md5sum | awk '{print $1}');
+CASINOUSERPWMD5=$(echo -n $CASINOUSERPW | md5sum | awk '{print $1}');
 echo "${green}Fertig.${reset}";
 echo "";
 
