@@ -34,3 +34,4 @@ Links der App
 -------------
 Website: SERVERIP
 phpMyAdmin: SERVERIP/phpmyadmin
+
