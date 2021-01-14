@@ -111,22 +111,22 @@ while true; do
         continue;
     fi
     if [[ ! "$APPUSERPW" =~ [[:lower:]] ]]; then
-        echo "${red}Kein Grossbuchstabe enthalten. Bitte erneut versuchen.${reset}";
+        echo "${red}Kein Kleinbuchstabe enthalten. Bitte erneut versuchen.${reset}";
         continue;
     fi
     if [[ ! $APPUSERPW == *['!'@#\$%^\&*()_+]* ]]; then
-        echo "${red}Kein Sonderzeichen (@, #, \$, %, ^, &, *, (, ), _, +) enthalten. Bitte erneut versuchen.${reset}";
+        echo "${red}Kein Sonderzeichen (!, @, #, \$, %, ^, &, *, (, ), _, +) enthalten. Bitte erneut versuchen.${reset}";
         continue;
     fi
     if [[ ! $APPUSERPW =~ [0-9] ]]; then
-        echo "${red}Kein Sonderzeichen (@, #, \$, %, ^, &, *, (, ), _, +) enthalten. Bitte erneut versuchen.${reset}";
+        echo "${red}Keine Zahl enthalten. Bitte erneut versuchen.${reset}";
         continue;
     fi
     read -s -p "${yellow}Passwort bestätigen: ${reset}" APPUSERCONFIRMPW; echo
     if [ "$APPUSERPW" = "$APPUSERCONFIRMPW" ]; then
         break;
     fi
-    echo "Passwörter stimmen nicht überein. Bitte erneut versuchen."
+    echo "${red}Passwörter stimmen nicht überein. Bitte erneut versuchen.${reset}"
 done
 echo "${green}Benutzerdaten OK, fahre fort...${reset}";
 echo "";
