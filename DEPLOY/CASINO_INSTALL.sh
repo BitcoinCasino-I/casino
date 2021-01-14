@@ -84,20 +84,7 @@ if [[ "$APPUSERPW" != "$APPUSERCONFIRMPW" ]]; then
 fi
 
 #FTP SERVER
-# Frage Benutzernamen für Installation ab
-read -p "${yellow}Benutzername für den FTP-User der WebApp: ${reset}" FTPUSER
-# Falls leer oder kürzer als 3 Zeichen, breche ab (ALTERNATIV: LOOP)
-if [ -z "$FTPUSER" ] || [ ${#FTPUSER} -lt 3 ]; then
-        # Abbruch
-        echo "${red}Benutzername leer oder weniger als 3 Zeichen. Abbruch.${reset}"
-        exit -1
-fi
-# Falls User bereits existiert, breche ab
-if grep "${FTPUSER}" /etc/passwd >/dev/null 2>&1; then
-        # Abbruch
-        echo "${red}Benutzer existiert bereits. Abbruch.${reset}"
-        exit -1
-fi
+FTPUSER="${APPUSER}-appftp";
 # Frage Passwort ab (und Bestätigung dafür)
 read -s -p "${yellow}Passwort für den FTP-User der WebApp: ${reset}" FTPUSERPW; echo
 # Falls leer oder kürzer als 9 Zeichen, breche ab (ALTERNATIV: LOOP)
