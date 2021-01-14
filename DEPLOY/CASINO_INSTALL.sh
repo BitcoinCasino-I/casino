@@ -30,8 +30,8 @@ reset=`tput setaf 7`;
 # Skript muss als root oder mit sudo ausgeführt werden
 if [[ $EUID > 0 ]]; then
         # Abbruch
-        echo "${red}Bitte als ROOT ausführen!${reset}"
-        exit -1
+        echo "${red}Bitte als ROOT ausführen!${reset}";
+        exit -1;
 fi
 
 echo ""
@@ -39,99 +39,25 @@ echo "${red}Achtung: Dieses Programm entfernt alle vorhandenen Datenbanken und W
 echo "Die Installation sollte nur auf einem frisch eingerichteten Debian 10 Server gestartet werden.${reset}";
 read -p "Fortfahren? (Y/N) " runyn
 if [[ ! "$runyn" == [yY1]* ]]; then
-    exit -1
+    exit -1;
 fi
 echo ""
-
-# Führe apt update aus, da sonst manche benötigte Pakete nicht gefunden werden (und upgrade)
-echo ""
-echo "${yellow}Führe apt update und apt upgrade aus...${reset}"
-apt-get -qq update >/dev/null 2>&1;
-apt-get -qq upgrade >/dev/null 2>&1;
-echo "${green}Fertig.${reset}"
-echo ""
-
-#WEBSTUFF
-# Frage Benutzernamen für Installation ab
-read -p "${yellow}Benutzername für den Linux-User der WebApp: ${reset}" APPUSER
-# Falls leer oder kürzer als 3 Zeichen, breche ab (ALTERNATIV: LOOP)
-if [ -z "$APPUSER" ] || [ ${#APPUSER} -lt 3 ]; then
-        # Abbruch
-        echo "${red}Benutzername leer oder weniger als 3 Zeichen. Abbruch.${reset}"
-        exit -1
-fi
-# Falls User bereits existiert, breche ab
-if grep "${APPUSER}" /etc/passwd >/dev/null 2>&1; then
-        # Abbruch
-        echo "${red}Benutzer existiert bereits. Abbruch.${reset}"
-        exit -1
-fi
-# Frage Passwort ab (und Bestätigung dafür)
-read -s -p "${yellow}Passwort für den Linux-User der WebApp: ${reset}" APPUSERPW; echo
-# Falls leer oder kürzer als 9 Zeichen, breche ab (ALTERNATIV: LOOP)
-if [ -z "$APPUSERPW" ] || [ ${#APPUSERPW} -lt 9 ]; then
-        # Abbruch
-        echo "${red}Passwort leer oder weniger als 9 Zeichen. Abbruch.${reset}"
-        exit -1
-fi
-read -s -p "${yellow}Passwort bestätigen: ${reset}" APPUSERCONFIRMPW; echo
-# Prüfe Übereinstimmung
-if [[ "$APPUSERPW" != "$APPUSERCONFIRMPW" ]]; then
-        # Abbruch
-        echo ""
-        echo "${red}Passwörter stimmen nicht überein. Abbruch.${reset}"
-        exit -1
-fi
-echo "${green}Benutzerdaten OK, fahre fort...${reset}";
-echo "";
-
-# Passwortgenerierung für andere Dienste
-echo "${yellow}Generiere sonstige Nutzerdaten...${reset}"
-FTPUSER="${APPUSER}-appftp";
-FTPUSERPW=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-16};);
-DBUSER="${APPUSER}-appdb";
-DBUSERPW=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-16};);
-PHPUSERPW=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-16};);
-CASINOUSER="${APPUSER}-app";
-CASINOUSERPW=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-16};);
-CASINOUSERPWMD5=$(echo -n $CASINOUSERPW | md5sum | awk '{print $1}');
-echo "${green}Fertig.${reset}";
-echo "";
 
 echo "${red}Möchten Sie für die App SSL aktivieren? Dazu benötigen Sie eine gültige Domain und E-Mail-Adresse.";
 echo "Der A-Record der Domain muss bereits auf die öffentliche IP dieses Servers verweisen, damit die Einrichtung funktioniert.";
 echo "Falls sie die Seite ohne SSL installieren, wird sie nur unter der öffentlichen IP des Servers erreichbar sein.${reset}";
-read -p "SSL aktivieren? (Y/N) " sslyn
+read -p "SSL-Setup verwenden? (Y/N) " sslyn
 if [[ "$sslyn" == [yY1]* ]]; then
-    echo ""
-    # Frage Domain ab
-    read -p "${yellow}Ihre Domain (ohne \"www\", zum Beispiel test.de): ${reset}" DOMAINNAME
-    DOMAINCHECKED=$(echo "$DOMAINNAME" | grep -P '(?=^.{4,253}$)(^(?:[a-zA-Z0-9](?:(?:[a-zA-Z0-9\-]){0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$)');
-    if [ -z "$DOMAINCHECKED" ]; then
-        # Abbruch
-        echo "${red}Domain leer oder fehlerhaft. Abbruch.${reset}";
-        exit -1;
-    fi
-    read -p "${yellow}Ihre E-Mail-Adresse: ${reset}" EMAILADDRESS
-    EMAILCHECKED=$(echo "$EMAILADDRESS" | grep -P "^([A-Za-z]+[A-Za-z0-9]*((\.|\-|\_)?[A-Za-z]+[A-Za-z0-9]*){1,})@(([A-Za-z]+[A-Za-z0-9]*)+((\.|\-|\_)?([A-Za-z]+[A-Za-z0-9]*)+){1,})+\.([A-Za-z]{2,})+");
-    if [ -z "$EMAILCHECKED" ]; then
-        # Abbruch
-        echo "${red}E-Mail-Adresse leer oder fehlerhaft. Abbruch.${reset}";
-        exit -1;
-    fi
-    echo "${green}OK, fahre fort mit SSL-Installation...${reset}";
+    echo "${green}OK, verwende SSL-Setup.${reset}";
 else
-    echo "${green}OK, fahre fort ohne SSL-Installation...${reset}";
+    echo "${green}OK, verwende kein SSL-Setup.${reset}";
 fi
 echo ""
 
-
-# Erstellung des Nutzers, Festlegen des Passworts
-echo "${yellow}Beginne Nutzererstellung...${reset}"
-adduser --disabled-password --gecos "" $APPUSER >/dev/null 2>&1;
-echo -e "$APPUSERPW\n$APPUSERPW" | passwd $APPUSER >/dev/null 2>&1;
-adduser --disabled-password --gecos "" $FTPUSER --shell /bin/false >/dev/null 2>&1;
-echo -e "$FTPUSERPW\n$FTPUSERPW" | passwd $FTPUSER >/dev/null 2>&1;
+# Führe apt update aus, da sonst manche benötigte Pakete nicht gefunden werden (und upgrade)
+echo "${yellow}Führe apt update und apt upgrade aus...${reset}"
+apt-get -qq update >/dev/null 2>&1;
+apt-get -qq upgrade >/dev/null 2>&1;
 echo "${green}Fertig.${reset}"
 echo ""
 
@@ -151,12 +77,99 @@ echo ""
 
 # Alle notwendigen Systempakete installieren
 echo "${yellow}Installiere alle nötigen Systempakete...${reset}";
-apt-get -qq install sudo git ufw openssh-server apache2 libapache2-mod-php7.3 libsodium23 php php-common php7.3 php7.3-cli php7.3-common php7.3-json php7.3-opcache php7.3-readline psmisc php7.3-mbstring php7.3-zip php7.3-gd php7.3-xml php7.3-curl php7.3-mysql mariadb-server mariadb-client mysql-common curl python3.7 python3-dev python3-pip python3-venv python3.7-venv libapache2-mod-wsgi-py3 libapache2-mod-security2 libmariadb-dev-compat libmariadb-dev proftpd-basic >/dev/null 2>&1;
+apt-get -qq install sudo libcrack2 git ufw openssh-server apache2 libapache2-mod-php7.3 libsodium23 php php-common php7.3 php7.3-cli php7.3-common php7.3-json php7.3-opcache php7.3-readline psmisc php7.3-mbstring php7.3-zip php7.3-gd php7.3-xml php7.3-curl php7.3-mysql mariadb-server mariadb-client mysql-common curl python3.7 python3-dev python3-pip python3-venv python3.7-venv libapache2-mod-wsgi-py3 libapache2-mod-security2 libmariadb-dev-compat libmariadb-dev proftpd-basic >/dev/null 2>&1;
 if [[ "$sslyn" == [yY1]* ]]; then
     apt-get -qq install certbot python3-certbot-apache >/dev/null 2>&1;
 fi
 echo "${green}Fertig.${reset}";
 echo ""
+echo ""
+
+# Frage Benutzernamen für Installation ab
+while true; do
+    read -s -p "${yellow}Benutzername für den Linux-User der WebApp: ${reset}" APPUSER; echo
+    if [ -z "$APPUSER" ] || [ ${#APPUSER} -lt 3 ]; then
+        echo "${red}Benutzername leer oder weniger als 3 Zeichen. Erneut versuchen.${reset}";
+        continue;
+    fi
+    if grep "${APPUSER}" /etc/passwd >/dev/null 2>&1; then
+        # Abbruch
+        echo "${red}Benutzer existiert bereits. Erneut versuchen.${reset}"
+        continue;
+    fi
+    break;
+done
+# Frage Passwort ab (und Bestätigung dafür)
+while true; do
+    read -s -p "${yellow}Passwort für den Linux-User der WebApp: ${reset}" APPUSERPW; echo
+    PASSWORDCHECK=$(echo $APPUSERPW | cracklib-check);
+    PASSWORDCHECKRESULT=$(echo $PASSWORDCHECK | awk -F': ' '{ print $2}');
+    if [ ! "$PASSWORDCHECKRESULT" == "OK" ]; then
+        echo "${red}Passwort zu schwach. Bitte erneut versuchen.${reset}";
+        continue;
+    fi
+    read -s -p "${yellow}Passwort bestätigen: ${reset}" APPUSERCONFIRMPW; echo
+    if [ "$APPUSERPW" = "$APPUSERCONFIRMPW" ]; then
+        break;
+    fi
+    echo "Passwörter stimmen nicht überein. Bitte erneut versuchen."
+done
+echo "${green}Benutzerdaten OK, fahre fort...${reset}";
+echo "";
+
+# Falls SSL ausgewählt wurde, frage Daten dafür ab
+if [[ "$sslyn" == [yY1]* ]]; then
+    # Frage Domain ab
+    while true; do
+        read -s -p "${yellow}Ihre Domain (ohne \"www\", zum Beispiel test.de): ${reset}" DOMAINNAME; echo
+        DOMAINCHECKED=$(echo "$DOMAINNAME" | grep -P '(?=^.{4,253}$)(^(?:[a-zA-Z0-9](?:(?:[a-zA-Z0-9\-]){0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$)');
+        if [ -z "$DOMAINCHECKED" ]; then
+            echo "${red}Domain leer oder fehlerhaft. Erneut versuchen.${reset}";
+            continue;
+        fi
+        read -s -p "${yellow}Ihre E-Mail-Adresse: ${reset}" EMAILADDRESS; echo
+        EMAILCHECKED=$(echo "$EMAILADDRESS" | grep -P "^([A-Za-z]+[A-Za-z0-9]*((\.|\-|\_)?[A-Za-z]+[A-Za-z0-9]*){1,})@(([A-Za-z]+[A-Za-z0-9]*)+((\.|\-|\_)?([A-Za-z]+[A-Za-z0-9]*)+){1,})+\.([A-Za-z]{2,})+");
+        if [ -z "$EMAILCHECKED" ]; then
+            echo "${red}E-Mail-Adresse leer oder fehlerhaft. Erneut versuchen.${reset}";
+            continue;
+        fi
+        break;
+    done
+    echo "${green}Daten für SSL-Setup OK, fahre fort...${reset}";
+    echo "";
+fi
+echo "";
+
+# Erstellung des Nutzers, Festlegen des Passworts
+echo "${yellow}Beginne Nutzererstellung...${reset}"
+adduser --disabled-password --gecos "" $APPUSER >/dev/null 2>&1;
+echo -e "$APPUSERPW\n$APPUSERPW" | passwd $APPUSER >/dev/null 2>&1;
+adduser --disabled-password --gecos "" $FTPUSER --shell /bin/false >/dev/null 2>&1;
+echo -e "$FTPUSERPW\n$FTPUSERPW" | passwd $FTPUSER >/dev/null 2>&1;
+echo "${green}Fertig.${reset}"
+echo ""
+
+# Erstellung und Zuweisung von Benutzergruppen
+echo "${yellow}Setze Benutzergruppen...${reset}";
+usermod -aG www-data $APPUSER >/dev/null;
+usermod -aG sudo $APPUSER >/dev/null;
+groupadd -f ftpuser
+usermod -aG ftpuser $FTPUSER >/dev/null;
+echo "${green}Fertig.${reset}";
+echo "";
+
+# Passwortgenerierung für andere Dienste
+echo "${yellow}Generiere sonstige Nutzerdaten...${reset}"
+FTPUSER="${APPUSER}-appftp";
+FTPUSERPW=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-16};);
+DBUSER="${APPUSER}-appdb";
+DBUSERPW=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-16};);
+PHPUSERPW=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-16};);
+CASINOUSER="${APPUSER}-app";
+CASINOUSERPW=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-16};);
+CASINOUSERPWMD5=$(echo -n $CASINOUSERPW | md5sum | awk '{print $1}');
+echo "${green}Fertig.${reset}";
+echo "";
 
 # Beginne mit UFW-Setup
 echo "${yellow}Richte Firewall ein...${reset}";
@@ -175,14 +188,6 @@ echo "";
 echo "${yellow}Bereite App-Dateien vor...${reset}";
 mkdir /home/$APPUSER/casinoapp-download;
 git clone -q $GITURL /home/$APPUSER/casinoapp-download >/dev/null;
-echo "${green}Fertig.${reset}";
-echo "";
-
-echo "${yellow}Setze Benutzergruppen...${reset}";
-usermod -aG www-data $APPUSER >/dev/null;
-usermod -aG sudo $APPUSER >/dev/null;
-groupadd -f ftpuser
-usermod -aG ftpuser $FTPUSER >/dev/null;
 echo "${green}Fertig.${reset}";
 echo "";
 
