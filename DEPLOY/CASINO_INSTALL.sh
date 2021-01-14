@@ -356,6 +356,7 @@ python3 -m venv /var/www/html/CasinoApp/venv;
 source /var/www/html/CasinoApp/venv/bin/activate;
 # Next line needs to be installed seperately, build errors otherwise when installing requirements at oce
 python3 -m pip install -qq pip wheel setuptools;
+python3 -m pip install -qq --upgrade pip wheel setuptools;
 python3 -m pip install -qq -r /home/$APPUSER/casinoapp-download/"${GITCONFIGSUBFOLDER}"requirements.txt;
 deactivate;
 echo "${yellow}Entferne temporäre Dateien...${reset}";
