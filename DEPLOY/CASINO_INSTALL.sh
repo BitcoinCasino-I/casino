@@ -82,77 +82,22 @@ if [[ "$APPUSERPW" != "$APPUSERCONFIRMPW" ]]; then
         echo "${red}Passwörter stimmen nicht überein. Abbruch.${reset}"
         exit -1
 fi
-
-#FTP SERVER
-FTPUSER="${APPUSER}-appftp";
-# Frage Passwort ab (und Bestätigung dafür)
-read -s -p "${yellow}Passwort für den FTP-User der WebApp: ${reset}" FTPUSERPW; echo
-# Falls leer oder kürzer als 9 Zeichen, breche ab (ALTERNATIV: LOOP)
-if [ -z "$FTPUSERPW" ] || [ ${#FTPUSERPW} -lt 9 ]; then
-        # Abbruch
-        echo "${red}Passwort leer oder weniger als 9 Zeichen. Abbruch.${reset}"
-        exit -1
-fi
-read -s -p "${yellow}Passwort bestätigen: ${reset}" FTPUSERCONFIRMPW; echo
-# Prüfe Übereinstimmung
-if [[ "$FTPUSERPW" != "$FTPUSERCONFIRMPW" ]]; then
-        # Abbruch
-        echo ""
-        echo "${red}Passwörter stimmen nicht überein. Abbruch.${reset}"
-        exit -1
-fi
-
-#DBUSER
-# Frage Passwort für eingeschränkten Datenbanknutzer ab (und Bestätigung dafür)
-read -s -p "${yellow}Passwort für den eingeschränkten Datenbanknutzer der App: ${reset}" DBUSERPW; echo
-# Falls leer oder kürzer als 9 Zeichen, breche ab (ALTERNATIV: LOOP)
-if [ -z "$DBUSERPW" ] || [ ${#DBUSERPW} -lt 9 ]; then
-        # Abbruch
-        echo "${red}Passwort leer oder weniger als 9 Zeichen. Abbruch.${reset}"
-        exit -1
-fi
-# Prüfe ob gleich wie vorherige Passwörter
-if [[ "$DBUSERPW" == "$APPUSERPW" ]]; then
-        # Abbruch
-        echo "${red}Passwort bereits verwendet. Abbruch.${reset}";
-        exit -1
-fi
-read -s -p "${yellow}Passwort bestätigen: ${reset}" DBUSERCONFIRMPW; echo
-# Prüfe Übereinstimmung
-if [[ "$DBUSERPW" != "$DBUSERCONFIRMPW" ]]; then
-        # Abbruch
-        echo ""
-        echo "${red}Passwörter stimmen nicht überein. Abbruch.${reset}"
-        exit -1
-fi
-
-#PHPUSER
-# Frage Passwort für eingeschränkten phpMyAdmin-User ab (und Bestätigung dafür)
-read -s -p "${yellow}Passwort für den eingeschränkten phpMyAdmin-User: ${reset}" PHPUSERPW; echo
-# Falls leer oder kürzer als 9 Zeichen, breche ab (ALTERNATIV: LOOP)
-if [ -z "$PHPUSERPW" ] || [ ${#PHPUSERPW} -lt 9 ]; then
-        # Abbruch
-        echo "${red}Passwort leer oder weniger als 9 Zeichen. Abbruch.${reset}"
-        exit -1
-fi
-# Prüfe ob gleich wie vorherige Passwörter
-if [[ "$PHPUSERPW" == "$APPUSERPW" ]] | [[ "$PHPUSERPW" == "$DBUSERPW" ]]; then
-        # Abbruch
-        echo "${red}Passwort bereits verwendet. Abbruch.${reset}";
-        exit -1;
-fi
-read -s -p "${yellow}Passwort bestätigen: ${reset}" PHPUSERCONFIRMPW; echo
-# Prüfe Übereinstimmung
-if [[ "$PHPUSERPW" != "$PHPUSERCONFIRMPW" ]]; then
-        # Abbruch
-        echo "";
-        echo "${red}Passwörter stimmen nicht überein. Abbruch.${reset}";
-        exit -1;
-fi
 echo "${green}Benutzerdaten OK, fahre fort...${reset}";
 echo "";
 
-echo ""
+# Passwortgenerierung für andere Dienste
+echo "${yellow}Generiere sonstige Nutzerdaten...${reset}"
+FTPUSER="${APPUSER}-appftp";
+FTPUSERPW=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-16};);
+DBUSER="${APPUSER}-appdb";
+DBUSERPW=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-16};);
+PHPUSERPW=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-16};);
+CASINOUSER="${APPUSER}-app";
+CASINOUSERPW=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-16};);
+CASINOUSERPWMD5=$(echo -n $CASINOUSERPW | head -c${1:-16};) | md5sum | awk '{print $1}');
+echo "${green}Fertig.${reset}";
+echo "";
+
 echo "${red}Möchten Sie für die App SSL aktivieren? Dazu benötigen Sie eine gültige Domain und E-Mail-Adresse.";
 echo "Der A-Record der Domain muss bereits auf die öffentliche IP dieses Servers verweisen, damit die Einrichtung funktioniert.";
 echo "Falls sie die Seite ohne SSL installieren, wird sie nur unter der öffentlichen IP des Servers erreichbar sein.${reset}";
@@ -268,7 +213,7 @@ else
     cat /home/$APPUSER/casinoapp-download/"${GITCONFIGSUBFOLDER}"Casino.http.conf >> /etc/apache2/sites-available/Casino.conf;
     sed -i "s/ServerName SERVERNAME/ServerName $SERVERIP/g" /etc/apache2/sites-available/Casino.conf;
 fi
-sed -i "s/Alias \/ftp \/home\/FTPUSER/Alias \/ftp\/home\/$FTPUSER/g" /etc/apache2/sites-available/Casino.conf;
+sed -i "s/Alias \/ftp \/home\/FTPUSER/Alias \/ftp \/home\/$FTPUSER/g" /etc/apache2/sites-available/Casino.conf;
 sed -i "s/<Directory \/home\/FTPUSER>/<Directory \/home\/$FTPUSER>/g" /etc/apache2/sites-available/Casino.conf;
 echo "${yellow}Bereite Webdateien vor...${reset}";
 rm /var/www/html/index.html;
@@ -317,13 +262,10 @@ mariadb < /usr/share/phpmyadmin/sql/create_tables.sql;
 echo "${yellow}Erstelle Datenbank für CasinoApp...${reset}";
 mariadb < /usr/share/phpmyadmin/sql/app-db.sql;
 echo "${yellow}Erstelle alle Datenbanknutzer...${reset}";
-DBUSER="${APPUSER}-appdb";
 mariadb -e "GRANT SELECT, INSERT, UPDATE, DELETE ON phpmyadmin.* TO 'pma'@'localhost' IDENTIFIED BY '$PHPUSERPW';";
 mariadb -e "GRANT ALL PRIVILEGES ON *.* TO '$APPUSER'@'localhost' IDENTIFIED BY '$APPUSERPW' WITH GRANT OPTION;";
 mariadb -e "GRANT SELECT, INSERT, UPDATE, DELETE ON casinoapp.* TO '$DBUSER'@'localhost' IDENTIFIED BY '$DBUSERPW';";
-CASINOUSER="${APPUSER}-app";
-CASINOUSERPW=$(echo -n $DBUSERPW | md5sum | awk '{print $1}')
-mariadb -e "USE casinoapp; INSERT INTO user VALUES (NULL, '$CASINOUSER', '', '$CASINOUSERPW', 0, 20, 0, 1, 1, NULL, NULL, 0, NULL);";
+mariadb -e "USE casinoapp; INSERT INTO user VALUES (NULL, '$CASINOUSER', '', '$CASINOUSERPWMD5', 0, 20, 0, 1, 1, NULL, NULL, 0, NULL);";
 echo "${green}Fertig.${reset}";
 echo "";
 
@@ -339,7 +281,7 @@ if [[ "$sslyn" == [yY1]* ]]; then
 else
     sed -i "s/SERVERIP/$SERVERIP/g" /home/$APPUSER/creds.txt;
 fi
-sed -i "s/Passwort: CASINOUSERPW/Passwort: $DBUSERPW/g" /home/$APPUSER/creds.txt;
+sed -i "s/Passwort: CASINOUSERPW/Passwort: $CASINOUSERPW/g" /home/$APPUSER/creds.txt;
 sed -i "s/Benutzername: CASINOUSER/Benutzername: $CASINOUSER/g" /home/$APPUSER/creds.txt;
 sed -i "s/Nutzername: FTPUSER/Nutzername: $FTPUSER/g" /home/$APPUSER/creds.txt;
 sed -i "s/Passwort: FTPUSERPW/Passwort: $FTPUSERPW/g" /home/$APPUSER/creds.txt;
