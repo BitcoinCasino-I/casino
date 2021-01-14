@@ -2,33 +2,14 @@
 
 # Voraussetzung sollte ein Debian 9 / 10 Server sein, keine zusätzlichen Check dafür im Skript
 
-# IMPLEMENTIERT:
-# - Benutzerdateneingabe
-# - User-Setup mit sudo
-# - root / sudo Checks
-# - Automatischer Purge aller relevanten Pakete
-# - Automatische Installation aller relevanten Pakete
-# - Automatisches Aufsetzen der Firewall
-# - Automatisches Aufsetzen und Konfigurieren von MariaDB und phpMyAdmin aus dessen Quellcode
-# - Automatisches Datenbanksetup mit verschiedenen Usern
-# - Automatisches Anpassen der relevanten configs
-# - Automatisches De/Aktivieren aller relevanten Apache Module
-# - Automatische Konfiuration der Apache Virtual Hosts und WSGI
-# - Automatisches Aufsetzen der virtuellen Umgebung
-# - Automatisches Setzen aller Berechtigungen
-# - Automatische Installation der CasinoApp
-
 # TODOS /IDEEN:
 # - Alles, was der Skript nicht erledigen kann, dokumentieren in den Installationshinweisen (plus Voraussetzungen / Anleitung Skript)
-# - FTP Server automatisch einrichten
 # - Apache Directives / Security Settings
-# - SSL Setup (allerdings wäre das eher was für die Installationshinweise, denn das dynamisch im Skript zu implementieren suckt)
 # - Virtualenv fixen, sodass die manuellen Fixes (s. unten) nicht mehr nötig sind
 # - Dynamische Konfiguration des Mail-Users (mail.cfg)
 # - Automatische Installation des Webhooks (nötig?)
 # - Funktionen verwenden (Code kürzen)
 # - >/dev/null statt >/dev/null 2>&1 verwenden, wo es Sinn macht
-# - separater Update-Script
 # - seperater sudo nutzer (...)
 # - alte Nutzer löschen
 
