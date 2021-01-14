@@ -14,8 +14,8 @@
 # - alte Nutzer löschen
 
 # Variables
-SERVERIP=$(curl -s ipinfo.io/ip);
-GITURL="https://github.com/Lartsch/casinoapp-deploy-test.git"
+SERVERIP=$(wget -qO- https://ipecho.net/plain;);
+GITURL="https://github.com/Lartsch/casinoapp-deploy-test.git";
 # Use the following lines to define the subfolder in the repo where the CasinoApp / Config files lives
 # Ex. GITCASINOSUBFOLDER="CasinoApp/" (notice slash at the end!)
 GITCASINOSUBFOLDER="CasinoApp/"
