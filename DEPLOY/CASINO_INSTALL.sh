@@ -205,7 +205,7 @@ fi
 echo ""
 
 
-# Erstellung des Nutzers, Festlegen des Passworts, Hinzufügen zur sudo-Gruppe
+# Erstellung des Nutzers, Festlegen des Passworts
 echo "${yellow}Beginne Nutzererstellung...${reset}"
 adduser --disabled-password --gecos "" $APPUSER >/dev/null 2>&1;
 echo -e "$APPUSERPW\n$APPUSERPW" | passwd $APPUSER >/dev/null 2>&1;
@@ -224,7 +224,7 @@ rm -rf /etc/apache2 >/dev/null 2>&1;
 rm -rf /etc/mysql >/dev/null 2>&1;
 rm -rf /etc/letsencrypt >/dev/null 2>&1;
 rm -rf /etc/proftpd >/dev/null 2>&1;
-apt-get -qq purge sudo ufw certbot python3-certbot-apache apache2 libapache2-mod-php7.3 libsodium23 php php-common php7.3 php7.3-cli php7.3-common php7.3-json php7.3-opcache php7.3-readline psmisc php7.3-mbstring php7.3-zip php7.3-gd php7.3-xml php7.3-curl php7.3-mysql mariadb-server mariadb-client mysql-common curl python3.7 python3-dev python3-pip python3-venv python3.7-venv libapache2-mod-wsgi-py3 libapache2-mod-security2 libmariadb-dev-compat libmariadb-dev proftpd-basic >/dev/null 2>&1;
+apt-get -qq purge ufw certbot python3-certbot-apache apache2 libapache2-mod-php7.3 libsodium23 php php-common php7.3 php7.3-cli php7.3-common php7.3-json php7.3-opcache php7.3-readline psmisc php7.3-mbstring php7.3-zip php7.3-gd php7.3-xml php7.3-curl php7.3-mysql mariadb-server mariadb-client mysql-common curl python3.7 python3-dev python3-pip python3-venv python3.7-venv libapache2-mod-wsgi-py3 libapache2-mod-security2 libmariadb-dev-compat libmariadb-dev proftpd-basic >/dev/null 2>&1;
 echo "${green}Fertig.${reset}"
 echo ""
 
