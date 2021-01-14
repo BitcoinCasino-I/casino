@@ -19,7 +19,7 @@ GITURL="https://github.com/Lartsch/casinoapp-deploy-test.git"
 # Use the following lines to define the subfolder in the repo where the CasinoApp / Config files lives
 # Ex. GITCASINOSUBFOLDER="CasinoApp/" (notice slash at the end!)
 GITCASINOSUBFOLDER="CasinoApp/"
-GITCCONFIGSUBFOLDER=""
+GITCCONFIGSUBFOLDER="Deploy/"
 
 # Definiere Farbcodes
 red=`tput setaf 1`;
