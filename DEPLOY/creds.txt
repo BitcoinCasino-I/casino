@@ -2,13 +2,13 @@
 
 Linux-User
 ----------
-Beutzername: APPUSER
+Benutzername: APPUSER
 Passwort: APPUSERPW
 
 
 Datenbank-Nutzer
 ----------------
-Beutzername: DBUSER (nur Zugriff auf casinoapp-Tabelle, eingeschränkte Aktionen)
+Benutzername: DBUSER (nur Zugriff auf casinoapp-Tabelle, eingeschränkte Aktionen)
 Passwort: DBUSERPW
 
 Benutzername: pma (nur Zugriff auf phpmyadmin-Tabelle, eingeschränkte Aktionen)
