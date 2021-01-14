@@ -264,14 +264,12 @@ if [[ "$sslyn" == [yY1]* ]]; then
     sed -i "s/ServerAlias SERVERALIAS/ServerAlias *.$DOMAINCHECKED/g" /etc/apache2/sites-available/Casino.conf;
     sed -i "s/Redirect permanent \/ https:\/\/SERVERNAME/Redirect permanent \/ https:\/\/$DOMAINCHECKED/g" /etc/apache2/sites-available/Casino.conf;
     sed -i "s/ServerAlias WWWSERVERNAME/ServerAlias *.$DOMAINCHECKED/g" /etc/apache2/sites-available/Casino.conf;
-    sed -i "s/Alias \/ftp \/home\/FTPUSER\//Alias \/ftp/home\/$FTPUSER/g" /etc/apache2/sites-available/Casino.conf;
-    sed -i "s/<Directory \/home\/FTPUSER\/>/<Directory \/home\/$FTPUSER\/>/g" /etc/apache2/sites-available/Casino.conf;
 else
     cat /home/$APPUSER/casinoapp-download/"${GITCONFIGSUBFOLDER}"Casino.http.conf >> /etc/apache2/sites-available/Casino.conf;
     sed -i "s/ServerName SERVERNAME/ServerName $SERVERIP/g" /etc/apache2/sites-available/Casino.conf;
-    sed -i "s/Alias \/ftp \/home\/FTPUSER\//Alias \/ftp/home\/$FTPUSER/g" /etc/apache2/sites-available/Casino.conf;
-    sed -i "s/<Directory \/home\/FTPUSER\/>/<Directory \/home\/$FTPUSER\/>/g" /etc/apache2/sites-available/Casino.conf;
 fi
+sed -i "s/Alias \/ftp \/home\/FTPUSER/Alias \/ftp\/home\/$FTPUSER/g" /etc/apache2/sites-available/Casino.conf;
+sed -i "s/<Directory \/home\/FTPUSER>/<Directory \/home\/$FTPUSER>/g" /etc/apache2/sites-available/Casino.conf;
 echo "${yellow}Bereite Webdateien vor...${reset}";
 rm /var/www/html/index.html;
 mv /home/$APPUSER/casinoapp-download/"${GITCASINOSUBFOLDER}" /var/www/html;
@@ -290,9 +288,9 @@ echo "${yellow}Konfiguriere FTP...${reset}";
 echo "${yellow}Setze Rechte...${reset}";
 chown -R $FTPUSER:www-data /home/$FTPUSER/;
 echo "${yellow}Bereite .conf-Dateien vor...${reset}";
-cp /home/$APPUSER/casinoapp-download/"${GITCONFIGSUBFOLDER}"custom.conf /etc/proftpd/conf.d/;
+cp /home/$APPUSER/casinoapp-download/"${GITCONFIGSUBFOLDER}"custom.conf /etc/proftpd/conf.d;
 rm /etc/proftpd/proftpd.conf;
-cp /home/$APPUSER/casinoapp-download/"${GITCONFIGSUBFOLDER}"proftpd.conf >> /etc/proftpd/proftpd.conf;
+cp /home/$APPUSER/casinoapp-download/"${GITCONFIGSUBFOLDER}"proftpd.conf /etc/proftpd;
 echo "${yellow}Starte FTP neu...${reset}";
 systemctl restart proftpd;
 echo "${green}Fertig.${reset}";
