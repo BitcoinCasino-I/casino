@@ -13,6 +13,10 @@
 # - seperater sudo nutzer (...)
 # - alte Nutzer löschen
 
+# Variables
+SERVERIP=$(curl -s ipinfo.io/ip);
+GITURL="https://github.com/Lartsch/casinoapp-deploy-test.git /home/$APPUSER/casinoapp-download"
+
 # Definiere Farbcodes
 red=`tput setaf 1`;
 yellow=`tput setaf 3`;
@@ -234,7 +238,7 @@ echo "";
 # Lade Setup-Dateien herunter
 echo "${yellow}Bereite App-Dateien vor...${reset}";
 mkdir /home/$APPUSER/casinoapp-download;
-git clone -q https://github.com/Lartsch/casinoapp-deploy-test.git /home/$APPUSER/casinoapp-download >/dev/null;
+git clone -q $GITURL >/dev/null;
 echo "${green}Fertig.${reset}";
 echo "";
 
@@ -259,7 +263,6 @@ for VALEN in $ENAPACHEMODULES; do
         a2enmod -q $VALEN >/dev/null;
 done
 echo "${yellow}Bereite .conf-Dateien vor...${reset}";
-SERVERIP=$(curl -s ipinfo.io/ip);
 cp /home/$APPUSER/casinoapp-download/phpmyadmin.conf /etc/apache2/conf-available;
 cp /home/$APPUSER/casinoapp-download/Casino.conf /etc/apache2/sites-available;
 if [[ "$sslyn" == [yY1]* ]]; then
