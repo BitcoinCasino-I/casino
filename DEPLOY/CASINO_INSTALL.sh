@@ -19,7 +19,7 @@ GITURL="https://github.com/Lartsch/casinoapp-deploy-test.git"
 # Use the following lines to define the subfolder in the repo where the CasinoApp / Config files lives
 # Ex. GITCASINOSUBFOLDER="CasinoApp/" (notice slash at the end!)
 GITCASINOSUBFOLDER="CasinoApp/"
-GITCCONFIGSUBFOLDER="Deploy/"
+GITCONFIGSUBFOLDER="Deploy/"
 
 # Definiere Farbcodes
 red=`tput setaf 1`;
@@ -256,10 +256,10 @@ for VALEN in $ENAPACHEMODULES; do
         a2enmod -q $VALEN >/dev/null;
 done
 echo "${yellow}Bereite .conf-Dateien vor...${reset}";
-cp /home/$APPUSER/casinoapp-download/"${GITCONFIGFOLDER}"phpmyadmin.conf /etc/apache2/conf-available;
-cp /home/$APPUSER/casinoapp-download/"${GITCONFIGFOLDER}"Casino.base.conf /etc/apache2/sites-available/Casino.conf;
+cp /home/$APPUSER/casinoapp-download/"${GITCONFIGSUBFOLDER}"phpmyadmin.conf /etc/apache2/conf-available;
+cp /home/$APPUSER/casinoapp-download/"${GITCONFIGSUBFOLDER}"Casino.base.conf /etc/apache2/sites-available/Casino.conf;
 if [[ "$sslyn" == [yY1]* ]]; then
-    cat /home/$APPUSER/casinoapp-download/"${GITCONFIGFOLDER}"Casino.https.conf >> /etc/apache2/sites-available/Casino.conf;
+    cat /home/$APPUSER/casinoapp-download/"${GITCONFIGSUBFOLDER}"Casino.https.conf >> /etc/apache2/sites-available/Casino.conf;
     sed -i "s/ServerName SERVERNAME/ServerName $DOMAINCHECKED/g" /etc/apache2/sites-available/Casino.conf;
     sed -i "s/ServerAlias SERVERALIAS/ServerAlias *.$DOMAINCHECKED/g" /etc/apache2/sites-available/Casino.conf;
     sed -i "s/Redirect permanent \/ https:\/\/SERVERNAME/Redirect permanent \/ https:\/\/$DOMAINCHECKED/g" /etc/apache2/sites-available/Casino.conf;
@@ -267,7 +267,7 @@ if [[ "$sslyn" == [yY1]* ]]; then
     sed -i "s/Alias \/ftp \/home\/FTPUSER\//Alias \/ftp/home\/$FTPUSER/g" /etc/apache2/sites-available/Casino.conf;
     sed -i "s/<Directory \/home\/FTPUSER\/>/<Directory \/home\/$FTPUSER\/>/g" /etc/apache2/sites-available/Casino.conf;
 else
-    cat /home/$APPUSER/casinoapp-download/"${GITCONFIGFOLDER}"Casino.http.conf >> /etc/apache2/sites-available/Casino.conf;
+    cat /home/$APPUSER/casinoapp-download/"${GITCONFIGSUBFOLDER}"Casino.http.conf >> /etc/apache2/sites-available/Casino.conf;
     sed -i "s/ServerName SERVERNAME/ServerName $SERVERIP/g" /etc/apache2/sites-available/Casino.conf;
     sed -i "s/Alias \/ftp \/home\/FTPUSER\//Alias \/ftp/home\/$FTPUSER/g" /etc/apache2/sites-available/Casino.conf;
     sed -i "s/<Directory \/home\/FTPUSER\/>/<Directory \/home\/$FTPUSER\/>/g" /etc/apache2/sites-available/Casino.conf;
@@ -290,9 +290,9 @@ echo "${yellow}Konfiguriere FTP...${reset}";
 echo "${yellow}Setze Rechte...${reset}";
 chown -R $FTPUSER:www-data /home/$FTPUSER/;
 echo "${yellow}Bereite .conf-Dateien vor...${reset}";
-cp /home/$APPUSER/casinoapp-download/"${GITCONFIGFOLDER}"custom.conf /etc/proftpd/conf.d/;
+cp /home/$APPUSER/casinoapp-download/"${GITCONFIGSUBFOLDER}"custom.conf /etc/proftpd/conf.d/;
 rm /etc/proftpd/proftpd.conf;
-cp /home/$APPUSER/casinoapp-download/"${GITCONFIGFOLDER}"proftpd.conf >> /etc/proftpd/proftpd.conf;
+cp /home/$APPUSER/casinoapp-download/"${GITCONFIGSUBFOLDER}"proftpd.conf >> /etc/proftpd/proftpd.conf;
 echo "${yellow}Starte FTP neu...${reset}";
 systemctl restart proftpd;
 echo "${green}Fertig.${reset}";
@@ -304,8 +304,8 @@ echo "${yellow}Bereite Dateien für phpMyAdmin vor...${reset}";
 wget -q -P /home/$APPUSER/casinoapp-download https://www.phpmyadmin.net/downloads/phpMyAdmin-latest-all-languages.tar.gz;
 mkdir -p /usr/share/phpmyadmin;
 tar xvf /home/$APPUSER/casinoapp-download/phpMyAdmin-latest-all-languages.tar.gz --strip-components=1 -C /usr/share/phpmyadmin >/dev/null 2>&1;
-cp /home/$APPUSER/casinoapp-download/"${GITCONFIGFOLDER}"config.inc.php /usr/share/phpmyadmin;
-cp /home/$APPUSER/casinoapp-download/"${GITCONFIGFOLDER}"app-db.sql /usr/share/phpmyadmin/sql;
+cp /home/$APPUSER/casinoapp-download/"${GITCONFIGSUBFOLDER}"config.inc.php /usr/share/phpmyadmin;
+cp /home/$APPUSER/casinoapp-download/"${GITCONFIGSUBFOLDER}"app-db.sql /usr/share/phpmyadmin/sql;
 mkdir -p /var/lib/phpmyadmin/tmp;
 echo "${yellow}Bearbeite Konfiguration für phpMyAdmin...${reset}";
 sed -i "s/PHPUSERPW/$PHPUSERPW/g" /usr/share/phpmyadmin/config.inc.php;
@@ -330,7 +330,7 @@ echo "${green}Fertig.${reset}";
 echo "";
 
 echo "${yellow}Lege Zugangsdaten-Datei an...${reset}";
-cp /home/$APPUSER/casinoapp-download/"${GITCONFIGFOLDER}"creds.txt /home/$APPUSER;
+cp /home/$APPUSER/casinoapp-download/"${GITCONFIGSUBFOLDER}"creds.txt /home/$APPUSER;
 sed -i "s/Nutzername: APPUSER/Nutzername: $APPUSER/g" /home/$APPUSER/creds.txt;
 sed -i "s/Passwort: APPUSERPW/Passwort: $APPUSERPW/g" /home/$APPUSER/creds.txt;
 sed -i "s/Nutzername: DBUSER/Nutzername: $DBUSER/g" /home/$APPUSER/creds.txt;
@@ -358,7 +358,7 @@ python3 -m venv /var/www/html/CasinoApp/venv;
 source /var/www/html/CasinoApp/venv/bin/activate;
 # Next line needs to be installed seperately, build errors otherwise when installing requirements at oce
 python3 -m pip install -qq pip wheel setuptools;
-python3 -m pip install -qq -r /home/$APPUSER/casinoapp-download/"${GITCONFIGFOLDER}"requirements.txt;
+python3 -m pip install -qq -r /home/$APPUSER/casinoapp-download/"${GITCONFIGSUBFOLDER}"requirements.txt;
 deactivate;
 echo "${yellow}Entferne temporäre Dateien...${reset}";
 rm -r /home/$APPUSER/casinoapp-download;
