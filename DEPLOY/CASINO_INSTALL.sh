@@ -77,7 +77,7 @@ echo ""
 
 # Alle notwendigen Systempakete installieren
 echo "${yellow}Installiere alle nötigen Systempakete...${reset}";
-apt-get -qq install sudo libcrack2 git ufw openssh-server apache2 libapache2-mod-php7.3 libsodium23 php php-common php7.3 php7.3-cli php7.3-common php7.3-json php7.3-opcache php7.3-readline psmisc php7.3-mbstring php7.3-zip php7.3-gd php7.3-xml php7.3-curl php7.3-mysql mariadb-server mariadb-client mysql-common curl python3.7 python3-dev python3-pip python3-venv python3.7-venv libapache2-mod-wsgi-py3 libapache2-mod-security2 libmariadb-dev-compat libmariadb-dev proftpd-basic >/dev/null 2>&1;
+apt-get -qq install sudo git ufw openssh-server apache2 libapache2-mod-php7.3 libsodium23 php php-common php7.3 php7.3-cli php7.3-common php7.3-json php7.3-opcache php7.3-readline psmisc php7.3-mbstring php7.3-zip php7.3-gd php7.3-xml php7.3-curl php7.3-mysql mariadb-server mariadb-client mysql-common curl python3.7 python3-dev python3-pip python3-venv python3.7-venv libapache2-mod-wsgi-py3 libapache2-mod-security2 libmariadb-dev-compat libmariadb-dev proftpd-basic >/dev/null 2>&1;
 if [[ "$sslyn" == [yY1]* ]]; then
     apt-get -qq install certbot python3-certbot-apache >/dev/null 2>&1;
 fi
@@ -87,7 +87,7 @@ echo ""
 
 # Frage Benutzernamen für Installation ab
 while true; do
-    read -s -p "${yellow}Benutzername für den Linux-User der WebApp: ${reset}" APPUSER; echo
+    read -p "${yellow}Benutzername für den Linux-User der WebApp: ${reset}" APPUSER; echo
     if [ -z "$APPUSER" ] || [ ${#APPUSER} -lt 3 ]; then
         echo "${red}Benutzername leer oder weniger als 3 Zeichen. Erneut versuchen.${reset}";
         continue;
@@ -102,10 +102,24 @@ done
 # Frage Passwort ab (und Bestätigung dafür)
 while true; do
     read -s -p "${yellow}Passwort für den Linux-User der WebApp: ${reset}" APPUSERPW; echo
-    PASSWORDCHECK=$(echo $APPUSERPW | cracklib-check);
-    PASSWORDCHECKRESULT=$(echo $PASSWORDCHECK | awk -F': ' '{ print $2}');
-    if [ ! "$PASSWORDCHECKRESULT" == "OK" ]; then
-        echo "${red}Passwort zu schwach. Bitte erneut versuchen.${reset}";
+    if [ ${#APPUSERPW} -lt 12 ]; then
+        echo "${red}Passwort zu kurz. Bitte erneut versuchen.${reset}";
+        continue;
+    fi
+    if [[ ! "$APPUSERPW" =~ [[:upper:]] ]]; then
+        echo "${red}Kein Grossbuchstabe enthalten. Bitte erneut versuchen.${reset}";
+        continue;
+    fi
+    if [[ ! "$APPUSERPW" =~ [[:lower:]] ]]; then
+        echo "${red}Kein Grossbuchstabe enthalten. Bitte erneut versuchen.${reset}";
+        continue;
+    fi
+    if [[ ! $APPUSERPW == *['!'@#\$%^\&*()_+]* ]]; then
+        echo "${red}Kein Sonderzeichen (@, #, \$, %, ^, &, *, (, ), _, +) enthalten. Bitte erneut versuchen.${reset}";
+        continue;
+    fi
+    if [[ ! $APPUSERPW =~ [0-9] ]]; then
+        echo "${red}Kein Sonderzeichen (@, #, \$, %, ^, &, *, (, ), _, +) enthalten. Bitte erneut versuchen.${reset}";
         continue;
     fi
     read -s -p "${yellow}Passwort bestätigen: ${reset}" APPUSERCONFIRMPW; echo
@@ -140,6 +154,19 @@ if [[ "$sslyn" == [yY1]* ]]; then
 fi
 echo "";
 
+# Passwortgenerierung für andere Dienste
+echo "${yellow}Generiere sonstige Nutzerdaten...${reset}"
+FTPUSER="${APPUSER}-appftp";
+FTPUSERPW=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-16};);
+DBUSER="${APPUSER}-appdb";
+DBUSERPW=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-16};);
+PHPUSERPW=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-16};);
+CASINOUSER="${APPUSER}-app";
+CASINOUSERPW=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-16};);
+CASINOUSERPWMD5=$(echo -n $CASINOUSERPW | md5sum | awk '{print $1}');
+echo "${green}Fertig.${reset}";
+echo "";
+
 # Erstellung des Nutzers, Festlegen des Passworts
 echo "${yellow}Beginne Nutzererstellung...${reset}"
 adduser --disabled-password --gecos "" $APPUSER >/dev/null 2>&1;
@@ -155,19 +182,6 @@ usermod -aG www-data $APPUSER >/dev/null;
 usermod -aG sudo $APPUSER >/dev/null;
 groupadd -f ftpuser
 usermod -aG ftpuser $FTPUSER >/dev/null;
-echo "${green}Fertig.${reset}";
-echo "";
-
-# Passwortgenerierung für andere Dienste
-echo "${yellow}Generiere sonstige Nutzerdaten...${reset}"
-FTPUSER="${APPUSER}-appftp";
-FTPUSERPW=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-16};);
-DBUSER="${APPUSER}-appdb";
-DBUSERPW=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-16};);
-PHPUSERPW=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-16};);
-CASINOUSER="${APPUSER}-app";
-CASINOUSERPW=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-16};);
-CASINOUSERPWMD5=$(echo -n $CASINOUSERPW | md5sum | awk '{print $1}');
 echo "${green}Fertig.${reset}";
 echo "";
 
