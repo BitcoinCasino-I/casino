@@ -266,8 +266,8 @@ echo "";
 # Beginne Apache-Setup
 echo "${yellow}Konfiguriere Apache...${reset}";
 echo "${yellow}Setze Rechte...${reset}";
-chown www-data:www-data -R /var/www;
-chmod 755 -R /var/www;
+chown $APPUSER:www-data -R /var/www;
+chmod 750 -R /var/www;
 echo "${yellow}De/Aktiviere alle relevanten Module...${reset}";
 ENAPACHEMODULES="access_compat authz_user dir negotiation php7.3 reqtimeout status mpm_prefork alias autoindex env rewrite wsgi filter setenvif auth_basic cgid headers authn_core proxy socache_shmcb authn_file deflate mime ssl authz_core proxy_http authz_host";
 DISAPACHEMODULES="mpm_event";
@@ -333,10 +333,10 @@ mkdir -p /var/lib/phpmyadmin/tmp;
 echo "${yellow}Bearbeite Konfiguration für phpMyAdmin...${reset}";
 sed -i "s/PHPUSERPW/$PHPUSERPW/g" /usr/share/phpmyadmin/config.inc.php;
 echo "${yellow}Setze Rechte...${reset}";
-chown -R www-data:www-data /var/lib/phpmyadmin;
-chown -R www-data:www-data /usr/share/phpmyadmin;
-chmod -R 755 /var/lib/phpmyadmin;
-chmod -R 755 /usr/share/phpmyadmin;
+chown -R $APPUSER:www-data /var/lib/phpmyadmin;
+chown -R $APPUSER:www-data /usr/share/phpmyadmin;
+chmod -R 750 /var/lib/phpmyadmin;
+chmod -R 750 /usr/share/phpmyadmin;
 echo "${yellow}Erstelle Datenbank für phpMyAdmin...${reset}";
 mariadb < /usr/share/phpmyadmin/sql/create_tables.sql;
 echo "${yellow}Erstelle Datenbank für CasinoApp...${reset}";
@@ -394,7 +394,7 @@ else
     sed -i "s/APPDOMAIN = 'https:\/\/casino.reshade.io'/APPDOMAIN = '$SERVERIP'/g" /var/www/html/CasinoApp/__init__.py;
 fi
 echo "${yellow}Setze Berechtigungen...${reset}";
-chown -R www-data:www-data /var/www/html/CasinoApp;
+chown -R $APPUSER:www-data /var/www/html/CasinoApp;
 chmod -R 750 /var/www/html/CasinoApp;
 chmod -R 770 /var/www/html/CasinoApp/static/upload/profileimg;
 echo "${yellow}Starte Apache-Webserver neu...${reset}";
