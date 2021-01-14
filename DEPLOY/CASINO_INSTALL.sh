@@ -40,6 +40,8 @@ echo "Die Installation sollte nur auf einem frisch eingerichteten Debian 10 Serv
 read -p "Fortfahren? (Y/N) " runyn
 if [[ ! "$runyn" == [yY1]* ]]; then
     exit -1;
+else
+    echo "${green}OK, fahre fort.${reset}";
 fi
 echo ""
 
