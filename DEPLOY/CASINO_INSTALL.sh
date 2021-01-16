@@ -184,8 +184,8 @@ if [[ "$sslyn" == [yY1]* ]]; then
         break;
     done
     echo "${green}Daten für SSL-Setup OK, fahre fort...${reset}";
+    echo "";
 fi
-echo "";
 
 # Passwortgenerierung für andere Dienste
 echo "${yellow}Generiere sonstige Nutzerdaten...${reset}"
