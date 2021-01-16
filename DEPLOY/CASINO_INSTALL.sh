@@ -39,7 +39,7 @@ fi
 echo ""
 echo "${red}Achtung: Dieses Programm entfernt alle vorhandenen Datenbanken und Websites, deinstalliert und installiert Systempakete!";
 echo "Die Installation sollte nur auf einem frisch eingerichteten Debian 10 Server gestartet werden.${reset}";
-read -p "Fortfahren? (Y/N) " runyn; echo
+read -p "Fortfahren? (Y/N) " runyn;
 if [[ ! "$runyn" == [yY1]* ]]; then
     exit -1;
 else
@@ -50,7 +50,7 @@ echo ""
 echo "${red}Möchten Sie für die App SSL aktivieren? Dazu benötigen Sie eine gültige Domain und E-Mail-Adresse.";
 echo "Der A-Record der Domain muss bereits auf die öffentliche IP dieses Servers verweisen, damit die Einrichtung funktioniert (ein Eintrag für \"@\", einer für \"www\").";
 echo "Falls sie die Seite ohne SSL installieren, wird sie nur unter der öffentlichen IP des Servers erreichbar sein.${reset}";
-read -p "SSL-Setup verwenden? (Y/N) " sslyn; echo
+read -p "SSL-Setup verwenden? (Y/N) " sslyn;
 if [[ "$sslyn" == [yY1]* ]]; then
     echo "${green}OK, verwende SSL-Setup.${reset}";
 else
@@ -58,40 +58,9 @@ else
 fi
 echo ""
 
-# Führe apt update aus, da sonst manche benötigte Pakete nicht gefunden werden (und upgrade)
-echo "${yellow}Führe apt update und apt upgrade aus...${reset}"
-apt-get -qq update >/dev/null 2>&1;
-apt-get -qq upgrade >/dev/null 2>&1;
-echo "${green}Fertig.${reset}"
-echo ""
-
-# Diverse Programme / Ordner /Datenbanken zurücksetzen
-echo "${yellow}Setze Programme und Ordner zurück...${reset}"
-rm -rf /var/lib/mysql/* >/dev/null 2>&1;
-rm -rf /var/www/html >/dev/null 2>&1;
-rm -rf /var/lib/phpmyadmin >/dev/null 2>&1;
-rm -rf /usr/share/phpmyadmin >/dev/null 2>&1;
-rm -rf /etc/apache2 >/dev/null 2>&1;
-rm -rf /etc/mysql >/dev/null 2>&1;
-rm -rf /etc/letsencrypt >/dev/null 2>&1;
-rm -rf /etc/proftpd >/dev/null 2>&1;
-apt-get -qq purge ufw certbot python3-certbot-apache apache2 libapache2-mod-php7.3 libsodium23 php php-common php7.3 php7.3-cli php7.3-common php7.3-json php7.3-opcache php7.3-readline psmisc php7.3-mbstring php7.3-zip php7.3-gd php7.3-xml php7.3-curl php7.3-mysql mariadb-server mariadb-client mysql-common curl python3.7 python3-dev python3-pip python3-venv python3.7-venv libapache2-mod-wsgi-py3 libapache2-mod-security2 libmariadb-dev-compat libmariadb-dev proftpd-basic >/dev/null 2>&1;
-echo "${green}Fertig.${reset}"
-echo ""
-
-# Alle notwendigen Systempakete installieren
-echo "${yellow}Installiere alle nötigen Systempakete...${reset}";
-apt-get -qq install sudo git ufw openssh-server apache2 libapache2-mod-php7.3 libsodium23 php php-common php7.3 php7.3-cli php7.3-common php7.3-json php7.3-opcache php7.3-readline psmisc php7.3-mbstring php7.3-zip php7.3-gd php7.3-xml php7.3-curl php7.3-mysql mariadb-server mariadb-client mysql-common curl python3.7 python3-dev python3-pip python3-venv python3.7-venv libapache2-mod-wsgi-py3 libapache2-mod-security2 libmariadb-dev-compat libmariadb-dev proftpd-basic >/dev/null 2>&1;
-if [[ "$sslyn" == [yY1]* ]]; then
-    apt-get -qq install certbot python3-certbot-apache >/dev/null 2>&1;
-fi
-echo "${green}Fertig.${reset}";
-echo ""
-echo ""
-
 # Frage Benutzernamen für Installation ab
 while true; do
-    read -p "${yellow}Benutzername für den Linux-User der WebApp: ${reset}" APPUSER; echo
+    read -p "${yellow}Benutzername für den Linux-User der WebApp: ${reset}" APPUSER;
     if [ -z "$APPUSER" ] || [ ${#APPUSER} -lt 3 ]; then
         echo "${red}Benutzername leer oder weniger als 3 Zeichen. Erneut versuchen.${reset}";
         continue;
@@ -105,7 +74,7 @@ while true; do
 done
 # Frage Passwort ab (und Bestätigung dafür)
 while true; do
-    read -s -p "${yellow}Passwort für den Linux-User der WebApp: ${reset}" APPUSERPW; echo
+    read -s -p "${yellow}Passwort für den Linux-User der WebApp: ${reset}" APPUSERPW;
     if [ ${#APPUSERPW} -lt 12 ]; then
         echo "${red}Passwort zu kurz. Bitte erneut versuchen.${reset}";
         continue;
@@ -126,7 +95,7 @@ while true; do
         echo "${red}Keine Zahl enthalten. Bitte erneut versuchen.${reset}";
         continue;
     fi
-    read -s -p "${yellow}Passwort bestätigen: ${reset}" APPUSERCONFIRMPW; echo
+    read -s -p "${yellow}Passwort bestätigen: ${reset}" APPUSERCONFIRMPW;
     if [ "$APPUSERPW" = "$APPUSERCONFIRMPW" ]; then
         break;
     fi
@@ -137,7 +106,7 @@ echo "";
 
 # Frage SMTP-Daten für Installation ab
 while true; do
-    read -p "${yellow}SMTP-Server: ${reset}" SMTPSERVER; echo
+    read -p "${yellow}SMTP-Server: ${reset}" SMTPSERVER;
     SMTPSERVERCHECKED=$(echo "$SMTPSERVER" | grep -P '(?=^.{4,253}$)(^(?:[a-zA-Z0-9](?:(?:[a-zA-Z0-9\-]){0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$)');
     if [ -z "$SMTPSERVERCHECKED" ]; then
         echo "${red}Domain leer oder fehlerhaft. Erneut versuchen.${reset}";
@@ -146,8 +115,8 @@ while true; do
     break;
 done
 while true; do
-    read -p "SSL für Mailversand verwenden? (Y/N) " SMTPSSL; echo
-    if ! { [[ "$SMTPSSL" == [yY1]* ]] && [[ "$SMTPSSL" == [nN0]* ]]; }; then
+    read -p "SSL für Mailversand verwenden? (Y/N) " SMTPSSL;
+    if ! [[ "$SMTPSSL" == [yY1nN0]* ]]; then
         echo "${red}Falsche Eingabe. Bitte erneut versuchen.${reset}";
         continue;
     else
@@ -160,7 +129,7 @@ while true; do
     fi
 done
 while true; do
-    read -p "${yellow}SMTP-Port (E-Mail): ${reset}" SMTPPORT; echo
+    read -p "${yellow}SMTP-Port (E-Mail): ${reset}" SMTPPORT;
     if ! [[ $SMTPPORT =~ "^[0-9]+$" ]]; then
        echo "${red}Eingabe keine Zahl. Bitte erneut versuchen.${reset}";
        continue;
@@ -168,7 +137,7 @@ while true; do
     break;
 done
 while true; do
-    read -p "${yellow}SMTP-Benutzername (E-Mail): ${reset}" SMTPUSER; echo
+    read -p "${yellow}SMTP-Benutzername (E-Mail): ${reset}" SMTPUSER;
     SMTPUSERCHECKED=$(echo "$SMTPUSER" | grep -P "^([A-Za-z]+[A-Za-z0-9]*((\.|\-|\_)?[A-Za-z]+[A-Za-z0-9]*){1,})@(([A-Za-z]+[A-Za-z0-9]*)+((\.|\-|\_)?([A-Za-z]+[A-Za-z0-9]*)+){1,})+\.([A-Za-z]{2,})+");
         if [ -z "$SMTPUSERCHECKED" ]; then
             echo "${red}Benutzername leer oder fehlerhaft. Erneut versuchen.${reset}";
@@ -177,12 +146,12 @@ while true; do
     break;
 done
 while true; do
-    read -s -p "${yellow}SMTP-Passwort: ${reset}" SMTPPW; echo
+    read -s -p "${yellow}SMTP-Passwort: ${reset}" SMTPPW;
     if [ -z "$SMTPPW" ]; then
         echo "${red}Falsche Eingabe. Bitte erneut versuchen.${reset}";
         continue;
     fi
-    read -s -p "${yellow}Passwort bestätigen: ${reset}" SMTPCONFIRMPW; echo
+    read -s -p "${yellow}Passwort bestätigen: ${reset}" SMTPCONFIRMPW;
     if [ "$SMTPPW" = "$SMTPCONFIRMPW" ]; then
         break;
     fi
@@ -228,6 +197,36 @@ DBADMIN="${APPUSER}-db";
 DBADMINPW=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-16};);
 echo "${green}Fertig.${reset}";
 echo "";
+
+# Führe apt update aus, da sonst manche benötigte Pakete nicht gefunden werden (und upgrade)
+echo "${yellow}Führe apt update und apt upgrade aus...${reset}"
+apt-get -qq update >/dev/null 2>&1;
+apt-get -qq upgrade >/dev/null 2>&1;
+echo "${green}Fertig.${reset}"
+echo ""
+
+# Diverse Programme / Ordner /Datenbanken zurücksetzen
+echo "${yellow}Setze Programme und Ordner zurück...${reset}"
+rm -rf /var/lib/mysql/* >/dev/null 2>&1;
+rm -rf /var/www/html >/dev/null 2>&1;
+rm -rf /var/lib/phpmyadmin >/dev/null 2>&1;
+rm -rf /usr/share/phpmyadmin >/dev/null 2>&1;
+rm -rf /etc/apache2 >/dev/null 2>&1;
+rm -rf /etc/mysql >/dev/null 2>&1;
+rm -rf /etc/letsencrypt >/dev/null 2>&1;
+rm -rf /etc/proftpd >/dev/null 2>&1;
+apt-get -qq purge ufw certbot python3-certbot-apache apache2 libapache2-mod-php7.3 libsodium23 php php-common php7.3 php7.3-cli php7.3-common php7.3-json php7.3-opcache php7.3-readline psmisc php7.3-mbstring php7.3-zip php7.3-gd php7.3-xml php7.3-curl php7.3-mysql mariadb-server mariadb-client mysql-common curl python3.7 python3-dev python3-pip python3-venv python3.7-venv libapache2-mod-wsgi-py3 libapache2-mod-security2 libmariadb-dev-compat libmariadb-dev proftpd-basic >/dev/null 2>&1;
+echo "${green}Fertig.${reset}"
+echo ""
+
+# Alle notwendigen Systempakete installieren
+echo "${yellow}Installiere alle nötigen Systempakete...${reset}";
+apt-get -qq install sudo git ufw openssh-server apache2 libapache2-mod-php7.3 libsodium23 php php-common php7.3 php7.3-cli php7.3-common php7.3-json php7.3-opcache php7.3-readline psmisc php7.3-mbstring php7.3-zip php7.3-gd php7.3-xml php7.3-curl php7.3-mysql mariadb-server mariadb-client mysql-common curl python3.7 python3-dev python3-pip python3-venv python3.7-venv libapache2-mod-wsgi-py3 libapache2-mod-security2 libmariadb-dev-compat libmariadb-dev proftpd-basic >/dev/null 2>&1;
+if [[ "$sslyn" == [yY1]* ]]; then
+    apt-get -qq install certbot python3-certbot-apache >/dev/null 2>&1;
+fi
+echo "${green}Fertig.${reset}";
+echo ""
 
 # Erstellung des Nutzers, Festlegen des Passworts
 echo "${yellow}Beginne Nutzererstellung...${reset}"
