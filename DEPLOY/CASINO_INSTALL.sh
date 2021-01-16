@@ -39,7 +39,7 @@ fi
 echo ""
 echo "${red}Achtung: Dieses Programm entfernt alle vorhandenen Datenbanken und Websites, deinstalliert und installiert Systempakete!";
 echo "Die Installation sollte nur auf einem frisch eingerichteten Debian 10 Server gestartet werden.${reset}";
-read -p "Fortfahren? (Y/N) " runyn;
+read -p "${yellow}Fortfahren?${reset} (Y/N) " runyn;
 if [[ ! "$runyn" == [yY1]* ]]; then
     exit -1;
 else
@@ -50,7 +50,7 @@ echo ""
 echo "${red}Möchten Sie für die App SSL aktivieren? Dazu benötigen Sie eine gültige Domain und E-Mail-Adresse.";
 echo "Der A-Record der Domain muss bereits auf die öffentliche IP dieses Servers verweisen, damit die Einrichtung funktioniert (ein Eintrag für \"@\", einer für \"www\").";
 echo "Falls sie die Seite ohne SSL installieren, wird sie nur unter der öffentlichen IP des Servers erreichbar sein.${reset}";
-read -p "SSL-Setup verwenden? (Y/N) " sslyn;
+read -p "${yellow}SSL-Setup verwenden?${reset} (Y/N) " sslyn;
 if [[ "$sslyn" == [yY1]* ]]; then
     echo "${green}OK, verwende SSL-Setup.${reset}";
 else
@@ -115,7 +115,7 @@ while true; do
     break;
 done
 while true; do
-    read -p "SSL für Mailversand verwenden? (Y/N) " SMTPSSL;
+    read -p "${yellow}SSL für Mailversand verwenden?${reset} (Y/N) " SMTPSSL;
     if ! [[ "$SMTPSSL" == [yY1nN0]* ]]; then
         echo "${red}Falsche Eingabe. Bitte erneut versuchen.${reset}";
         continue;
@@ -130,7 +130,7 @@ while true; do
 done
 while true; do
     read -p "${yellow}SMTP-Port (E-Mail): ${reset}" SMTPPORT;
-    if ! [[ $SMTPPORT =~ "^[0-9]+$" ]]; then
+    if ! [[ $SMTPPORT =~ ^[0-9]+$ ]]; then
        echo "${red}Eingabe keine Zahl. Bitte erneut versuchen.${reset}";
        continue;
     fi
