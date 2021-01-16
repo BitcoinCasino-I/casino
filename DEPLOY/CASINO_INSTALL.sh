@@ -427,7 +427,7 @@ echo "";
 echo ""
 echo ""
 echo "${green}Installation abgeschlossen.";
-echo "Wechsle zum Benutzer \"${yellow}$APPUSER${green}\".";
+echo "Wechsle zum Benutzer \"${yellow}$APPUSER${green}\"...";
 echo "Zugangsdaten gespeichert unter /home/$APPUSER/creds.txt ${red}- Bitte woanders sichern und dann löschen!"
 echo "Bitte Neustart durchführen mit ${yellow}sudo reboot${reset}";
 echo ""
