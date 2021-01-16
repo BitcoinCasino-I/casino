@@ -2,6 +2,8 @@
 
 # Voraussetzung sollte ein Debian 9 / 10 Server sein, keine zusätzlichen Check dafür im Skript
 
+# WICHTIG: Nach Testphase die db.cfg und mail.cfg aus dem deploy-test-Repo verwenden
+
 # TODOS /IDEEN:
 # - Alles, was der Skript nicht erledigen kann, dokumentieren in den Installationshinweisen (plus Voraussetzungen / Anleitung Skript)
 # - Apache Directives / Security Settings
@@ -37,7 +39,7 @@ fi
 echo ""
 echo "${red}Achtung: Dieses Programm entfernt alle vorhandenen Datenbanken und Websites, deinstalliert und installiert Systempakete!";
 echo "Die Installation sollte nur auf einem frisch eingerichteten Debian 10 Server gestartet werden.${reset}";
-read -p "Fortfahren? (Y/N) " runyn
+read -p "Fortfahren? (Y/N) " runyn; echo
 if [[ ! "$runyn" == [yY1]* ]]; then
     exit -1;
 else
@@ -46,9 +48,9 @@ fi
 echo ""
 
 echo "${red}Möchten Sie für die App SSL aktivieren? Dazu benötigen Sie eine gültige Domain und E-Mail-Adresse.";
-echo "Der A-Record der Domain muss bereits auf die öffentliche IP dieses Servers verweisen, damit die Einrichtung funktioniert.";
+echo "Der A-Record der Domain muss bereits auf die öffentliche IP dieses Servers verweisen, damit die Einrichtung funktioniert (ein Eintrag für \"@\", einer für \"www\").";
 echo "Falls sie die Seite ohne SSL installieren, wird sie nur unter der öffentlichen IP des Servers erreichbar sein.${reset}";
-read -p "SSL-Setup verwenden? (Y/N) " sslyn
+read -p "SSL-Setup verwenden? (Y/N) " sslyn; echo
 if [[ "$sslyn" == [yY1]* ]]; then
     echo "${green}OK, verwende SSL-Setup.${reset}";
 else
@@ -133,17 +135,73 @@ done
 echo "${green}Benutzerdaten OK, fahre fort...${reset}";
 echo "";
 
+# Frage SMTP-Daten für Installation ab
+while true; do
+    read -p "${yellow}SMTP-Server: ${reset}" SMTPSERVER; echo
+    SMTPSERVERCHECKED=$(echo "$SMTPSERVER" | grep -P '(?=^.{4,253}$)(^(?:[a-zA-Z0-9](?:(?:[a-zA-Z0-9\-]){0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$)');
+    if [ -z "$SMTPSERVERCHECKED" ]; then
+        echo "${red}Domain leer oder fehlerhaft. Erneut versuchen.${reset}";
+        continue;
+    fi
+    break;
+done
+while true; do
+    read -p "SSL für Mailversand verwenden? (Y/N) " SMTPSSL; echo
+    if ! { [[ "$SMTPSSL" == [yY1]* ]] && [[ "$SMTPSSL" == [nN0]* ]]; }; then
+        echo "${red}Falsche Eingabe. Bitte erneut versuchen.${reset}";
+        continue;
+    else
+        if [[ "$SMTPSSL" == [yY1]* ]]; then
+            SMTPSSL="True";
+        else
+            SMTPSSL="False";
+        fi
+        break;
+    fi
+done
+while true; do
+    read -p "${yellow}SMTP-Port (E-Mail): ${reset}" SMTPPORT; echo
+    if ! [[ $SMTPPORT =~ "^[0-9]+$" ]]; then
+       echo "${red}Eingabe keine Zahl. Bitte erneut versuchen.${reset}";
+       continue;
+    fi
+    break;
+done
+while true; do
+    read -p "${yellow}SMTP-Benutzername (E-Mail): ${reset}" SMTPUSER; echo
+    SMTPUSERCHECKED=$(echo "$SMTPUSER" | grep -P "^([A-Za-z]+[A-Za-z0-9]*((\.|\-|\_)?[A-Za-z]+[A-Za-z0-9]*){1,})@(([A-Za-z]+[A-Za-z0-9]*)+((\.|\-|\_)?([A-Za-z]+[A-Za-z0-9]*)+){1,})+\.([A-Za-z]{2,})+");
+        if [ -z "$SMTPUSERCHECKED" ]; then
+            echo "${red}Benutzername leer oder fehlerhaft. Erneut versuchen.${reset}";
+            continue;
+        fi
+    break;
+done
+while true; do
+    read -s -p "${yellow}SMTP-Passwort: ${reset}" SMTPPW; echo
+    if [ -z "$SMTPPW" ]; then
+        echo "${red}Falsche Eingabe. Bitte erneut versuchen.${reset}";
+        continue;
+    fi
+    read -s -p "${yellow}Passwort bestätigen: ${reset}" SMTPCONFIRMPW; echo
+    if [ "$SMTPPW" = "$SMTPCONFIRMPW" ]; then
+        break;
+    fi
+    echo "${red}Passwörter stimmen nicht überein. Bitte erneut versuchen.${reset}";
+done
+echo "${green}SMTP-Daten OK, fahre fort...${reset}";
+echo "";
+
 # Falls SSL ausgewählt wurde, frage Daten dafür ab
 if [[ "$sslyn" == [yY1]* ]]; then
     # Frage Domain ab
     while true; do
-        read -s -p "${yellow}Ihre Domain (ohne \"www\", zum Beispiel test.de): ${reset}" DOMAINNAME; echo
+        read -p "${yellow}Ihre Domain (ohne \"www\", zum Beispiel test.de): ${reset}" DOMAINNAME; echo
         DOMAINCHECKED=$(echo "$DOMAINNAME" | grep -P '(?=^.{4,253}$)(^(?:[a-zA-Z0-9](?:(?:[a-zA-Z0-9\-]){0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$)');
         if [ -z "$DOMAINCHECKED" ]; then
             echo "${red}Domain leer oder fehlerhaft. Erneut versuchen.${reset}";
             continue;
         fi
-        read -s -p "${yellow}Ihre E-Mail-Adresse: ${reset}" EMAILADDRESS; echo
+        read -p "${yellow}Ihre E-Mail-Adresse: ${reset}" EMAILADDRESS; echo
         EMAILCHECKED=$(echo "$EMAILADDRESS" | grep -P "^([A-Za-z]+[A-Za-z0-9]*((\.|\-|\_)?[A-Za-z]+[A-Za-z0-9]*){1,})@(([A-Za-z]+[A-Za-z0-9]*)+((\.|\-|\_)?([A-Za-z]+[A-Za-z0-9]*)+){1,})+\.([A-Za-z]{2,})+");
         if [ -z "$EMAILCHECKED" ]; then
             echo "${red}E-Mail-Adresse leer oder fehlerhaft. Erneut versuchen.${reset}";
@@ -330,17 +388,27 @@ deactivate;
 echo "${yellow}Entferne temporäre Dateien...${reset}";
 rm -r /home/$APPUSER/casinoapp-download;
 echo "${yellow}Bearbeite Konfigurationen...${reset}";
+# Edit database config file
 sed -i "s/'DBUSER'/'$DBUSER'/g" /var/www/html/CasinoApp/db.cfg;
 sed -i "s/'DBUSERPW'/'$DBUSERPW'/g" /var/www/html/CasinoApp/db.cfg;
+# Edit server domain/ip
 if [[ "$sslyn" == [yY1]* ]]; then
     sed -i "s/APPDOMAIN = 'https:\/\/casino.reshade.io'/APPDOMAIN = 'https:\/\/$DOMAINCHECKED'/g" /var/www/html/CasinoApp/__init__.py;
 else
     sed -i "s/APPDOMAIN = 'https:\/\/casino.reshade.io'/APPDOMAIN = '$SERVERIP'/g" /var/www/html/CasinoApp/__init__.py;
 fi
+# Edit mail config file
+sed -i "s/'SMTPSERVER'/'$SMTPSERVER'/g" /var/www/html/CasinoApp/mail.cfg;
+sed -i "s/SMTPPORT/$SMTPPORT/g" /var/www/html/CasinoApp/mail.cfg;
+sed -i "s/SMTPSSL/$SMTPSSL/g" /var/www/html/CasinoApp/mail.cfg;
+sed -i "s/'SMTPUSER'/'$SMTPUSER'/g" /var/www/html/CasinoApp/mail.cfg;
+sed -i "s/'SMTPPW'/'$SMTPPW'/g" /var/www/html/CasinoApp/mail.cfg;
+# Setze Berechtigungen
 echo "${yellow}Setze Berechtigungen...${reset}";
 chown -R $APPUSER:www-data /var/www/html/CasinoApp;
 chmod -R 750 /var/www/html/CasinoApp;
 chmod -R 770 /var/www/html/CasinoApp/static/upload/profileimg;
+# Apache-Neustart
 echo "${yellow}Starte Apache-Webserver neu...${reset}";
 systemctl restart apache2;
 echo "${green}Fertig.${reset}";
