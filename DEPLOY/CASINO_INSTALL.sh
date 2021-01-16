@@ -350,6 +350,7 @@ echo "${yellow}Erstelle alle Datenbanknutzer...${reset}";
 mariadb -e "GRANT SELECT, INSERT, UPDATE, DELETE ON phpmyadmin.* TO 'pma'@'localhost' IDENTIFIED BY '$PHPUSERPW';";
 mariadb -e "GRANT ALL PRIVILEGES ON *.* TO '$DBADMIN'@'localhost' IDENTIFIED BY '$DBADMINPW' WITH GRANT OPTION;";
 mariadb -e "GRANT SELECT, INSERT, UPDATE, DELETE ON casinoapp.* TO '$DBUSER'@'localhost' IDENTIFIED BY '$DBUSERPW';";
+echo "${yellow}Erstelle Website-Nutzer...${reset}";
 mariadb -e "USE casinoapp; INSERT INTO user VALUES (NULL, '$CASINOUSER', '', '$CASINOUSERPWMD5', 0, 20, 0, 1, 1, NULL, NULL, 0, NULL);";
 echo "${green}Fertig.${reset}";
 echo "";
