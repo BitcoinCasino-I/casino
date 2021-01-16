@@ -1,12 +1,12 @@
 
 
-Linux-User
-----------
+LINUX-NUTZER
+------------
 Benutzername: APPUSER
 Passwort: APPUSERPW
 
 
-Datenbank-Nutzer
+DATENBANK-NUTZER
 ----------------
 Benutzername: DBUSER (nur Zugriff auf casinoapp-Tabelle, eingeschränkte Aktionen)
 Passwort: DBUSERPW
@@ -18,13 +18,13 @@ Benutzername: DBADMIN (Vollzugriff)
 Passwort: DBADMINPW
 
 
-Website-Nutzer
+WEBSITE-NUTZER
 --------------
 Benutzername: CASINOUSER (Admin - neue Accounts können über das Adminpanel, die Registrierung oder über phpMyAdmin angelegt werden)
 Passwort: CASINOUSERPW
 
 
-FTP-Server
+FTP-SERVER
 ----------
 Server-IP: SERVERIP
 Port: 20
@@ -32,8 +32,8 @@ Benutzername: FTPUSER
 Passwort: FTPUSERPW
 
 
-Mail-Server
------------
+MAIL-VERSAND
+------------
 SMTP-Server: SMTPSERVER
 SMTP-Port: SMTPPORT
 SSL: SMTPSSL
@@ -41,9 +41,13 @@ Benutzername: SMTPUSER
 Passwort: SMTPPW
 
 
-Links
+LNIKS
 -----
 Website: SERVERIP
 phpMyAdmin: SERVERIP/phpmyadmin
 
+
+SONSTIGES
+---------
+Application Secret: APPLICATIONSECRET
 

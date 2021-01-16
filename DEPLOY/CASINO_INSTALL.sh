@@ -2,7 +2,7 @@
 
 # Voraussetzung sollte ein Debian 9 / 10 Server sein, keine zusätzlichen Check dafür im Skript
 
-# WICHTIG: Nach Testphase die db.cfg und mail.cfg aus dem deploy-test-Repo verwenden
+# WICHTIG: NACH TESTPHASE DIE DB.CFG, MAIL.CFG UND CASINOAPP.WSGI AUS DEM DEPLOY-TEST-REPO VERWENDEN
 
 # TODOS /IDEEN:
 # - Alles, was der Skript nicht erledigen kann, dokumentieren in den Installationshinweisen (plus Voraussetzungen / Anleitung Skript)
@@ -199,6 +199,7 @@ CASINOUSERPW=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-16};);
 CASINOUSERPWMD5=$(echo -n $CASINOUSERPW | md5sum | awk '{print $1}');
 DBADMIN="${APPUSER}-db";
 DBADMINPW=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-16};);
+APPLICATIONSECRET=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-32};);
 echo "${green}Fertig.${reset}";
 echo "";
 
@@ -378,6 +379,7 @@ sed -i "s/SMTPPORT/$SMTPPORT/g" /home/$APPUSER/creds.txt;
 sed -i "s/SMTPSSL/$SMTPSSL/g" /home/$APPUSER/creds.txt;
 sed -i "s/SMTPUSER/$SMTPUSER/g" /home/$APPUSER/creds.txt;
 sed -i "s/SMTPPW/$SMTPPW/g" /home/$APPUSER/creds.txt;
+sed -i "s/APPLICATIONSECRET/$APPLICATIONSECRET/g" /home/$APPUSER/creds.txt;
 chown ${APPUSER}:${APPUSER} /home/$APPUSER/creds.txt;
 chmod 750 /home/$APPUSER/creds.txt;
 echo "${green}Fertig.${reset}";
@@ -412,6 +414,8 @@ sed -i "s/SMTPPORT/$SMTPPORT/g" /var/www/html/CasinoApp/mail.cfg;
 sed -i "s/SMTPSSL/$SMTPSSL/g" /var/www/html/CasinoApp/mail.cfg;
 sed -i "s/'SMTPUSER'/'$SMTPUSER'/g" /var/www/html/CasinoApp/mail.cfg;
 sed -i "s/'SMTPPW'/'$SMTPPW'/g" /var/www/html/CasinoApp/mail.cfg;
+# Bearbeite wsgi secret
+sed -i "s/'APPLICATIONSECRET'/'$APPLICATIONSECRET'/g" /var/www/html/CasinoApp/casinoapp.wsgi;
 # Setze Berechtigungen
 echo "${yellow}Setze Berechtigungen...${reset}";
 chown -R $APPUSER:www-data /var/www/html/CasinoApp;
