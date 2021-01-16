@@ -50,7 +50,8 @@ done
 echo ""
 
 echo "${red}Möchten Sie für die App SSL aktivieren? Dazu benötigen Sie eine gültige Domain und E-Mail-Adresse.";
-echo "Der A-Record der Domain muss bereits auf die öffentliche IP dieses Servers verweisen, damit die Einrichtung funktioniert (ein Eintrag für \"@\", einer für \"www\").";
+echo "Der A-Record der Domain muss bereits auf die öffentliche IP dieses Servers verweisen, damit die Einrichtung funktioniert.";
+echo "--> Ein Eintrag für \"@\", einer für \"www\"."
 echo "Falls sie die Seite ohne SSL installieren, wird sie nur unter der öffentlichen IP des Servers erreichbar sein.${reset}";
 while true; do
     read -p "${yellow}SSL-Setup verwenden?${reset} (Y/N) " sslyn;
