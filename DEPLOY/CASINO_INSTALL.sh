@@ -74,7 +74,7 @@ while true; do
 done
 # Frage Passwort ab (und Bestätigung dafür)
 while true; do
-    read -s -p "${yellow}Passwort für den Linux-User der WebApp: ${reset}" APPUSERPW;
+    read -s -p "${yellow}Passwort für den Linux-User der WebApp: ${reset}" APPUSERPW; echo
     if [ ${#APPUSERPW} -lt 12 ]; then
         echo "${red}Passwort zu kurz. Bitte erneut versuchen.${reset}";
         continue;
@@ -95,7 +95,7 @@ while true; do
         echo "${red}Keine Zahl enthalten. Bitte erneut versuchen.${reset}";
         continue;
     fi
-    read -s -p "${yellow}Passwort bestätigen: ${reset}" APPUSERCONFIRMPW;
+    read -s -p "${yellow}Passwort bestätigen: ${reset}" APPUSERCONFIRMPW; echo
     if [ "$APPUSERPW" = "$APPUSERCONFIRMPW" ]; then
         break;
     fi
@@ -146,12 +146,12 @@ while true; do
     break;
 done
 while true; do
-    read -s -p "${yellow}SMTP-Passwort: ${reset}" SMTPPW;
+    read -s -p "${yellow}SMTP-Passwort: ${reset}" SMTPPW; echo
     if [ -z "$SMTPPW" ]; then
         echo "${red}Falsche Eingabe. Bitte erneut versuchen.${reset}";
         continue;
     fi
-    read -s -p "${yellow}Passwort bestätigen: ${reset}" SMTPCONFIRMPW;
+    read -s -p "${yellow}Passwort bestätigen: ${reset}" SMTPCONFIRMPW; echo
     if [ "$SMTPPW" = "$SMTPCONFIRMPW" ]; then
         break;
     fi
