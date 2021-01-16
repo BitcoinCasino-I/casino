@@ -24,16 +24,25 @@ Benutzername: CASINOUSER (Admin - neue Accounts können über das Adminpanel, di
 Passwort: CASINOUSERPW
 
 
-FTP
---------------
+FTP-Server
+----------
 Server-IP: SERVERIP
 Port: 20
 Benutzername: FTPUSER
 Passwort: FTPUSERPW
 
 
-Links der App
--------------
+Mail-Server
+-----------
+SMTP-Server: SMTPSERVER
+SMTP-Port: SMTPPORT
+SSL: SMTPSSL
+Benutzername: SMTPUSER
+Passwort: SMTPPW
+
+
+Links
+-----
 Website: SERVERIP
 phpMyAdmin: SERVERIP/phpmyadmin
 

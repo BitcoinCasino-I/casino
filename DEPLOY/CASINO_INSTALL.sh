@@ -39,23 +39,27 @@ fi
 echo ""
 echo "${red}Achtung: Dieses Programm entfernt alle vorhandenen Datenbanken und Websites, deinstalliert und installiert Systempakete!";
 echo "Die Installation sollte nur auf einem frisch eingerichteten Debian 10 Server gestartet werden.${reset}";
-read -p "${yellow}Fortfahren?${reset} (Y/N) " runyn;
-if [[ ! "$runyn" == [yY1]* ]]; then
-    exit -1;
-else
-    echo "${green}OK, fahre fort.${reset}";
-fi
+while true; do
+    read -p "${yellow}Fortfahren?${reset} (Y/N) " runyn;
+    if ! [[ "$runyn" == [yY1nN0]* ]]; then
+        echo "${red}Falsche Eingabe. Bitte erneut versuchen.${reset}";
+        continue;
+    fi
+    break;
+done
 echo ""
 
 echo "${red}Möchten Sie für die App SSL aktivieren? Dazu benötigen Sie eine gültige Domain und E-Mail-Adresse.";
 echo "Der A-Record der Domain muss bereits auf die öffentliche IP dieses Servers verweisen, damit die Einrichtung funktioniert (ein Eintrag für \"@\", einer für \"www\").";
 echo "Falls sie die Seite ohne SSL installieren, wird sie nur unter der öffentlichen IP des Servers erreichbar sein.${reset}";
-read -p "${yellow}SSL-Setup verwenden?${reset} (Y/N) " sslyn;
-if [[ "$sslyn" == [yY1]* ]]; then
-    echo "${green}OK, verwende SSL-Setup.${reset}";
-else
-    echo "${green}OK, verwende kein SSL-Setup.${reset}";
-fi
+while true; do
+    read -p "${yellow}SSL-Setup verwenden?${reset} (Y/N) " sslyn;
+    if ! [[ "$sslyn" == [yY1nN0]* ]]; then
+        echo "${red}Falsche Eingabe. Bitte erneut versuchen.${reset}";
+        continue;
+    fi
+    break;
+done
 echo ""
 
 # Frage Benutzernamen für Installation ab
@@ -179,7 +183,6 @@ if [[ "$sslyn" == [yY1]* ]]; then
         break;
     done
     echo "${green}Daten für SSL-Setup OK, fahre fort...${reset}";
-    echo "";
 fi
 echo "";
 
@@ -368,6 +371,11 @@ sed -i "s/Passwort: CASINOUSERPW/Passwort: $CASINOUSERPW/g" /home/$APPUSER/creds
 sed -i "s/Benutzername: CASINOUSER/Benutzername: $CASINOUSER/g" /home/$APPUSER/creds.txt;
 sed -i "s/Benutzername: FTPUSER/Benutzername: $FTPUSER/g" /home/$APPUSER/creds.txt;
 sed -i "s/Passwort: FTPUSERPW/Passwort: $FTPUSERPW/g" /home/$APPUSER/creds.txt;
+sed -i "s/SMTPSERVER/$SMTPSERVER/g" /home/$APPUSER/creds.txt;
+sed -i "s/SMTPPORT/$SMTPPORT/g" /home/$APPUSER/creds.txt;
+sed -i "s/SMTPSSL/$SMTPSSL/g" /home/$APPUSER/creds.txt;
+sed -i "s/SMTPUSER/$SMTPUSER/g" /home/$APPUSER/creds.txt;
+sed -i "s/SMTPPW/$SMTPPW/g" /home/$APPUSER/creds.txt;
 chown ${APPUSER}:${APPUSER} /home/$APPUSER/creds.txt;
 chmod 750 /home/$APPUSER/creds.txt;
 echo "${green}Fertig.${reset}";
