@@ -170,13 +170,13 @@ echo "";
 if [[ "$sslyn" == [yY1]* ]]; then
     # Frage Domain ab
     while true; do
-        read -p "${yellow}Ihre Domain (ohne \"www\", zum Beispiel test.de): ${reset}" DOMAINNAME; echo
+        read -p "${yellow}Ihre Domain (ohne \"www\", zum Beispiel test.de): ${reset}" DOMAINNAME;
         DOMAINCHECKED=$(echo "$DOMAINNAME" | grep -P '(?=^.{4,253}$)(^(?:[a-zA-Z0-9](?:(?:[a-zA-Z0-9\-]){0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$)');
         if [ -z "$DOMAINCHECKED" ]; then
             echo "${red}Domain leer oder fehlerhaft. Erneut versuchen.${reset}";
             continue;
         fi
-        read -p "${yellow}Ihre E-Mail-Adresse: ${reset}" EMAILADDRESS; echo
+        read -p "${yellow}Ihre E-Mail-Adresse: ${reset}" EMAILADDRESS;
         EMAILCHECKED=$(echo "$EMAILADDRESS" | grep -P "^([A-Za-z]+[A-Za-z0-9]*((\.|\-|\_)?[A-Za-z]+[A-Za-z0-9]*){1,})@(([A-Za-z]+[A-Za-z0-9]*)+((\.|\-|\_)?([A-Za-z]+[A-Za-z0-9]*)+){1,})+\.([A-Za-z]{2,})+");
         if [ -z "$EMAILCHECKED" ]; then
             echo "${red}E-Mail-Adresse leer oder fehlerhaft. Erneut versuchen.${reset}";
