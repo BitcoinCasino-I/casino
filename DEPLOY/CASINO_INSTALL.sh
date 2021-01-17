@@ -274,8 +274,6 @@ echo "";
 
 # Beginne Apache-Setup
 echo "${yellow}Konfiguriere Apache...${reset}";
-echo "${yellow}Installiere Firewall...${reset}";
-git clone -q https://github.com/SpiderLabs/owasp-modsecurity-crs.git /etc/apache2/owasp-modsecurity-crs >/dev/null;
 echo "${yellow}De/Aktiviere alle relevanten Module...${reset}";
 ENAPACHEMODULES="security2 access_compat authz_user dir negotiation php7.3 reqtimeout status mpm_prefork alias autoindex env rewrite wsgi filter setenvif auth_basic cgid headers authn_core proxy socache_shmcb authn_file deflate mime ssl authz_core proxy_http authz_host";
 DISAPACHEMODULES="mpm_event";
