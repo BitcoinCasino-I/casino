@@ -13,7 +13,7 @@ if [[ $EUID > 0 ]] || [ -z "$SUDO_USER" ]; then
         exit -1;
 fi
 
-SERVERIP=$(grep "APPDOMAIN = '" /var/www/html/CasinoApp/__init__.py | awk -F "'" '{print $2}');;
+SERVERIP=$(grep "APPDOMAIN = '" /var/www/html/CasinoApp/__init__.py | awk -F "'" '{print $2}');
 USER=$(stat -c '%U' /var/www/html/CasinoApp/casinoapp.wsgi);
 
 echo ""
@@ -78,7 +78,7 @@ source /var/www/html/CasinoApp/venv/bin/activate;
 # Next line needs to be installed seperately, build errors otherwise when installing requirements at oce
 python3 -m pip install -qq pip wheel setuptools;
 python3 -m pip install -qq --upgrade pip wheel setuptools;
-python3 -m pip install -qq -r /home/$USER/casinoapp-update/requirements.txt;
+python3 -m pip install -qq -r /home/$USER/casinoapp-update/Deployment/requirements.txt;
 deactivate;
 echo "${yellow}Entferne temporäre Dateien...${reset}";
 rm -rf /home/$USER/casinoapp-update;

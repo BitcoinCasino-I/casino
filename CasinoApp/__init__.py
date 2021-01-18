@@ -169,7 +169,7 @@ def index():
 
 @app.route("/robots.txt")
 def robots_txt():
-    return send_from_directory("static", "templates/robots.txt")
+    return send_from_directory(app.static_folder, "templates/robots.txt")
 
 @app.route('/login', methods=['GET', 'POST'])
 def anmeldung():
