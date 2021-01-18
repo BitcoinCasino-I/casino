@@ -18,11 +18,11 @@
 
 # Variables
 SERVERIP=$(wget -qO- https://ipecho.net/plain;);
-GITURL="https://github.com/Lartsch/casinoapp-deploy-test.git";
+GITURL="https://github.com/BitcoinCasino-I/casino.git";
 # Use the following lines to define the subfolder in the repo where the CasinoApp / Config files lives
 # Ex. GITCASINOSUBFOLDER="CasinoApp/" (notice slash at the end!)
 GITCASINOSUBFOLDER="CasinoApp/"
-GITCONFIGSUBFOLDER="Deploy/"
+GITCONFIGSUBFOLDER="Deployment/"
 
 # Definiere Farbcodes
 red=`tput setaf 1`;
