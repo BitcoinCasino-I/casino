@@ -296,8 +296,6 @@ else
     cat /home/$APPUSER/casinoapp-download/"${GITCONFIGSUBFOLDER}"Casino.http.conf >> /etc/apache2/sites-available/Casino.conf;
     sed -i "s/ServerName SERVERNAME/ServerName $SERVERIP/g" /etc/apache2/sites-available/Casino.conf;
 fi
-sed -i "s/Alias \/ftp \/home\/FTPUSER/Alias \/ftp \/home\/$FTPUSER/g" /etc/apache2/sites-available/Casino.conf;
-sed -i "s/<Directory \/home\/FTPUSER>/<Directory \/home\/$FTPUSER>/g" /etc/apache2/sites-available/Casino.conf;
 echo "${yellow}Bereite Webdateien vor...${reset}";
 rm /var/www/html/index.html;
 mv /home/$APPUSER/casinoapp-download/"${GITCASINOSUBFOLDER}" /var/www/html;
@@ -420,6 +418,7 @@ sed -i "s/'APPLICATIONSECRET'/'$APPLICATIONSECRET'/g" /var/www/html/CasinoApp/ca
 # Setze Berechtigungen
 echo "${yellow}Setze Berechtigungen...${reset}";
 chown -R $APPUSER:www-data /var/www/html/CasinoApp;
+chown -R $FTPUSER:www-data /var/www/html/CasinoApp/static/js
 chmod -R 750 /var/www/html/CasinoApp;
 chmod -R 770 /var/www/html/CasinoApp/static/upload/profileimg;
 # Apache-Neustart
