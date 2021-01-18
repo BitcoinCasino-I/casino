@@ -166,6 +166,10 @@ def index():
 			isAdmin = True
 	return render_template('home.html', isLoggedIn=isLoggedIn, isAdmin=isAdmin)
 
+@app.route("/robots.txt")
+def robots_txt():
+    return render_template("robots.txt")
+
 @app.route('/login', methods=['GET', 'POST'])
 def anmeldung():
 	# if user is logged in, redirect to account page

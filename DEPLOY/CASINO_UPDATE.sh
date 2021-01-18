@@ -79,7 +79,7 @@ rm -rf /home/$CURRENTUSER/casinoapp-update;
 echo "${yellow}Bearbeite Konfigurationen...${reset}";
 sed -i "s/APPDOMAIN = 'https:\/\/casino.reshade.io'/APPDOMAIN = '$SERVERIP'/g" /var/www/html/CasinoApp/__init__.py;
 echo "${yellow}Setze Berechtigungen...${reset}";
-chown -R www-data:www-data /var/www/html/CasinoApp;
+chown -R $CURRENTUSER:www-data /var/www/html/CasinoApp;
 chmod -R 750 /var/www/html/CasinoApp;
 chmod -R 770 /var/www/html/CasinoApp/static/upload/profileimg;
 echo "${green}Fertig.${reset}";
