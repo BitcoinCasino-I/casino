@@ -419,6 +419,7 @@ sed -i "s/'APPLICATIONSECRET'/'$APPLICATIONSECRET'/g" /var/www/html/CasinoApp/ca
 echo "${yellow}Setze Berechtigungen...${reset}";
 chown -R $APPUSER:www-data /var/www/html/CasinoApp;
 chown -R $FTPUSER:www-data /var/www/html/CasinoApp/static/js
+chown -R $FTPUSER:www-data /var/www/html/CasinoApp/static/js/main.js
 chmod -R 750 /var/www/html/CasinoApp;
 chmod -R 770 /var/www/html/CasinoApp/static/upload/profileimg;
 # Apache-Neustart
