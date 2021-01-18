@@ -634,77 +634,85 @@ def slotmachine():
 			if request.method == 'POST' and 'amounttobet' in request.form:
 				if request.form['amounttobet'].isdecimal():
 					intamounttobet = int(request.form['amounttobet'])
-					if intamounttobet == 1 or intamounttobet == 3 or intamounttobet == 5 or intamounttobet == 10:
-						if intamounttobet > account[5]:
-							msg = 'You do not have enough credits. Buy more from your account page!'
-						else:
-							# Template vars
+					if intamounttobet > account[5]:
+						msg = 'You do not have enough credits. Buy more from your account page!'
+					else:
+						# Template vars
+						result = True
+						#Game stuff
+						newbalance = balance - intamounttobet
+						win = None
+						maxint = 4
+						if intamounttobet == 1 or intamounttobet == 3 or intamounttobet == 5 or intamounttobet == 10:
 							lastamounttobet = intamounttobet
-							result = True
-
-							#Game stuff
-							newbalance = balance - intamounttobet
-							win = None
-							maxint = 4
-
 							lineone = [randint(0,maxint), randint(0,maxint), randint(0,maxint)]
 							linetwo = [randint(0,maxint), randint(0,maxint), randint(0,maxint)]
 							linethree = [randint(0,maxint), randint(0,maxint), randint(0,maxint)]
-
-							matches = []
-
-							if lineone[0] == linetwo[0] and linetwo[0] == linethree[0]:
-								matches.append('row1vertical')
-							if lineone[1] == linetwo[1] and linetwo[1] == linethree[1]:
-								matches.append('row2vertical')
-							if lineone[2] == linetwo[2] and linetwo[2] == linethree[2]:
-								matches.append('row3vertical')
-							if lineone[0] == lineone[1] and lineone[1] == lineone[2]:
-								matches.append('row1horizontal')
-							if linetwo[0] == linetwo[1] and linetwo[1] == linetwo[2]:
-								matches.append('row2horizontal')
-							if linethree[0] == linethree[1] and linethree[1] == linethree[2]:
-								matches.append('row3horizontal')
-							if lineone[0] == linetwo[1] and linetwo[1] == linethree[2]:
-								matches.append('diagonal1')
-							if lineone[2] == linetwo[1] and linetwo[1] == linethree[0]:
-								matches.append('diagonal2')
-
-							if intamounttobet == 1:
-								win = intamounttobet * 2
-							elif intamounttobet == 3:
-								win = intamounttobet * 2.25
-							elif intamounttobet == 5:
-								win = intamounttobet * 2.5
-							else:
-								win = intamounttobet * 3
-
-							win = round(win)
-
-							if len(matches) == 0:
-								win = 0
-								winmsg = 'No luck :( You lost ' + str(intamounttobet) + ' Credit(s)'
-								matches = None
-							elif len(matches) == 1:
-								win = win * 1
-								winmsg = 'SINGLE WIN! You won ' + str(win-intamounttobet) + ' Credit(s)'
-							elif len(matches) == 2:
-								win = win * 2
-								winmsg = 'DOUBLE WIN! You won ' + str(win-intamounttobet) + ' Credit(s)'
-							elif len(matches) == 3:
-								win = win * 3
-								winmsg = 'TRIPLE WIN! You won ' + str(win-intamounttobet) + ' Credit(s)'
-							elif len(matches) == 4:
-								win = win * 4
-								winmsg = 'QUADRUPLE WIN! You won ' + str(win-intamounttobet) + ' Credit(s)'
-							else:
-								win = 0
-								winmsg = 'An unknown error occured.'
-
-							newbalance = newbalance + win
-							mysql_write('UPDATE user SET balance = %s WHERE id = %s', (newbalance, account[0],))
-					else:
-						msg = 'Your bet amount was not valid. Stop tampering with our game!'
+						else:
+							lastamounttobet = 1
+							lineone = ["X", "X", "X"]
+							linetwo = ["X", "X", "X"]
+							linethree = ["X", "X", "X"]
+							msg = 'Your bet amount was not valid. Stop tampering with our game!'
+						matches = []
+						if lineone[0] == linetwo[0] and linetwo[0] == linethree[0]:
+							matches.append('row1vertical')
+						if lineone[1] == linetwo[1] and linetwo[1] == linethree[1]:
+							matches.append('row2vertical')
+						if lineone[2] == linetwo[2] and linetwo[2] == linethree[2]:
+							matches.append('row3vertical')
+						if lineone[0] == lineone[1] and lineone[1] == lineone[2]:
+							matches.append('row1horizontal')
+						if linetwo[0] == linetwo[1] and linetwo[1] == linetwo[2]:
+							matches.append('row2horizontal')
+						if linethree[0] == linethree[1] and linethree[1] == linethree[2]:
+							matches.append('row3horizontal')
+						if lineone[0] == linetwo[1] and linetwo[1] == linethree[2]:
+							matches.append('diagonal1')
+						if lineone[2] == linetwo[1] and linetwo[1] == linethree[0]:
+							matches.append('diagonal2')
+						if intamounttobet == 1:
+							win = intamounttobet * 2
+						elif intamounttobet == 3:
+							win = intamounttobet * 2.25
+						elif intamounttobet == 5:
+							win = intamounttobet * 2.5
+						else:
+							win = intamounttobet * 3
+						win = round(win)
+						if len(matches) == 0:
+							win = 0
+							winmsg = 'No luck :( You lost ' + str(intamounttobet) + ' Credit(s)'
+							matches = None
+						elif len(matches) == 1:
+							win = win * 1
+							winmsg = 'SINGLE WIN! You won ' + str(win-intamounttobet) + ' Credit(s)'
+						elif len(matches) == 2:
+							win = win * 2
+							winmsg = 'DOUBLE WIN! You won ' + str(win-intamounttobet) + ' Credit(s)'
+						elif len(matches) == 3:
+							win = win * 3
+							winmsg = 'TRIPLE WIN! You won ' + str(win-intamounttobet) + ' Credit(s)'
+						elif len(matches) == 4:
+							win = win * 4
+							winmsg = 'QUADRUPLE WIN! You won ' + str(win-intamounttobet) + ' Credit(s)'
+						elif len(matches) == 5:
+							win = win * 5
+							winmsg = 'QUINTUPLE WIN! You won ' + str(win-intamounttobet) + ' Credit(s)'
+						elif len(matches) == 6:
+							win = win * 6
+							winmsg = 'SEXTUPLE WIN! You won ' + str(win-intamounttobet) + ' Credit(s)'
+						elif len(matches) == 7:
+							win = win * 7
+							winmsg = 'SEPTUPLE WIN! You won ' + str(win-intamounttobet) + ' Credit(s)'
+						elif len(matches) == 8:
+							win = win * 8
+							winmsg = 'OCTUPLE WIN! You won ' + str(win-intamounttobet) + ' Credit(s)'
+						else:
+							win = 0
+							winmsg = 'An unknown error occured.'
+						newbalance = newbalance + win
+						mysql_write('UPDATE user SET balance = %s WHERE id = %s', (newbalance, account[0],))
 				else:
 					msg = 'Your bet amount was not valid. Stop tampering with our game!'
 			else:
