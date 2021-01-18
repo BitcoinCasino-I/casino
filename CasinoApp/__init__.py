@@ -432,13 +432,19 @@ def buycredits():
 		if request.form['package'] == '' or request.form['name'] == '' or request.form['ccnumber'] == '' or request.form['ccv'] == '':
 			msg = 'Fill out the form!'
 		else:
-			package = int(request.form['package'])
-			account = mysql_fetchone('SELECT * FROM user WHERE username = %s', (session.get("username"),))
-			if account:
-				mysql_write('UPDATE user SET balance = %s WHERE username = %s', (int(account[5])+package, account[1],))
-				msg = 'Your purchase for account "' + account[1] + '" was successful!'
+			ccnumber = len(str(request.form.get('ccnumber', type=int)))
+			ccv = len(str(request.form.get('ccv', type=int)))
+			if ccnumber == 16 and ccv == 3:
+				package = int(request.form['package'])
+				account = mysql_fetchone('SELECT * FROM user WHERE username = %s', (session.get("username"),))
+				if account:
+					mysql_write('UPDATE user SET balance = %s WHERE username = %s', (int(account[5])+package, account[1],))
+					msg = 'Your purchase for account "' + account[1] + '" was successful!'
+				else:
+					msg = 'Unknown error occured.'
 			else:
-				msg = 'Unknown error occured.'
+				msg = 'ccnumber or ccv is not correct'
+
 	return render_template('buycredits.html', isLoggedIn=True, isAdmin=False, msg=msg, credits=mysql_fetchone('SELECT * FROM user WHERE username = %s', (session.get("username",)))[5])
 
 @app.route('/adminpanel', methods=['GET', 'POST'])
