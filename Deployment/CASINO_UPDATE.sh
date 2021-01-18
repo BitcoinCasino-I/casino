@@ -6,15 +6,15 @@ yellow=`tput setaf 3`;
 green=`tput setaf 2`;
 reset=`tput setaf 7`;
 
-SERVERIP=$(grep "APPDOMAIN = '" /var/www/html/CasinoApp/__init__.py | awk -F "'" '{print $2}');;
-USER=$(stat -c '%U' /var/www/html/CasinoApp/casinoapp.wsgi);
-
 # Skript muss als root oder mit sudo ausgeführt werden
 if [[ $EUID > 0 ]] || [ -z "$SUDO_USER" ]; then
         # Abbruch
         echo "${red}Bitte als root / mit sudo ausführen!${reset}";
         exit -1;
 fi
+
+SERVERIP=$(grep "APPDOMAIN = '" /var/www/html/CasinoApp/__init__.py | awk -F "'" '{print $2}');;
+USER=$(stat -c '%U' /var/www/html/CasinoApp/casinoapp.wsgi);
 
 echo ""
 echo "${red}Achtung: Dieses Programm löscht den kompletten Ordner /var/www/html/CasinoApp, ausgenommen den Profilbild-Ordner.";
