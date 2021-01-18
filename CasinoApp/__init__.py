@@ -3,6 +3,7 @@
 # CODE IST TEILWEISE REDUNDANT UND KANN AUCH ALLGEMEIN NOCH OPTIMIERT WERDEN. FOKUS LAG ERSTMAL AUF FUNKTIONALITÄT.
 
 from flask import Flask, render_template, request, redirect, url_for, session, jsonify
+from flask.helpers import send_from_directory
 from flaskext.mysql import MySQL
 from flask_mail import Mail, Message
 from random import randint
@@ -168,7 +169,7 @@ def index():
 
 @app.route("/robots.txt")
 def robots_txt():
-    return render_template("robots.txt")
+    return send_from_directory("static", "robots.txt")
 
 @app.route('/login', methods=['GET', 'POST'])
 def anmeldung():
@@ -263,7 +264,7 @@ def myaccount():
 	msgimage = ''
 	extension = ''
 	hasimage = False
-	accountdata = mysql_fetchone('SELECT * FROM user WHERE id = %s AND username = %s', (session.get("id"), session.get("username"),))
+	accountdata = mysql_fetchone('SELECT * FROM user WHERE id = %s', (session.get("id"),))
 	localfiles = glob.glob(app.config['PROFILEIMAGE_UPLOAD_FOLDER'] + '/' + str(session.get("id")) + '.*')
 	if accountdata[11] == 1 and localfiles:
 		hasimage = True
