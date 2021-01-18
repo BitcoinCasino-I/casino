@@ -23,7 +23,7 @@ app.config.from_pyfile('mail.cfg')
 app.config['PROFILEIMAGE_UPLOAD_FOLDER'] = '/var/www/html/CasinoApp/static/upload/profileimg'
 app.config['MAX_CONTENT_LENGTH'] = 8 * 1024 * 1024
 
-APPDOMAIN = 'https://casino.reshade.io'
+APPDOMAIN = 'APPDOMAIN'
 
 mysql.init_app(app)
 mail.init_app(app)
