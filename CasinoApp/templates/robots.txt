@@ -1,4 +1,4 @@
-#robots.txt for casino.reshade.io
+#robots.txt for casino.reshade.io\n
 
 User-agent: *
 Disallow: /adminpanel/

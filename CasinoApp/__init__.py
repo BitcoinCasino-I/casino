@@ -3,7 +3,6 @@
 # CODE IST TEILWEISE REDUNDANT UND KANN AUCH ALLGEMEIN NOCH OPTIMIERT WERDEN. FOKUS LAG ERSTMAL AUF FUNKTIONALITÄT.
 
 from flask import Flask, render_template, request, redirect, url_for, session, jsonify
-from flask.helpers import send_from_directory
 from flaskext.mysql import MySQL
 from flask_mail import Mail, Message
 from random import randint
