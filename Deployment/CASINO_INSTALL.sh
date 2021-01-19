@@ -4,17 +4,13 @@
 
 # WICHTIG: NACH TESTPHASE DIE DB.CFG, MAIL.CFG UND CASINOAPP.WSGI AUS DEM DEPLOY-TEST-REPO VERWENDEN
 
-# TODOS /IDEEN:
-# - Alles, was der Skript nicht erledigen kann, dokumentieren in den Installationshinweisen (plus Voraussetzungen / Anleitung Skript)
-# - Apache Directives / Security Settings
-# - Virtualenv fixen, sodass die manuellen Fixes (s. unten) nicht mehr nötig sind
-# - Dynamische Konfiguration des Mail-Users (mail.cfg)
-# - Automatische Installation des Webhooks (nötig?)
-# - Funktionen verwenden (Code kürzen)
-# - >/dev/null statt >/dev/null 2>&1 verwenden, wo es Sinn macht
-# - seperater sudo nutzer (...)
-# - alte Nutzer löschen
-# - sicherstellen, dass python3.7 verwendet wird
+# TODOS (GEORDNET NACH PRIORITÄT):
+# - SEPARATER SUDO USER
+# - SICHERSTELLEN, DASS DIE RICHTIGEN VERSIONEN DER PROGRAMME HERUNTERGELADEN UND GENUTZT WERDEN
+# - ALLES, WAS DER SKRIPT NICHT ERLEDIGEN KANN, DOKUMENTIEREN IN DEN INSTALLATIONSHINWEISEN (PLUS VORAUSSETZUNGEN / ANLEITUNG SKRIPT)
+# - >/DEV/NULL STATT >/DEV/NULL 2>&1 VERWENDEN, WO ES SINN MACHT
+# - VIRTUALENV FIXEN, SODASS DIE MANUELLEN FIXES (S. UNTEN) NICHT MEHR NÖTIG SIND
+# - FUNKTIONEN VERWENDEN (CODE KÜRZEN)
 
 # Variables
 SERVERIP=$(wget -qO- https://ipecho.net/plain;);
