@@ -170,10 +170,8 @@ echo ""
 
 # Diverse Programme / Ordner /Datenbanken zurücksetzen
 echo "${yellow}Setze Programme, Ordner und Nutzer zurück...${reset}"
-pkill -9 -u $APPUSER >/dev/null 2>&1;
-pkill -9 -u $FTPUSER >/dev/null 2>&1;
-deluser --quiet --force --remove-home --remove-all-files $APPUSER >/dev/null 2>&1;
-delgroup --quiet --force $APPUSER >/dev/null 2>&1;
+pkill -u $APPUSER >/dev/null 2>&1;
+pkill -u $FTPUSER >/dev/null 2>&1;
 deluser --quiet --force --remove-home --remove-all-files $FTPUSER >/dev/null 2>&1;
 delgroup --quiet --force $FTPUSER >/dev/null 2>&1;
 rm -rf /var/lib/mysql/* >/dev/null 2>&1;
@@ -184,6 +182,7 @@ rm -rf /etc/apache2 >/dev/null 2>&1;
 rm -rf /etc/mysql >/dev/null 2>&1;
 rm -rf /etc/letsencrypt >/dev/null 2>&1;
 rm -rf /etc/proftpd >/dev/null 2>&1;
+rm -rf /home/$APPUSER/* >/dev/null 2>&1;
 apt-get -qq purge ufw certbot apache2 mariadb-server mariadb-client mysql-common python3.7 proftpd-basic libapache2-mod-php7.3 libapache2-mod-security2 >/dev/null 2>&1;
 echo "${green}Fertig.${reset}"
 echo ""
@@ -199,7 +198,11 @@ echo ""
 
 # Erstellung des Nutzers, Festlegen des Passworts
 echo "${yellow}Beginne Nutzererstellung...${reset}"
-adduser --disabled-password --gecos "" $APPUSER >/dev/null 2>&1;
+if id "$APPUSER" >/dev/null 2>&1; then
+        usermod -G $APPUSER $APPUSER
+else
+        adduser --disabled-password --gecos "" $APPUSER >/dev/null 2>&1;
+fi
 echo -e "$APPUSERPW\n$APPUSERPW" | passwd $APPUSER >/dev/null 2>&1;
 chown -R ${APPUSER}:${APPUSER} /home/$APPUSER;
 chmod -R 750 /home/$APPUSER;
