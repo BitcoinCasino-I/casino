@@ -41,7 +41,7 @@ Benutzername: SMTPUSER
 Passwort: SMTPPW
 
 
-LNIKS
+LINKS
 -----
 Website: SERVERIP
 phpMyAdmin: SERVERIP/phpmyadmin
