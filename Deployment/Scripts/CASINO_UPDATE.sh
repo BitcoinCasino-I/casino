@@ -14,6 +14,7 @@ if [[ $EUID == 0 ]] || ! [ -z "$SUDO_USER" ] || ! [[ "$USER" == "casino" ]]; the
 fi
 
 SERVERIP=$(grep "APPDOMAIN = '" /var/www/html/CasinoApp/__init__.py | awk -F "'" '{print $2}');
+APPLICATIONKEY = $(grep "application.secret_key = '" /var/www/html/CasinoApp/casinoapp.wsgi | awk -F "'" '{print $2}');
 
 echo ""
 echo "${red}Achtung: Dieses Programm löscht den kompletten Ordner /var/www/html/CasinoApp, ausgenommen Profilbilder und Konfigurationen.";
