@@ -403,4 +403,5 @@ echo "ANSCHLIESSEND NEUSTART DURCHFÜHREN MIT ${yellow}sudo reboot${reset}";
 echo ""
 
 # Letzer Schritt, wechsle zum APPUSER
+cd /home/$APPUSER
 su "$APPUSER";
