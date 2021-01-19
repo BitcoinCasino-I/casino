@@ -54,7 +54,7 @@ echo "${green}Fertig.${reset}";
 echo "";
 
 echo "${yellow}Lösche CasinoApp...${reset}";
-rm -r /var/www/html/CasinoApp >/dev/null;
+rm -rf /var/www/html/CasinoApp >/dev/null;
 echo "${green}Fertig.${reset}";
 echo "";
 
