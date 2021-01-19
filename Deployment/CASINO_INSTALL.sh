@@ -183,7 +183,7 @@ rm -rf /etc/apache2 >/dev/null 2>&1;
 rm -rf /etc/mysql >/dev/null 2>&1;
 rm -rf /etc/letsencrypt >/dev/null 2>&1;
 rm -rf /etc/proftpd >/dev/null 2>&1;
-apt-get -qq purge ufw certbot apache2 mariadb-server mariadb-client mysql-common python3.7 proftpd-basic >/dev/null 2>&1;
+apt-get -qq purge ufw certbot apache2 mariadb-server mariadb-client mysql-common python3.7 proftpd-basic libapache2-mod-php7.3 libapache2-mod-security2 >/dev/null 2>&1;
 echo "${green}Fertig.${reset}"
 echo ""
 
