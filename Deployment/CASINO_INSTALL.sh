@@ -280,8 +280,6 @@ echo "";
 
 # Beginne FTP-Setup
 echo "${yellow}Konfiguriere FTP...${reset}";
-echo "${yellow}Setze Rechte...${reset}";
-chown -R $FTPUSER:www-data /home/$FTPUSER/;
 echo "${yellow}Bereite .conf-Dateien vor...${reset}";
 cp /home/$APPUSER/casinoapp-download/"${GITCONFIGSUBFOLDER}"custom.conf /etc/proftpd/conf.d;
 rm /etc/proftpd/proftpd.conf;
