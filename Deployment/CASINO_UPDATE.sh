@@ -6,8 +6,8 @@ yellow=`tput setaf 3`;
 green=`tput setaf 2`;
 reset=`tput setaf 7`;
 
-# Skript muss als casino mit sudo ausgeführt werden
-if [[ $EUID > 0 ]] || ! [ -z "$SUDO_USER" ]; then
+# Skript muss als casino ohne sudo ausgeführt werden
+if [[ $EUID > 0 ]] || ! [ -z "$SUDO_USER" ] || ! [[ "$USER" == "casino" ]]; then
         # Abbruch
         echo "${red}Bitte als Nutzer \"casino\" OHNE sudo ausführen!${reset}";
         exit -1;
