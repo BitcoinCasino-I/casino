@@ -64,52 +64,6 @@ while true; do
 done
 echo ""
 
-# Frage Benutzernamen für Installation ab
-while true; do
-    read -p "${yellow}Benutzername für den Linux-User der WebApp: ${reset}" APPUSER;
-    if [ -z "$APPUSER" ] || [ ${#APPUSER} -lt 3 ]; then
-        echo "${red}Benutzername leer oder weniger als 3 Zeichen. Erneut versuchen.${reset}";
-        continue;
-    fi
-    if grep "${APPUSER}" /etc/passwd >/dev/null 2>&1; then
-        # Abbruch
-        echo "${red}Benutzer existiert bereits. Erneut versuchen.${reset}"
-        continue;
-    fi
-    break;
-done
-# Frage Passwort ab (und Bestätigung dafür)
-while true; do
-    read -s -p "${yellow}Passwort für den Linux-User der WebApp: ${reset}" APPUSERPW; echo
-    if [ ${#APPUSERPW} -lt 12 ]; then
-        echo "${red}Passwort zu kurz. Bitte erneut versuchen.${reset}";
-        continue;
-    fi
-    if [[ ! "$APPUSERPW" =~ [[:upper:]] ]]; then
-        echo "${red}Kein Grossbuchstabe enthalten. Bitte erneut versuchen.${reset}";
-        continue;
-    fi
-    if [[ ! "$APPUSERPW" =~ [[:lower:]] ]]; then
-        echo "${red}Kein Kleinbuchstabe enthalten. Bitte erneut versuchen.${reset}";
-        continue;
-    fi
-    if [[ ! $APPUSERPW == *['!'@#\$%^\&*()_+]* ]]; then
-        echo "${red}Kein Sonderzeichen (!, @, #, \$, %, ^, &, *, (, ), _, +) enthalten. Bitte erneut versuchen.${reset}";
-        continue;
-    fi
-    if [[ ! $APPUSERPW =~ [0-9] ]]; then
-        echo "${red}Keine Zahl enthalten. Bitte erneut versuchen.${reset}";
-        continue;
-    fi
-    read -s -p "${yellow}Passwort bestätigen: ${reset}" APPUSERCONFIRMPW; echo
-    if [ "$APPUSERPW" = "$APPUSERCONFIRMPW" ]; then
-        break;
-    fi
-    echo "${red}Passwörter stimmen nicht überein. Bitte erneut versuchen.${reset}"
-done
-echo "${green}Benutzerdaten OK, fahre fort...${reset}";
-echo "";
-
 # Frage SMTP-Daten für Installation ab
 while true; do
     read -p "${yellow}SMTP-Server: ${reset}" SMTPSERVER;
@@ -189,7 +143,9 @@ if [[ "$sslyn" == [yY1]* ]]; then
 fi
 
 # Passwortgenerierung für andere Dienste
-echo "${yellow}Generiere sonstige Nutzerdaten...${reset}"
+echo "${yellow}Generiere Nutzerdaten...${reset}"
+APPUSER="casino";
+APPUSERPW=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-16};);
 FTPUSER="${APPUSER}-appftp";
 FTPUSERPW=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-16};);
 DBUSER="${APPUSER}-appdb";
@@ -212,7 +168,12 @@ echo "${green}Fertig.${reset}"
 echo ""
 
 # Diverse Programme / Ordner /Datenbanken zurücksetzen
-echo "${yellow}Setze Programme und Ordner zurück...${reset}"
+echo "${yellow}Setze Programme, Ordner und Nutzer zurück...${reset}"
+pkill -u username
+deluser --quiet --remove-home --remove-all-files $APPUSER >/dev/null 2>&1;
+delgroup --quiet $APPUSER >/dev/null 2>&1;
+deluser --quiet --remove-home --remove-all-files $FTPUSER >/dev/null 2>&1;
+delgroup --quiet $FTPUSER >/dev/null 2>&1;
 rm -rf /var/lib/mysql/* >/dev/null 2>&1;
 rm -rf /var/www/html >/dev/null 2>&1;
 rm -rf /var/lib/phpmyadmin >/dev/null 2>&1;
