@@ -398,8 +398,8 @@ echo ""
 echo ""
 echo "${green}Installation abgeschlossen.";
 echo "Wechsle zum Benutzer \"${yellow}$APPUSER${green}\"...";
-echo "Zugangsdaten gespeichert unter /home/$APPUSER/creds.txt ${red}- Bitte woanders sichern und dann löschen!"
-echo "Bitte Neustart durchführen mit ${yellow}sudo reboot${reset}";
+echo "${red}ZUGANGSDATEN GESPEICHERT UNTER /home/$APPUSER/creds.txt - BITTE WOANDERS SICHERN UND DANN DIE DATEI LÖSCHEN!"
+echo "ANSCHLIESSEND NEUSTART DURCHFÜHREN MIT ${yellow}sudo reboot${reset}";
 echo ""
 
 # Letzer Schritt, wechsle zum APPUSER
