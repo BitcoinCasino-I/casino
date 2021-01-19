@@ -7,16 +7,16 @@ green=`tput setaf 2`;
 reset=`tput setaf 7`;
 
 # Skript muss als casino mit sudo ausgeführt werden
-if [[ $EUID > 0 ]] || ! [ "$SUDO_USER" == "casino" ]; then
+if [[ $EUID > 0 ]] || ! [ -z "$SUDO_USER" ]; then
         # Abbruch
-        echo "${red}Bitte als Nutzer \"casino\" mit sudo ausführen!${reset}";
+        echo "${red}Bitte als Nutzer \"casino\" OHNE sudo ausführen!${reset}";
         exit -1;
 fi
 
 SERVERIP=$(grep "APPDOMAIN = '" /var/www/html/CasinoApp/__init__.py | awk -F "'" '{print $2}');
 
 echo ""
-echo "${red}Achtung: Dieses Programm löscht den kompletten Ordner /var/www/html/CasinoApp, ausgenommen den Profilbild-Ordner.";
+echo "${red}Achtung: Dieses Programm löscht den kompletten Ordner /var/www/html/CasinoApp, ausgenommen Profilbilder, Logs und Konfigurationen.";
 echo "Datenbanken bleiben ebenfalls erhalten.${reset}";
 while true; do
     read -p "${yellow}Fortfahren?${reset} (Y/N) " runyn;
@@ -38,7 +38,7 @@ echo "";
 
 # Lade Setup-Dateien herunter
 echo "${yellow}Stoppe Apache...${reset}";
-systemctl stop apache2 >/dev/null 2>&1;
+sudo systemctl stop apache2 >/dev/null 2>&1;
 echo "${green}Fertig.${reset}";
 echo "";
 
@@ -86,11 +86,11 @@ sed -i "s/APPDOMAIN = 'APPDOMAIN'/APPDOMAIN = '$SERVERIP'/g" /var/www/html/Casin
 echo "${yellow}Setze Berechtigungen...${reset}";
 chown -R casino:www-data /var/www/html/CasinoApp;
 chmod -R 750 /var/www/html/CasinoApp;
-chmod -R 770 /var/www/html/CasinoApp/static/upload/profileimg;
+chmod -R 770 /var/www/html/CasinoApp/static/upload/profileimg /var/www/html/CasinoApp/static/js;
 echo "${green}Fertig.${reset}";
 echo "";
 
 echo "${yellow}Starte Apache...${reset}";
-systemctl start apache2 >/dev/null 2>&1;
+sudo systemctl start apache2 >/dev/null 2>&1;
 echo "${green}Fertig.${reset}";
 echo "";

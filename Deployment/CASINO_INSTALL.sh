@@ -214,6 +214,7 @@ usermod -aG www-data $APPUSER >/dev/null;
 usermod -aG sudo $APPUSER >/dev/null;
 groupadd -f ftpuser
 usermod -aG ftpuser $FTPUSER >/dev/null;
+usermod -aG www-data $FTPUSER >/dev/null;
 echo "${green}Fertig.${reset}";
 echo "";
 
@@ -302,11 +303,9 @@ mkdir -p /var/lib/phpmyadmin/tmp;
 echo "${yellow}Bearbeite Konfiguration für phpMyAdmin...${reset}";
 sed -i "s/PHPUSERPW/$PHPUSERPW/g" /usr/share/phpmyadmin/config.inc.php;
 echo "${yellow}Setze Rechte...${reset}";
-chown -R $APPUSER:www-data /var/lib/phpmyadmin;
+chown -R $APPUSER:www-data /var/lib/phpmyadmin /usr/share/phpmyadmin;
 chown -R www-data:www-data /var/lib/phpmyadmin/tmp;
-chown -R $APPUSER:www-data /usr/share/phpmyadmin;
-chmod -R 750 /var/lib/phpmyadmin;
-chmod -R 750 /usr/share/phpmyadmin;
+chmod -R 750 /var/lib/phpmyadmin /usr/share/phpmyadmin;
 echo "${yellow}Erstelle Datenbank für phpMyAdmin...${reset}";
 mariadb < /usr/share/phpmyadmin/sql/create_tables.sql;
 echo "${yellow}Erstelle Datenbank für CasinoApp...${reset}";
@@ -352,10 +351,8 @@ sed -i "s/'APPLICATIONSECRET'/'$APPLICATIONSECRET'/g" /var/www/html/CasinoApp/ca
 # Setze Berechtigungen
 echo "${yellow}Setze Berechtigungen...${reset}";
 chown -R $APPUSER:www-data /var/www/html/CasinoApp;
-chown -R $FTPUSER:www-data /var/www/html/CasinoApp/static/js
-chown -R $FTPUSER:www-data /var/www/html/CasinoApp/static/js/main.js
 chmod -R 750 /var/www/html/CasinoApp;
-chmod -R 770 /var/www/html/CasinoApp/static/upload/profileimg;
+chmod -R 770 /var/www/html/CasinoApp/static/upload/profileimg /var/www/html/CasinoApp/static/js;
 # Apache-Neustart
 echo "${yellow}Starte Apache-Webserver neu...${reset}";
 systemctl restart apache2;
