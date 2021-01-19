@@ -1,8 +1,6 @@
 #!/bin/bash
 
-# Voraussetzung sollte ein Debian 9 / 10 Server sein, keine zusätzlichen Check dafür im Skript
-
-# WICHTIG: NACH TESTPHASE DIE DB.CFG, MAIL.CFG UND CASINOAPP.WSGI AUS DEM DEPLOY-TEST-REPO VERWENDEN
+# Voraussetzung ist ein (optimalerweise "frischer") Debian 10 Server!
 
 # TODOS (GEORDNET NACH PRIORITÄT):
 # - SEPARATER SUDO USER
@@ -31,6 +29,13 @@ if [[ $EUID > 0 ]]; then
         # Abbruch
         echo "${red}Bitte als ROOT ausführen!${reset}";
         exit -1;
+fi
+
+SYSVERSION=$(cat /etc/issue);
+if ! [[ $SYSVERSION == *"Debian GNU/Linux 10"* ]]; then
+    # Abbruch
+    echo "${red}Bitte als ROOT ausführen!${reset}";
+    exit -1;
 fi
 
 echo ""
