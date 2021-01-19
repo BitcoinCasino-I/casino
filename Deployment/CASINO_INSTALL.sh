@@ -202,9 +202,9 @@ echo "${yellow}Beginne Nutzererstellung...${reset}"
 adduser --disabled-password --gecos "" $APPUSER >/dev/null 2>&1;
 echo -e "$APPUSERPW\n$APPUSERPW" | passwd $APPUSER >/dev/null 2>&1;
 chown -R ${APPUSER}:${APPUSER} /home/$APPUSER;
-adduser --disabled-password --gecos "" $FTPUSER --shell /bin/false >/dev/null 2>&1;
+chmod -R 750 /home/$APPUSER;
+adduser --no-create-home --disabled-password --gecos "" $FTPUSER --shell /bin/false >/dev/null 2>&1;
 echo -e "$FTPUSERPW\n$FTPUSERPW" | passwd $FTPUSER >/dev/null 2>&1;
-chown -R ${FTPUSER}:${FTPUSER} /home/$FTPUSER;
 echo "${green}Fertig.${reset}"
 echo ""
 
