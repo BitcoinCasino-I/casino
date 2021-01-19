@@ -169,7 +169,8 @@ echo ""
 
 # Diverse Programme / Ordner /Datenbanken zurücksetzen
 echo "${yellow}Setze Programme, Ordner und Nutzer zurück...${reset}"
-pkill -u username
+pkill -u $APPUSER >/dev/null 2>&1;
+pkill -u $FTPUSER >/dev/null 2>&1;
 deluser --quiet --remove-home --remove-all-files $APPUSER >/dev/null 2>&1;
 delgroup --quiet $APPUSER >/dev/null 2>&1;
 deluser --quiet --remove-home --remove-all-files $FTPUSER >/dev/null 2>&1;
