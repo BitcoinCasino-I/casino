@@ -2,16 +2,14 @@
 
 # CODE IST TEILWEISE REDUNDANT UND KANN AUCH ALLGEMEIN NOCH OPTIMIERT WERDEN. FOKUS LAG ERSTMAL AUF FUNKTIONALITÄT.
 
-from flask import Flask, render_template, request, redirect, url_for, session, jsonify, send_from_directory
+from flask import Flask, render_template, request, redirect, url_for, session, send_from_directory
 from flaskext.mysql import MySQL
 from flask_mail import Mail, Message
 from random import randint
 from flask_jsglue import JSGlue
 from datetime import datetime
 
-import re, hashlib, json, os, glob, struct, PIL
-from PIL import Image 
-from ftplib import FTP
+import re, hashlib, os, glob, PIL
 
 mysql = MySQL()
 mail = Mail()
