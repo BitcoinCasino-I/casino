@@ -25,16 +25,16 @@ green=`tput setaf 2`;
 reset=`tput setaf 7`;
 
 # Skript muss als root oder mit sudo ausgeführt werden
-if [[ $EUID > 0 ]]; then
+if [[ $EUID > 0 ]] || ! [ -z "$SUDO_USER" ]; then
         # Abbruch
-        echo "${red}Bitte als ROOT ausführen!${reset}";
+        echo "${red}Bitte als ROOT-USER ausführen!${reset}";
         exit -1;
 fi
 
 SYSVERSION=$(cat /etc/issue);
 if ! [[ $SYSVERSION == *"Debian GNU/Linux 10"* ]]; then
     # Abbruch
-    echo "${red}Bitte als ROOT ausführen!${reset}";
+    echo "${red}Debian 10 ist Voraussetzung für die CasinoApp-Installation! Bitte verwenden Sie ein Debian 10-System.${reset}";
     exit -1;
 fi
 
