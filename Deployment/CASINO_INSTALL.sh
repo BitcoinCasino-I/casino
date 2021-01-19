@@ -25,9 +25,9 @@ green=`tput setaf 2`;
 reset=`tput setaf 7`;
 
 # Skript muss als root oder mit sudo ausgeführt werden
-if [[ $EUID > 0 ]] || ! [ -z "$SUDO_USER" ]; then
+if [[ $EUID > 0 ]]; then
         # Abbruch
-        echo "${red}Bitte als ROOT-USER ausführen!${reset}";
+        echo "${red}Bitte als ROOT oder mit SUDO ausführen!${reset}";
         exit -1;
 fi
 
