@@ -317,6 +317,48 @@ mariadb -e "USE casinoapp; INSERT INTO user VALUES (NULL, '$CASINOUSER', '', '$C
 echo "${green}Fertig.${reset}";
 echo "";
 
+# Beginne mit App-Installation
+echo "${yellow}Installiere die virtuelle Umgebung...${reset}";
+# Next line is needed as fix for opencv build failing. pip needs to be upgraded manually after initial installation
+python3 -m pip install -qq --upgrade pip wheel setuptools;
+python3 -m venv /var/www/html/CasinoApp/venv;
+source /var/www/html/CasinoApp/venv/bin/activate;
+# Next line needs to be installed seperately, build errors otherwise when installing requirements at oce
+python3 -m pip install -qq pip wheel setuptools;
+python3 -m pip install -qq --upgrade pip wheel setuptools;
+python3 -m pip install -qq -r /home/$APPUSER/casinoapp-download/"${GITCONFIGSUBFOLDER}"requirements.txt;
+deactivate;
+echo "${yellow}Bearbeite Konfigurationen...${reset}";
+# Edit database config file
+sed -i "s/'DBUSER'/'$DBUSER'/g" /var/www/html/CasinoApp/db.cfg;
+sed -i "s/'DBUSERPW'/'$DBUSERPW'/g" /var/www/html/CasinoApp/db.cfg;
+# Edit server domain/ip
+if [[ "$sslyn" == [yY1]* ]]; then
+    sed -i "s/APPDOMAIN = 'APPDOMAIN'/APPDOMAIN = 'https:\/\/$DOMAINCHECKED'/g" /var/www/html/CasinoApp/__init__.py;
+else
+    sed -i "s/APPDOMAIN = 'APPDOMAIN'/APPDOMAIN = '$SERVERIP'/g" /var/www/html/CasinoApp/__init__.py;
+fi
+# Edit mail config file
+sed -i "s/'SMTPSERVER'/'$SMTPSERVER'/g" /var/www/html/CasinoApp/mail.cfg;
+sed -i "s/SMTPPORT/$SMTPPORT/g" /var/www/html/CasinoApp/mail.cfg;
+sed -i "s/SMTPSSL/$SMTPSSL/g" /var/www/html/CasinoApp/mail.cfg;
+sed -i "s/'SMTPUSER'/'$SMTPUSER'/g" /var/www/html/CasinoApp/mail.cfg;
+sed -i "s/'SMTPPW'/'$SMTPPW'/g" /var/www/html/CasinoApp/mail.cfg;
+# Bearbeite wsgi secret
+sed -i "s/'APPLICATIONSECRET'/'$APPLICATIONSECRET'/g" /var/www/html/CasinoApp/casinoapp.wsgi;
+# Setze Berechtigungen
+echo "${yellow}Setze Berechtigungen...${reset}";
+chown -R $APPUSER:www-data /var/www/html/CasinoApp;
+chown -R $FTPUSER:www-data /var/www/html/CasinoApp/static/js
+chown -R $FTPUSER:www-data /var/www/html/CasinoApp/static/js/main.js
+chmod -R 750 /var/www/html/CasinoApp;
+chmod -R 770 /var/www/html/CasinoApp/static/upload/profileimg;
+# Apache-Neustart
+echo "${yellow}Starte Apache-Webserver neu...${reset}";
+systemctl restart apache2;
+echo "${green}Fertig.${reset}";
+echo "";
+
 echo "${yellow}Lege Zugangsdaten-Datei an...${reset}";
 cp /home/$APPUSER/casinoapp-download/"${GITCONFIGSUBFOLDER}"creds.txt /home/$APPUSER;
 sed -i "s/Benutzername: APPUSER/Benutzername: $APPUSER/g" /home/$APPUSER/creds.txt;
@@ -346,47 +388,8 @@ chmod 750 /home/$APPUSER/creds.txt;
 echo "${green}Fertig.${reset}";
 echo "";
 
-# Beginne mit App-Installation
-echo "${yellow}Installiere die virtuelle Umgebung...${reset}";
-# Next line is needed as fix for opencv build failing. pip needs to be upgraded manually after initial installation
-python3 -m pip install -qq --upgrade pip wheel setuptools;
-python3 -m venv /var/www/html/CasinoApp/venv;
-source /var/www/html/CasinoApp/venv/bin/activate;
-# Next line needs to be installed seperately, build errors otherwise when installing requirements at oce
-python3 -m pip install -qq pip wheel setuptools;
-python3 -m pip install -qq --upgrade pip wheel setuptools;
-python3 -m pip install -qq -r /home/$APPUSER/casinoapp-download/"${GITCONFIGSUBFOLDER}"requirements.txt;
-deactivate;
 echo "${yellow}Entferne temporäre Dateien...${reset}";
 rm -r /home/$APPUSER/casinoapp-download;
-echo "${yellow}Bearbeite Konfigurationen...${reset}";
-# Edit database config file
-sed -i "s/'DBUSER'/'$DBUSER'/g" /var/www/html/CasinoApp/db.cfg;
-sed -i "s/'DBUSERPW'/'$DBUSERPW'/g" /var/www/html/CasinoApp/db.cfg;
-# Edit server domain/ip
-if [[ "$sslyn" == [yY1]* ]]; then
-    sed -i "s/APPDOMAIN = 'APPDOMAIN'/APPDOMAIN = 'https:\/\/$DOMAINCHECKED'/g" /var/www/html/CasinoApp/__init__.py;
-else
-    sed -i "s/APPDOMAIN = 'APPDOMAIN'/APPDOMAIN = '$SERVERIP'/g" /var/www/html/CasinoApp/__init__.py;
-fi
-# Edit mail config file
-sed -i "s/'SMTPSERVER'/'$SMTPSERVER'/g" /var/www/html/CasinoApp/mail.cfg;
-sed -i "s/SMTPPORT/$SMTPPORT/g" /var/www/html/CasinoApp/mail.cfg;
-sed -i "s/SMTPSSL/$SMTPSSL/g" /var/www/html/CasinoApp/mail.cfg;
-sed -i "s/'SMTPUSER'/'$SMTPUSER'/g" /var/www/html/CasinoApp/mail.cfg;
-sed -i "s/'SMTPPW'/'$SMTPPW'/g" /var/www/html/CasinoApp/mail.cfg;
-# Bearbeite wsgi secret
-sed -i "s/'APPLICATIONSECRET'/'$APPLICATIONSECRET'/g" /var/www/html/CasinoApp/casinoapp.wsgi;
-# Setze Berechtigungen
-echo "${yellow}Setze Berechtigungen...${reset}";
-chown -R $APPUSER:www-data /var/www/html/CasinoApp;
-chown -R $FTPUSER:www-data /var/www/html/CasinoApp/static/js
-chown -R $FTPUSER:www-data /var/www/html/CasinoApp/static/js/main.js
-chmod -R 750 /var/www/html/CasinoApp;
-chmod -R 770 /var/www/html/CasinoApp/static/upload/profileimg;
-# Apache-Neustart
-echo "${yellow}Starte Apache-Webserver neu...${reset}";
-systemctl restart apache2;
 echo "${green}Fertig.${reset}";
 echo "";
 
