@@ -351,6 +351,7 @@ echo "${yellow}Setze Berechtigungen...${reset}";
 chown -R $APPUSER:www-data /var/www/html/CasinoApp;
 chmod -R 750 /var/www/html/CasinoApp;
 chmod -R 770 /var/www/html/CasinoApp/static/upload/profileimg /var/www/html/CasinoApp/static/js;
+chmod -R g+s /var/www/html/CasinoApp;
 # Apache-Neustart
 echo "${yellow}Starte Apache-Webserver neu...${reset}";
 systemctl restart apache2;
