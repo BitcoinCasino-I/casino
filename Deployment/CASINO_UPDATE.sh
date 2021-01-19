@@ -16,7 +16,7 @@ fi
 SERVERIP=$(grep "APPDOMAIN = '" /var/www/html/CasinoApp/__init__.py | awk -F "'" '{print $2}');
 
 echo ""
-echo "${red}Achtung: Dieses Programm löscht den kompletten Ordner /var/www/html/CasinoApp, ausgenommen Profilbilder, Logs und Konfigurationen.";
+echo "${red}Achtung: Dieses Programm löscht den kompletten Ordner /var/www/html/CasinoApp, ausgenommen Profilbilder und Konfigurationen.";
 echo "Datenbanken bleiben ebenfalls erhalten.${reset}";
 while true; do
     read -p "${yellow}Fortfahren?${reset} (Y/N) " runyn;
@@ -51,10 +51,6 @@ echo "${yellow}Sichere Konfiguration...${reset}";
 mkdir -p /home/casino/casinoapp-update/backup/configs;
 mv /var/www/html/CasinoApp/*.cfg /home/casino/casinoapp-update/backup/configs >/dev/null;
 echo "${green}Fertig.${reset}";
-echo "${yellow}Sichere Logs...${reset}";
-mkdir -p /home/casino/casinoapp-update/backup/logs;
-mv /var/www/html/CasinoApp/logs/* /home/casino/casinoapp-update/backup/logs >/dev/null;
-echo "${green}Fertig.${reset}";
 echo "";
 
 echo "${yellow}Lösche CasinoApp...${reset}";
@@ -66,7 +62,6 @@ echo "${yellow}Installiere CasinoApp...${reset}";
 mv /home/casino/casinoapp-update/CasinoApp /var/www/html >/dev/null;
 mv /home/casino/casinoapp-update/backup/images/* /var/www/html/CasinoApp/static/upload/profileimg;
 mv /home/casino/casinoapp-update/backup/configs/* /var/www/html/CasinoApp;
-mv /home/casino/casinoapp-update/backup/logs/* /var/www/html/CasinoApp/logs;
 echo "${green}Fertig.${reset}";
 echo "";
 
