@@ -172,10 +172,10 @@ echo ""
 echo "${yellow}Setze Programme, Ordner und Nutzer zurück...${reset}"
 pkill -u $APPUSER >/dev/null 2>&1;
 pkill -u $FTPUSER >/dev/null 2>&1;
-deluser --quiet --remove-home --remove-all-files $APPUSER >/dev/null 2>&1;
-delgroup --quiet $APPUSER >/dev/null 2>&1;
-deluser --quiet --remove-home --remove-all-files $FTPUSER >/dev/null 2>&1;
-delgroup --quiet $FTPUSER >/dev/null 2>&1;
+deluser --quiet --force --remove-home --remove-all-files $APPUSER >/dev/null 2>&1;
+delgroup --quiet --force $APPUSER >/dev/null 2>&1;
+deluser --quiet --force --remove-home --remove-all-files $FTPUSER >/dev/null 2>&1;
+delgroup --quiet --force $FTPUSER >/dev/null 2>&1;
 rm -rf /var/lib/mysql/* >/dev/null 2>&1;
 rm -rf /var/www/html >/dev/null 2>&1;
 rm -rf /var/lib/phpmyadmin >/dev/null 2>&1;
