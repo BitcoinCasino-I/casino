@@ -1,6 +1,4 @@
-#robots.txt for casino.reshade.io\n
-
-User-agent: *
+﻿User-agent: *
 Disallow: /adminpanel/
 Disallow: /ftp/Backups/
 Disallow: /ftp/Logs/
