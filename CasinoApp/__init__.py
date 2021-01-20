@@ -283,16 +283,18 @@ def myaccount():
 		else:
 			msgchangepw = 'Wrong current password!'
 	if request.method == 'POST' and 'confirmpassword' in request.form:
-		# Create variables for easy access
 		currentpassword = request.form['confirmpassword']
-		md5_hash_current = get_md5(currentpassword)
-		account = mysql_fetchone('SELECT * FROM user WHERE username = %s AND password = %s', (session.get("username"), md5_hash_current,))
-		if account:
-			mysql_write('DELETE FROM user WHERE username = %s', (session.get("username"),))
-			destroy_session()
-			return redirect(url_for('index'))
+		if re.fullmatch(r'[A-Za-z0-9@#$%^&+=]{8,}', currentpassword):
+			md5_hash_current = get_md5(currentpassword)
+			account = mysql_fetchone('SELECT * FROM user WHERE username = %s AND password = %s', (session.get("username"), md5_hash_current,))
+			if account:
+				mysql_write('DELETE FROM user WHERE username = %s', (session.get("username"),))
+				destroy_session()
+				return redirect(url_for('index'))
+			else:
+				msgdeleteacc = 'Wrong current password!'
 		else:
-			msgdeleteacc = 'Wrong current password!'
+			msg = 'New password too weak! You need at least one uppercase and lowercase letter, a digit and a special character (@#$%^&+=). Minimum length 8 characters.'
 	if request.method == 'POST' and 'image' in request.files:
 		file = request.files['image']
 		if file.filename == '':
