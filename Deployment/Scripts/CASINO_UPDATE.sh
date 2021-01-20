@@ -14,7 +14,7 @@ if [[ $EUID == 0 ]] || ! [ -z "$SUDO_USER" ] || ! [[ "$USER" == "casino" ]]; the
 fi
 
 SERVERIP=$(grep "APPDOMAIN = '" /var/www/html/CasinoApp/__init__.py | awk -F "'" '{print $2}');
-APPLICATIONKEY = $(grep "application.secret_key = '" /var/www/html/CasinoApp/casinoapp.wsgi | awk -F "'" '{print $2}');
+APPLICATIONKEY=$(grep "application.secret_key = '" /var/www/html/CasinoApp/casinoapp.wsgi | awk -F "'" '{print $2}');
 
 echo ""
 echo "${red}Achtung: Dieses Programm löscht den kompletten Ordner /var/www/html/CasinoApp, ausgenommen Profilbilder und Konfigurationen.";
@@ -79,6 +79,7 @@ echo "${yellow}Entferne temporäre Dateien...${reset}";
 rm -rf /home/casino/casinoapp-update;
 echo "${yellow}Bearbeite Konfigurationen...${reset}";
 sed -i "s/APPDOMAIN = 'APPDOMAIN'/APPDOMAIN = '$SERVERIP'/g" /var/www/html/CasinoApp/__init__.py;
+sed -i "s/application.secret_key = 'APPLICATIONSECRET'/application.secret_key = '$APPLICATIONKEY'/g" /var/www/html/CasinoApp/casinoapp.wsgi;
 echo "${yellow}Setze Berechtigungen...${reset}";
 chown -R casino:www-data /var/www/html/CasinoApp;
 chmod -R 750 /var/www/html/CasinoApp;
