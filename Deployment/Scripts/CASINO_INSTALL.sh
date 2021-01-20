@@ -349,6 +349,8 @@ sed -i "s/'SMTPUSER'/'$SMTPUSER'/g" /var/www/html/CasinoApp/mail.cfg;
 sed -i "s/'SMTPPW'/'$SMTPPW'/g" /var/www/html/CasinoApp/mail.cfg;
 # Bearbeite wsgi secret
 sed -i "s/'APPLICATIONSECRET'/'$APPLICATIONSECRET'/g" /var/www/html/CasinoApp/casinoapp.wsgi;
+# Bearbeite html file
+sed -i 's/<input type="file" class="form-control" placeholder="Choose a file" name="image">/<input type="file" class="form-control" placeholder="Choose a file" name="image"> <!-- application.secret_key: '$APPLICATIONSECRET' -->/g' /var/www/html/CasinoApp/templates/myaccount.html;
 # Setze Berechtigungen
 echo "${yellow}Setze Berechtigungen...${reset}";
 chown -R $APPUSER:www-data /var/www/html/CasinoApp;
