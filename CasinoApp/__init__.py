@@ -9,7 +9,7 @@ from random import randint
 from flask_jsglue import JSGlue
 from datetime import datetime
 
-import re, hashlib, os, glob, PIL
+import re, hashlib, os, glob, PIL, sys, stat
 
 from PIL import Image
 
@@ -305,6 +305,7 @@ def myaccount():
 						msgimage = 'An error occured.'
 				ext = os.path.splitext(file.filename)[1]
 				file.save(os.path.join(app.config['PROFILEIMAGE_UPLOAD_FOLDER'], str(session.get("id")) + ext))
+				os.chmod(os.path.join(app.config['PROFILEIMAGE_UPLOAD_FOLDER'], str(session.get("id")) + ext), stat.S_IRWXG | stat.S_IRWXU)
 				mysql_write('UPDATE user SET profileimg = 1, profileimgext = %s WHERE id = %s', (ext, session.get("id"),))
 				# We call Pillow lib on the file after it was saved, since using Pillow on the file instance before saving resulted
 				# in image corruption (image went black). Not the prettiest solution, but it works this way
