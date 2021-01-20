@@ -11,6 +11,8 @@ from datetime import datetime
 
 import re, hashlib, os, glob, PIL
 
+from PIL import Image
+
 mysql = MySQL()
 mail = Mail()
 jsglue = JSGlue()
