@@ -235,6 +235,8 @@ def registrierung():
 			msg = 'Invalid email address!'
 		elif not re.match(r'[A-Za-z0-9]+', username):
 			msg = 'Username must contain only characters and numbers!'
+		elif not re.fullmatch(r'[A-Za-z0-9@#$%^&+=]{8,}', password):
+    		msg = 'Password too weak!'
 		else:
 			otp = randint(000000,999999)
 			# Account doesnt exist and the form data is valid, insert new account into table
