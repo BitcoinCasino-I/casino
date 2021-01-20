@@ -294,7 +294,7 @@ def myaccount():
 			else:
 				msgdeleteacc = 'Wrong current password!'
 		else:
-			msg = 'New password too weak! You need at least one uppercase and lowercase letter, a digit and a special character (@#$%^&+=). Minimum length 8 characters.'
+			msgdeleteacc = 'New password too weak! You need at least one uppercase and lowercase letter, a digit and a special character (@#$%^&+=). Minimum length 8 characters.'
 	if request.method == 'POST' and 'image' in request.files:
 		file = request.files['image']
 		if file.filename == '':
