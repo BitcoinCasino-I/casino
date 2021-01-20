@@ -1859,3 +1859,10 @@ section {
     padding-top: 4px;
   }
 }
+
+@media (min-width: 991px) {
+  /* For mobile phones: */
+  .col-lg-half-offset{
+    margin-left: 4.16666666667% !important;
+  }
+}
