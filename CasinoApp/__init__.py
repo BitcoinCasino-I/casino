@@ -235,8 +235,8 @@ def registrierung():
 			msg = 'Invalid email address!'
 		elif not re.match(r'[A-Za-z0-9]+', username):
 			msg = 'Username must contain only characters and numbers!'
-		elif not re.fullmatch(r"^(?=.{8,})(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).*$", password):
-			msg = 'Password too weak! You need at least one uppercase and lowercase letter, a digit and a special character (@#$%^&+=). Minimum length 8 characters.'
+		elif not re.fullmatch(r"^(?=.{8,})(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&+=]).*$", password):
+			msg = 'Password too weak! You need at least one uppercase and lowercase letter, a digit and a special character (!@#$%^&+=). Minimum length 8 characters.'
 		else:
 			otp = randint(000000,999999)
 			# Account doesnt exist and the form data is valid, insert new account into table
@@ -271,30 +271,30 @@ def myaccount():
 		hasimage = True
 		extension = accountdata[12]
 	if request.method == 'POST' and 'currentpassword' in request.form and 'newpassword' in request.form:
-		# Create variables for easy access
-		currentpassword = request.form['currentpassword']
 		newpassword = request.form['newpassword']
-		md5_hash_current = get_md5(currentpassword)
-		md5_hash_new = get_md5(newpassword)
-		account = mysql_fetchone('SELECT * FROM user WHERE username = %s AND password = %s', (session.get("username"), md5_hash_current,))
-		if account:
-			mysql_write('UPDATE user SET password = %s WHERE username = %s', (md5_hash_new, session.get("username"),))
-			msgchangepw = 'Password updated successfully! :)'
-		else:
-			msgchangepw = 'Wrong current password!'
-	if request.method == 'POST' and 'confirmpassword' in request.form:
-		currentpassword = request.form['confirmpassword']
-		if re.fullmatch(r'^(?=.{8,})(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).*$', currentpassword):
+		if re.fullmatch(r"^(?=.{8,})(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&+=]).*$", newpassword):
+			# Create variables for easy access
+			currentpassword = request.form['currentpassword']
 			md5_hash_current = get_md5(currentpassword)
+			md5_hash_new = get_md5(newpassword)
 			account = mysql_fetchone('SELECT * FROM user WHERE username = %s AND password = %s', (session.get("username"), md5_hash_current,))
 			if account:
-				mysql_write('DELETE FROM user WHERE username = %s', (session.get("username"),))
-				destroy_session()
-				return redirect(url_for('index'))
+				mysql_write('UPDATE user SET password = %s WHERE username = %s', (md5_hash_new, session.get("username"),))
+				msgchangepw = 'Password updated successfully! :)'
 			else:
-				msgdeleteacc = 'Wrong current password!'
+				msgchangepw = 'Wrong current password!'
 		else:
-			msgdeleteacc = 'New password too weak! You need at least one uppercase and lowercase letter, a digit and a special character (@#$%^&+=). Minimum length 8 characters.'
+			msgchangepw = 'Password too weak! You need at least one uppercase and lowercase letter, a digit and a special character (!@#$%^&+=). Minimum length 8 characters.'
+	if request.method == 'POST' and 'confirmpassword' in request.form:
+		currentpassword = request.form['confirmpassword']
+		md5_hash_current = get_md5(currentpassword)
+		account = mysql_fetchone('SELECT * FROM user WHERE username = %s AND password = %s', (session.get("username"), md5_hash_current,))
+		if account:
+			mysql_write('DELETE FROM user WHERE username = %s', (session.get("username"),))
+			destroy_session()
+			return redirect(url_for('index'))
+		else:
+			msgdeleteacc = 'Wrong current password!'
 	if request.method == 'POST' and 'image' in request.files:
 		file = request.files['image']
 		if file.filename == '':
