@@ -235,7 +235,7 @@ def registrierung():
 			msg = 'Invalid email address!'
 		elif not re.match(r'[A-Za-z0-9]+', username):
 			msg = 'Username must contain only characters and numbers!'
-		elif not re.fullmatch(r'[A-Za-z0-9@#$%^&+=]{8,}', password):
+		elif not re.fullmatch(r"^(?=.{8,})(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).*$", password):
 			msg = 'Password too weak! You need at least one uppercase and lowercase letter, a digit and a special character (@#$%^&+=). Minimum length 8 characters.'
 		else:
 			otp = randint(000000,999999)
@@ -284,7 +284,7 @@ def myaccount():
 			msgchangepw = 'Wrong current password!'
 	if request.method == 'POST' and 'confirmpassword' in request.form:
 		currentpassword = request.form['confirmpassword']
-		if re.fullmatch(r'[A-Za-z0-9@#$%^&+=]{8,}', currentpassword):
+		if re.fullmatch(r'^(?=.{8,})(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).*$', currentpassword):
 			md5_hash_current = get_md5(currentpassword)
 			account = mysql_fetchone('SELECT * FROM user WHERE username = %s AND password = %s', (session.get("username"), md5_hash_current,))
 			if account:
