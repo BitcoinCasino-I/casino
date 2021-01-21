@@ -11,6 +11,9 @@ DATENBANK-NUTZER
 Benutzername: DBUSER (nur Zugriff auf casinoapp-Tabelle, eingeschränkte Aktionen)
 Passwort: DBUSERPW
 
+Benutzername: DBUSERREAD (nur Zugriff auf casinoapp-Tabelle, nur Lesezugriff)
+Passwort: DBUSERREADPW
+
 Benutzername: pma (nur Zugriff auf phpmyadmin-Tabelle, eingeschränkte Aktionen)
 Passwort: PHPUSERPW
 
