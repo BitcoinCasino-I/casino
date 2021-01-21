@@ -275,6 +275,7 @@ a2enconf -q phpmyadmin >/dev/null;
 a2ensite -q Casino >/dev/null;
 a2dissite -q 000-default >/dev/null;
 if [[ "$sslyn" == [yY1]* ]]; then
+    echo "${yellow}Installiere SSL-Zertifikate...${reset}";
     certbot --apache --quiet --non-interactive --agree-tos -m "$EMAILCHECKED" -d "$DOMAINCHECKED" -d "www.$DOMAINCHECKED";
 fi
 echo "${yellow}Setze Rechte...${reset}";
